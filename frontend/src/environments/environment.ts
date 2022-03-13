@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseApiUrl:
+    'https://us-central1-ng-blog-574e0.cloudfunctions.net/engagement',
 };
 
 /*
