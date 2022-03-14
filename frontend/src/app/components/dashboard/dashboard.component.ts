@@ -24,9 +24,10 @@ export class DashboardComponent implements OnInit {
       if (this.isAuthenticated) {
         this.isLoading = true;
         this.employeeService.getAllEmployees();
-        this.employeeService.userEmployees.subscribe((employees) => {
+        this.employeeService.employees.subscribe((employees) => {
           this.employees = employees;
           this.isLoading = false;
+          console.log(this.employees);
         });
       }
     });

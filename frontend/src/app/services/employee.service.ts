@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
 })
 export class EmployeeService {
   // fetchedPosts = new Subject<Post[]>();
-  userEmployees = new Subject<Employee[]>();
+  employees = new Subject<Employee[]>();
+  employee = new Subject<Employee>();
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +18,15 @@ export class EmployeeService {
     this.http
       .get<Employee[]>(`${environment.firebaseApiUrl}/employees`)
       .subscribe((employees: Employee[]) => {
-        this.userEmployees.next(employees);
+        this.employees.next(employees);
+      });
+  }
+
+  getSingleEmployeeDetails(employeeId: string) {
+    this.http
+      .get<Employee>(`${environment.firebaseApiUrl}/employees/${employeeId}`)
+      .subscribe((employee: Employee) => {
+        this.employee.next(employee);
       });
   }
 }

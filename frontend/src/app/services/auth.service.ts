@@ -37,6 +37,7 @@ export class AuthService {
           this.handleAuthentication(
             responseData.email,
             responseData.localId,
+            responseData.refreshToken,
             responseData.idToken,
             +responseData.expiresIn
           );
@@ -57,9 +58,11 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
+            console.log(responseData, 'response data');
           this.handleAuthentication(
             responseData.email,
             responseData.localId,
+            responseData.refreshToken,
             responseData.idToken,
             +responseData.expiresIn
           );
@@ -67,14 +70,30 @@ export class AuthService {
       );
   }
 
+  refreshToken() {
+      //implement timer from rxjs
+        return this.http
+        .post<any>(
+          'https://securetoken.googleapis.com/v1/token?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
+          {
+            grant_type: 'refresh_token',
+            refresh_token: this.user.subscribe((user) => {
+                console.log(user?.refreshToken, "user refresh token");
+                return user?.refreshToken;
+            }),
+          }
+        )
+    }
+
   private handleAuthentication(
     email: string,
     userId: string,
+    refreshToken: string,
     token: string,
     expiresIn: number
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, token, expirationDate);
+    const user = new User(email, userId, refreshToken, token, expirationDate);
     this.user.next(user);
     localStorage.setItem('AuthToken', `Bearer ${token}`);
   }
