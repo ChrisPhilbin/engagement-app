@@ -9,9 +9,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoadingComponent } from './components/util/loading/loading.component';
+import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent],
+  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent, EmployeeDetailsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
