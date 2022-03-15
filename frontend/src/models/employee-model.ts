@@ -9,3 +9,17 @@ export interface Employee {
   sportsTeams: string[];
   userId: string;
 }
+
+export interface EmployeeBirthday {
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+}
+
+export interface EmployeeAnniversary {
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  hiredate: string;
+}

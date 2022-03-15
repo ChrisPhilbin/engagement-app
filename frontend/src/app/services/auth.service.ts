@@ -58,7 +58,7 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
-            console.log(responseData, 'response data');
+          console.log(responseData, 'response data');
           this.handleAuthentication(
             responseData.email,
             responseData.localId,
@@ -71,19 +71,22 @@ export class AuthService {
   }
 
   refreshToken() {
-      //implement timer from rxjs
-        return this.http
-        .post<any>(
-          'https://securetoken.googleapis.com/v1/token?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
-          {
-            grant_type: 'refresh_token',
-            refresh_token: this.user.subscribe((user) => {
-                console.log(user?.refreshToken, "user refresh token");
-                return user?.refreshToken;
-            }),
-          }
-        )
-    }
+    //implement timer from rxjs
+    return this.http.post<any>(
+      'https://securetoken.googleapis.com/v1/token?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
+      {
+        grant_type: 'refresh_token',
+        refresh_token: this.user.subscribe((user) => {
+          console.log(user?.refreshToken, 'user refresh token');
+          return user?.refreshToken;
+        }),
+      }
+    );
+  }
+
+  getTokenFromLocalStorage() {
+    return localStorage.getItem('AuthToken');
+  }
 
   private handleAuthentication(
     email: string,

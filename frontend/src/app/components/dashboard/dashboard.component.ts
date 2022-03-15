@@ -19,17 +19,26 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.user.subscribe((user) => {
-      this.isAuthenticated = !user ? false : true;
-      if (this.isAuthenticated) {
-        this.isLoading = true;
-        this.employeeService.getAllEmployees();
-        this.employeeService.employees.subscribe((employees) => {
-          this.employees = employees;
-          this.isLoading = false;
-          console.log(this.employees);
-        });
-      }
-    });
+    if(this.authService.getTokenFromLocalStorage()) {
+      this.isAuthenticated = true;
+      this.isLoading = true;
+      this.employeeService.getAllEmployees();
+      this.employeeService.employees.subscribe((employees) => {
+        this.employees = employees;
+        this.isLoading = false;
+      })
+    }
+    // this.authService.user.subscribe((user) => {
+    //   this.isAuthenticated = !user ? false : true;
+    //   if (this.isAuthenticated) {
+    //     this.isLoading = true;
+    //     this.employeeService.getAllEmployees();
+    //     this.employeeService.employees.subscribe((employees) => {
+    //       this.employees = employees;
+    //       this.isLoading = false;
+    //       console.log(this.employees);
+    //     });
+    //   }
+    // });
   }
 }
