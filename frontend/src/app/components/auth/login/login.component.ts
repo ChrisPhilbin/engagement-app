@@ -53,9 +53,7 @@ export class LoginComponent implements OnInit {
     authObs.subscribe(
       (response) => {
         this.isLoading = false;
-        this.authService.user.subscribe((user) => {
-          console.log(user);
-        });
+        this.authService.user.subscribe((user) => {});
         this.router.navigate(['/dashboard']);
       },
       (errorMessage) => {

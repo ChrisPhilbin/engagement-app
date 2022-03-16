@@ -1,0 +1,6 @@
+<div *ngIf="birthdays.length">
+    <strong>Upcoming birthdays:</strong>
+    <ul>
+        <li *ngFor="let employee of birthdays">{{ employee.firstName + ' ' + employee.lastName }}</li>
+    </ul>
+</div>

@@ -58,7 +58,6 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
-          console.log(responseData, 'response data');
           this.handleAuthentication(
             responseData.email,
             responseData.localId,
@@ -86,6 +85,10 @@ export class AuthService {
 
   getTokenFromLocalStorage() {
     return localStorage.getItem('AuthToken');
+  }
+
+  isLoggedIn() {
+    return localStorage.getItem('AuthToken') ? true : false
   }
 
   private handleAuthentication(

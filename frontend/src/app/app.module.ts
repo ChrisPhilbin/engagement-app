@@ -11,9 +11,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoadingComponent } from './components/util/loading/loading.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { EmployeesComponent } from './components/employees/employees.component';
+import { UpcomingBirthdaysComponent } from './components/employees/upcoming-birthdays/upcoming-birthdays.component';
+import { UpcomingAnniversariesComponent } from './components/employees/upcoming-anniversaries/upcoming-anniversaries.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent, EmployeeDetailsComponent, EmployeesComponent],
+  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent, EmployeeDetailsComponent, EmployeesComponent, UpcomingBirthdaysComponent, UpcomingAnniversariesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

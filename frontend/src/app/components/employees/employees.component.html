@@ -1,3 +1,5 @@
+<app-loading *ngIf="isLoading"></app-loading>
+
 <div *ngIf="employees.length && isAuthenticated">
     <ul *ngFor="let employee of employees">
         <li><a a [routerLink]="['/employees', employee.employeeId]">{{ employee.firstName }}</a></li>

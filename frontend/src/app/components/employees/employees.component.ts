@@ -26,7 +26,6 @@ export class EmployeesComponent implements OnInit {
       this.employeeService.employees.subscribe((employees) => {
         this.employees = employees;
         this.isLoading = false;
-        console.log(this.employees);
       });
     }
     // this.authService.user.subscribe((user) => {
