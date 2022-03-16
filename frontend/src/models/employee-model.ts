@@ -8,6 +8,7 @@ export interface Employee {
   lastInteraction: string;
   sportsTeams: string[];
   userId: string;
+  employeeId: string;
 }
 
 export interface EmployeeBirthday {

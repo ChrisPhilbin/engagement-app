@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/models/employee-model';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  selector: 'app-employees',
+  templateUrl: './employees.component.html',
+  styleUrls: ['./employees.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class EmployeesComponent implements OnInit {
   isLoading = false;
   isAuthenticated = false;
   employees: Employee[] = [];
 
   constructor(
     private authService: AuthService,
-    private employeeService: EmployeeService,
-    private router: Router
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit(): void {
@@ -28,9 +26,8 @@ export class DashboardComponent implements OnInit {
       this.employeeService.employees.subscribe((employees) => {
         this.employees = employees;
         this.isLoading = false;
+        console.log(this.employees);
       });
-    } else {
-      this.router.navigate(['/']);
     }
     // this.authService.user.subscribe((user) => {
     //   this.isAuthenticated = !user ? false : true;

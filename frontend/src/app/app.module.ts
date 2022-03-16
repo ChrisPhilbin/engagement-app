@@ -10,9 +10,10 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoadingComponent } from './components/util/loading/loading.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+import { EmployeesComponent } from './components/employees/employees.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent, EmployeeDetailsComponent],
+  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent, EmployeeDetailsComponent, EmployeesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

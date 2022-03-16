@@ -21,11 +21,12 @@ export class EmployeeDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.meetingId = params['id'];
+      this.meetingId = params['employeeId'];
       this.isLoading = true;
       this.employeeService.getSingleEmployeeDetails(this.meetingId);
       this.employeeService.employee.subscribe((employee: Employee) => {
         this.employee = employee;
+        this.isLoading = false;
       });
     });
   }

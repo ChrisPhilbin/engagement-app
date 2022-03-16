@@ -1,11 +1,1 @@
-<div *ngIf="isAuthenticated">User is isAuthenticated</div>
-
-<div *ngIf="!isAuthenticated">Not authenticated</div>
-
-<app-loading *ngIf="isLoading"></app-loading>
-
-<div *ngIf="employees.length">
-    <ul *ngFor="let employee of employees">
-        <li>{{ employee.firstName }}</li>
-    </ul>
-</div>
+<app-employees></app-employees>
