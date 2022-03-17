@@ -1,0 +1,6 @@
+<strong>Meetings</strong>
+<div *ngIf="meetings.length">
+    <ul>
+        <li *ngFor="let meeting of meetings">{{ meeting.meetingDate | date:'fullDate' }}</li>
+    </ul>
+</div>

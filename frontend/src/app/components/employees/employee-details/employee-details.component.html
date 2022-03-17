@@ -1,3 +1,4 @@
 <div *ngIf="employee">
     {{ employee.firstName }}
+    <app-meetings [employeeId]="employee.employeeId"></app-meetings>
 </div>
