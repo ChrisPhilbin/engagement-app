@@ -16,11 +16,9 @@ export class MeetingsComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(): void {
-    console.log(this.employeeId, 'EE id');
     this.meetingService.getEmployeeMeetings(this.employeeId);
     this.meetingService.meetings.subscribe((meetings: Meeting[]) => {
       this.meetings = meetings;
-      console.log(this.meetings);
     });
   }
 }

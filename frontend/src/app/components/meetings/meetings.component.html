@@ -1,6 +1,6 @@
 <strong>Meetings</strong>
 <div *ngIf="meetings.length">
     <ul>
-        <li *ngFor="let meeting of meetings">{{ meeting.meetingDate | date:'fullDate' }}</li>
+        <li *ngFor="let meeting of meetings"><a [routerLink]="['/employees', employeeId, 'meetings', meeting.meetingId]">{{ meeting.meetingDate | date:'fullDate' }}</a></li>
     </ul>
 </div>

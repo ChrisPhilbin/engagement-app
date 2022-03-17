@@ -15,9 +15,24 @@ import { UpcomingBirthdaysComponent } from './components/employees/upcoming-birt
 import { UpcomingAnniversariesComponent } from './components/employees/upcoming-anniversaries/upcoming-anniversaries.component';
 import { MeetingsComponent } from './components/meetings/meetings.component';
 import { MeetingDetailsComponent } from './components/meetings/meeting-details/meeting-details.component';
+import { EmployeeFormComponent } from './components/employees/employee-form/employee-form.component';
+import { MeetingFormComponent } from './components/meetings/meeting-form/meeting-form.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, LoadingComponent, EmployeeDetailsComponent, EmployeesComponent, UpcomingBirthdaysComponent, UpcomingAnniversariesComponent, MeetingsComponent, MeetingDetailsComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    DashboardComponent,
+    LoadingComponent,
+    EmployeeDetailsComponent,
+    EmployeesComponent,
+    UpcomingBirthdaysComponent,
+    UpcomingAnniversariesComponent,
+    MeetingsComponent,
+    MeetingDetailsComponent,
+    EmployeeFormComponent,
+    MeetingFormComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
