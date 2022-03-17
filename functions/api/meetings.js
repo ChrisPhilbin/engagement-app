@@ -57,7 +57,7 @@ exports.getAllMeetingsForEmployee = (request, response) => {
         if (doc.data().userId !== request.user.uid) {
           return response.status(401).json({ error: "You are not authorized" });
         }
-        meetings.push(doc.data());
+        meetings.push({ ...doc.data(), meetingId: doc.id });
       });
       return response.status(200).json(meetings);
     })
@@ -79,14 +79,16 @@ exports.getMeetingDetails = (request, response) => {
       }
     });
 
-  db.doc(`employees/${request.params.employeeId}/meetings/${request.params.meetingId}`)
+  db.doc(
+    `employees/${request.params.employeeId}/meetings/${request.params.meetingId}`
+  )
     .get()
     .then((doc) => {
       if (doc.data().userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized" });
       }
 
-      return response.status(200).json(doc.data());
+      return response.status(200).json({ ...doc.data(), meetingId: doc.id });
     });
 };
 
