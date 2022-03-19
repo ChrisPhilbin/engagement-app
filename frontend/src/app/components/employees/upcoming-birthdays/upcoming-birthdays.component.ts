@@ -18,15 +18,14 @@ export class UpcomingBirthdaysComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.isLoading = true;
-      this.employeeService.getUpcomingBirthdays();
-      this.employeeService.employeeBirthdays.subscribe(
-        (birthdays: EmployeeBirthday[]) => {
-          this.birthdays = birthdays;
-          this.isLoading = false;
-        }
-      );
-    }
+    this.isLoading = true;
+    this.employeeService.getUpcomingBirthdays();
+    this.employeeService.employeeBirthdays.subscribe(
+      (birthdays: EmployeeBirthday[]) => {
+        this.birthdays = birthdays;
+        console.log(this.birthdays);
+        this.isLoading = false;
+      }
+    );
   }
 }

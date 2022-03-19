@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -41,11 +43,14 @@ import { MeetingFormComponent } from './components/meetings/meeting-form/meeting
     ReactiveFormsModule,
   ],
   providers: [
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true,
     },
+    CookieService,
   ],
   bootstrap: [AppComponent],
 })

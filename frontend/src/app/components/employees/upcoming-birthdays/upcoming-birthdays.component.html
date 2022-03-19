@@ -1,6 +1,15 @@
 <div *ngIf="birthdays.length">
-    <strong>Upcoming birthdays:</strong>
-    <ul>
-        <li *ngFor="let employee of birthdays">{{ employee.firstName + ' ' + employee.lastName }}</li>
-    </ul>
+  <strong>Upcoming birthdays:</strong>
+  <ul>
+    <li *ngFor="let employee of birthdays">
+      <a [routerLink]="['/employees', employee.employeeId]"
+        >{{ employee.firstName + " " + employee.lastName }} -
+        {{ employee.birthDate | date: "EEEE, MMMM d" }}</a
+      >
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!birthdays.length">
+  <strong>No birthdays within the next 7 days!</strong>
 </div>

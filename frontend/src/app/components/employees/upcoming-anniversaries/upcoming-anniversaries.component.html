@@ -1,1 +1,15 @@
-<p>upcoming-anniversaries works!</p>
+<div *ngIf="anniversaries.length">
+  <strong>Upcoming anniversaries:</strong>
+  <ul>
+    <li *ngFor="let employee of anniversaries">
+      <a [routerLink]="['/employees', employee.employeeId]"
+        >{{ employee.firstName + " " + employee.lastName }} -
+        {{ employee.hiredate | date: "EEEE, MMMM d" }}</a
+      >
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!anniversaries.length">
+  <strong>No anniversaries within the next 7 days!</strong>
+</div>

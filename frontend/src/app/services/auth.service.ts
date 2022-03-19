@@ -1,8 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { User } from '../../models/user-model';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface AuthResponseData {
   kind: string;
@@ -19,7 +21,11 @@ export class AuthService {
   user = new BehaviorSubject<User | null>(null);
   errorMessage = new Subject();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    public jwtHelper: JwtHelperService
+  ) {}
 
   signup(email: string, password: string) {
     return this.http
@@ -69,26 +75,49 @@ export class AuthService {
       );
   }
 
-  refreshToken() {
-    //implement timer from rxjs
-    return this.http.post<any>(
-      'https://securetoken.googleapis.com/v1/token?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
-      {
-        grant_type: 'refresh_token',
-        refresh_token: this.user.subscribe((user) => {
-          console.log(user?.refreshToken, 'user refresh token');
-          return user?.refreshToken;
-        }),
-      }
-    );
-  }
-
   getTokenFromLocalStorage() {
     return localStorage.getItem('AuthToken');
   }
 
   isLoggedIn() {
-    return localStorage.getItem('AuthToken') ? true : false
+    return localStorage.getItem('AuthToken') ? true : false;
+  }
+
+  public isAuthenticated() {
+    //need to set cookie with user info upon initial auth
+    //then get the token from the cookie and see if it is active
+    //@ts-ignore
+    const token: string = this.cookieService.get('token');
+
+    let localUser;
+
+    this.user.subscribe((user) => {
+      localUser = user;
+    });
+
+    if (!this.jwtHelper.isTokenExpired(token) && localUser === null) {
+      console.log('token is not expired AND user is null...');
+      //if token is still valid get the user data from the cookie and then set set user.next to value of newly created user object
+      //@ts-ignore
+      let user = new User(
+        this.cookieService.get('email'),
+        this.cookieService.get('userId'),
+        this.cookieService.get('refreshToken'),
+        this.cookieService.get('token'),
+        //@ts-ignore
+        this.cookieService.get('expiresIn')
+      );
+      this.user.next(user);
+      localStorage.setItem('AuthToken', `Bearer ${token}`);
+      //@ts-ignore
+      this.user.subscribe((user) => {
+        console.log(user, 'user object after cookie service');
+      });
+    }
+
+    //in future, can setup an option in cookie indicating whether or not user should stay signed in
+    //if so, use the refreshToken to request a new AuthToken from Firebase
+    return !this.jwtHelper.isTokenExpired(token);
   }
 
   private handleAuthentication(
@@ -101,6 +130,15 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, refreshToken, token, expirationDate);
     this.user.next(user);
+    this.user.subscribe((user) => {
+      console.log(user);
+    });
+    this.cookieService.set('email', email);
+    this.cookieService.set('userId', userId);
+    this.cookieService.set('refreshToken', refreshToken);
+    this.cookieService.set('token', token);
+    //@ts-ignore
+    this.cookieService.set('expirationDate', expirationDate);
     localStorage.setItem('AuthToken', `Bearer ${token}`);
   }
 

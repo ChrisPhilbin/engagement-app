@@ -18,15 +18,13 @@ export class UpcomingAnniversariesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.isLoading = true;
-      this.employeeService.getUpcomingAnniversaries();
-      this.employeeService.employeeAnniversaries.subscribe(
-        (anniversaries: EmployeeAnniversary[]) => {
-          this.anniversaries = anniversaries;
-          this.isLoading = false;
-        }
-      );
-    }
+    this.isLoading = true;
+    this.employeeService.getUpcomingAnniversaries();
+    this.employeeService.employeeAnniversaries.subscribe(
+      (anniversaries: EmployeeAnniversary[]) => {
+        this.anniversaries = anniversaries;
+        this.isLoading = false;
+      }
+    );
   }
 }
