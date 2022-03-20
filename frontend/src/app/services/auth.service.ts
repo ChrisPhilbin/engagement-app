@@ -96,7 +96,6 @@ export class AuthService {
     });
 
     if (!this.jwtHelper.isTokenExpired(token) && localUser === null) {
-      console.log('token is not expired AND user is null...');
       //if token is still valid get the user data from the cookie and then set set user.next to value of newly created user object
       //@ts-ignore
       let user = new User(
@@ -105,14 +104,10 @@ export class AuthService {
         this.cookieService.get('refreshToken'),
         this.cookieService.get('token'),
         //@ts-ignore
-        this.cookieService.get('expiresIn')
+        this.cookieService.get('expirationDate')
       );
       this.user.next(user);
       localStorage.setItem('AuthToken', `Bearer ${token}`);
-      //@ts-ignore
-      this.user.subscribe((user) => {
-        console.log(user, 'user object after cookie service');
-      });
     }
 
     //in future, can setup an option in cookie indicating whether or not user should stay signed in
@@ -130,15 +125,11 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, refreshToken, token, expirationDate);
     this.user.next(user);
-    this.user.subscribe((user) => {
-      console.log(user);
-    });
     this.cookieService.set('email', email);
     this.cookieService.set('userId', userId);
     this.cookieService.set('refreshToken', refreshToken);
     this.cookieService.set('token', token);
-    //@ts-ignore
-    this.cookieService.set('expirationDate', expirationDate);
+    this.cookieService.set('expirationDate', JSON.stringify(expirationDate.toString()));
     localStorage.setItem('AuthToken', `Bearer ${token}`);
   }
 
