@@ -1,6 +1,7 @@
 export interface Employee {
-  birthdate: string;
+  birthDate: string;
   createdAt: string;
+  hireDate: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -9,6 +10,9 @@ export interface Employee {
   sportsTeams: string[];
   userId: string;
   employeeId: string;
+  hasUpcomingBirthday: boolean;
+  hasUpcomingWorkAnniversary: boolean;
+  hasRecentInteraction: boolean;
 }
 
 export interface EmployeeBirthday {

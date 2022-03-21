@@ -45,12 +45,12 @@ exports.getAllEmployees = (request, response) => {
           lastName: doc.data().lastName,
           email: doc.data().email,
           createdAt: doc.data().createdAt,
-          hireDate: doc.data().hireDate,
-          birthDate: doc.data().birthDate,
+          hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
+          birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
           hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
           hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
           hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
-          lastInteraction: doc.data().lastInteraction,
+          lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
           interests: doc.data().interests,
           sportsTeams: doc.data().sportsTeams,
         });
@@ -135,7 +135,7 @@ exports.getAllUpcomingBirthdays = (request, response) => {
             employeeId: doc.id,
             firstName: doc.data().firstName,
             lastName: doc.data().lastName,
-            birthDate: doc.data().birthDate,
+            birthDate: doc.data().birthDate.toDate(),
           });
         }
         return response.status(200).json(employees);

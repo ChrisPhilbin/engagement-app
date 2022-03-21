@@ -1,7 +1,76 @@
 <app-loading *ngIf="isLoading"></app-loading>
 
 <div *ngIf="employees.length && isAuthenticated">
-    <ul *ngFor="let employee of employees">
-        <li><a a [routerLink]="['/employees', employee.employeeId]">{{ employee.firstName }}</a></li>
-    </ul>
+  <table class="min-w-full">
+    <thead class="bg-gray-100 dark:bg-gray-700">
+      <tr>
+        <th
+          scope="col"
+          class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+        >
+          Employee Name
+        </th>
+        <th
+          scope="col"
+          class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+        >
+          Birthday
+        </th>
+        <th
+          scope="col"
+          class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+        >
+          Hire date
+        </th>
+        <th
+          scope="col"
+          class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400"
+        >
+          Last interaction
+        </th>
+        <th scope="col" class="relative py-3 px-6">
+          <span class="sr-only">Edit</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Product 1 -->
+      <tr
+        class="border-b odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600"
+        *ngFor="let employee of employees"
+      >
+        <td
+          class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {{ employee.firstName + " " + employee.lastName }}
+        </td>
+        <td
+          class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
+        >
+          {{ employee.birthDate | date: "EEEE, MMMM d" }}
+        </td>
+        <td
+          class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
+        >
+          {{ employee.hireDate | date: "fullDate" }}
+        </td>
+        <td
+          class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400"
+        >
+          <p
+            [ngClass]="
+              employee.hasRecentInteraction ? '' : 'text-red-600 font-bold'
+            "
+          >
+            {{ employee.lastInteraction | date: "fullDate" }}
+          </p>
+        </td>
+        <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+          <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline"
+            >Edit</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
