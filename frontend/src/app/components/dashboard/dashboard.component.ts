@@ -45,4 +45,8 @@ export class DashboardComponent implements OnInit {
     //   }
     // });
   }
+
+  handleLogout() {
+    this.authService.logout();
+  }
 }

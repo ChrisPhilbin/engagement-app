@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { User } from '../../models/user-model';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 export interface AuthResponseData {
   kind: string;
@@ -24,7 +25,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    public jwtHelper: JwtHelperService
+    public jwtHelper: JwtHelperService,
+    public router: Router
   ) {}
 
   signup(email: string, password: string) {
@@ -83,6 +85,13 @@ export class AuthService {
     return localStorage.getItem('AuthToken') ? true : false;
   }
 
+  public logout() {
+    this.cookieService.set('token', '');
+    this.cookieService.set('expirationDate', '');
+    this.cookieService.set('refreshToken', '');
+    this.router.navigate(['login']);
+  }
+
   public isAuthenticated() {
     //need to set cookie with user info upon initial auth
     //then get the token from the cookie and see if it is active
@@ -129,7 +138,10 @@ export class AuthService {
     this.cookieService.set('userId', userId);
     this.cookieService.set('refreshToken', refreshToken);
     this.cookieService.set('token', token);
-    this.cookieService.set('expirationDate', JSON.stringify(expirationDate.toString()));
+    this.cookieService.set(
+      'expirationDate',
+      JSON.stringify(expirationDate.toString())
+    );
     localStorage.setItem('AuthToken', `Bearer ${token}`);
   }
 
