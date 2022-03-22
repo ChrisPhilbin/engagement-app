@@ -19,6 +19,10 @@ import { MeetingsComponent } from './components/meetings/meetings.component';
 import { MeetingDetailsComponent } from './components/meetings/meeting-details/meeting-details.component';
 import { EmployeeFormComponent } from './components/employees/employee-form/employee-form.component';
 import { MeetingFormComponent } from './components/meetings/meeting-form/meeting-form.component';
+import { HeaderComponent } from './components/navigation/header/header.component';
+import { MenubarModule } from 'primeng/menubar';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -34,6 +38,7 @@ import { MeetingFormComponent } from './components/meetings/meeting-form/meeting
     MeetingDetailsComponent,
     EmployeeFormComponent,
     MeetingFormComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +46,9 @@ import { MeetingFormComponent } from './components/meetings/meeting-form/meeting
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MenubarModule,
+    InputTextModule,
+    ButtonModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

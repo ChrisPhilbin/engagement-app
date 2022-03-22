@@ -1,0 +1,13 @@
+<p-menubar [model]="items">
+  <div>
+    <input type="text" pInputText placeholder="Search" />
+    <button
+      type="button"
+      pButton
+      [label]="isLoggedIn() ? 'Logout' : 'Login'"
+      icon="pi pi-power-off"
+      style="margin-left: 0.25em"
+      (click)="handleLogOut()"
+    ></button>
+  </div>
+</p-menubar>
