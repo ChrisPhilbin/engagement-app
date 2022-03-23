@@ -1,13 +1,14 @@
 <p-menubar [model]="items">
-  <div>
-    <input type="text" pInputText placeholder="Search" />
+  <!-- <div>
+    <input *ngIf="isAuthenticated" type="text" pInputText placeholder="Search" />
     <button
       type="button"
       pButton
-      [label]="isLoggedIn() ? 'Logout' : 'Login'"
+      [label]="isAuthenticated ? 'Logout' : 'Login'"
       icon="pi pi-power-off"
       style="margin-left: 0.25em"
-      (click)="handleLogOut()"
+      class="hidden"
+      (click)="isAuthenticated ? handleLogOut() : redirectToLogin()"
     ></button>
-  </div>
+  </div> -->
 </p-menubar>
