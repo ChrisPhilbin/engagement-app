@@ -23,6 +23,7 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ButtonModule } from 'primeng/button';
     EmployeeFormComponent,
     MeetingFormComponent,
     HeaderComponent,
+    AtAGlanceComponent,
   ],
   imports: [
     BrowserModule,

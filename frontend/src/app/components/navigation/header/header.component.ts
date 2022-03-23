@@ -33,6 +33,7 @@ export class HeaderComponent implements OnChanges {
           {
             label: 'View All',
             icon: 'pi pi-fw pi-list',
+            command: () => this.router.navigate(['/dashboard']),
           },
         ],
       },
