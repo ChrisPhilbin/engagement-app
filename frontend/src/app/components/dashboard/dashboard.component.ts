@@ -32,21 +32,5 @@ export class DashboardComponent implements OnInit {
     } else {
       this.router.navigate(['/']);
     }
-    // this.authService.user.subscribe((user) => {
-    //   this.isAuthenticated = !user ? false : true;
-    //   if (this.isAuthenticated) {
-    //     this.isLoading = true;
-    //     this.employeeService.getAllEmployees();
-    //     this.employeeService.employees.subscribe((employees) => {
-    //       this.employees = employees;
-    //       this.isLoading = false;
-    //       console.log(this.employees);
-    //     });
-    //   }
-    // });
-  }
-
-  handleLogout() {
-    this.authService.logout();
   }
 }

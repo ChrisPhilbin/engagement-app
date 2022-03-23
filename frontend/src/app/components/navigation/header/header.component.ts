@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,18 +8,14 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnChanges {
   constructor(private AuthService: AuthService, private router: Router) {}
 
   items: MenuItem[] = [];
-  isAuthenticated = false;
 
-  ngOnInit() {
-    this.AuthService.user.subscribe((user) => {
-      if (user) {
-        this.isAuthenticated = true;
-      }
-    });
+  @Input() isAuthenticated = false;
+
+  ngOnChanges() {
     this.items = [
       {
         label: 'File',
@@ -110,7 +106,6 @@ export class HeaderComponent implements OnInit {
       },
       {
         label: 'Events',
-        //@ts-ignore
         visible: this.isAuthenticated,
         icon: 'pi pi-fw pi-calendar',
         items: [
@@ -152,7 +147,6 @@ export class HeaderComponent implements OnInit {
   }
 
   handleLogOut() {
-    this.isAuthenticated = false;
     this.AuthService.logout();
   }
 

@@ -90,6 +90,7 @@ export class AuthService {
     this.cookieService.set('expirationDate', '');
     this.cookieService.set('refreshToken', '');
     this.router.navigate(['login']);
+    this.user.next(null);
   }
 
   public isAuthenticated() {
