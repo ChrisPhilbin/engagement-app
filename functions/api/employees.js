@@ -168,3 +168,28 @@ exports.getAllUpcomingAnniversaries = (request, response) => {
       response.status(500).json({ error: "Something went wrong." });
     });
 };
+
+exports.getAllOutstandingInteractions = (request, response) => {
+  db.collection("employees")
+    .where("userId", "==", request.user.uid)
+    .get()
+    .then((data) => {
+      let employees = [];
+      data.forEach((doc) => {
+        if (!hasRecentInteraction(doc.data().lastInteraction)) {
+          employees.push({
+            employeeId: doc.id,
+            firstName: doc.data().firstName,
+            lastName: doc.data().lastName,
+            lastInteraction: doc.data().lastInteraction
+              ? doc.data().lastInteraction.toDate()
+              : "",
+          });
+        }
+      });
+      return response.status(200).json(employees);
+    })
+    .catch((error) => {
+      response.status(500).json({ error: "Something went wrong." });
+    });
+};

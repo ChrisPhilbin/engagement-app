@@ -19,6 +19,7 @@ const {
   deleteEmployee,
   getAllUpcomingBirthdays,
   getAllUpcomingAnniversaries,
+  getAllOutstandingInteractions,
 } = require("./api/employees");
 
 const {
@@ -32,6 +33,7 @@ app.post("/employees", auth, createEmployee);
 app.get("/employees", auth, getAllEmployees);
 app.get("/employees/anniversaries", auth, getAllUpcomingAnniversaries);
 app.get("/employees/birthdays", auth, getAllUpcomingBirthdays);
+app.get("/employees/interactions", auth, getAllOutstandingInteractions);
 app.post("/employees/:employeeId/meetings", auth, createMeeting);
 app.get("/employees/:employeeId/meetings", auth, getAllMeetingsForEmployee);
 app.get("/employees/:employeeId/meetings/:meetingId", auth, getMeetingDetails);

@@ -48,7 +48,9 @@ exports.hasRecentInteraction = (employeeLastInteractionDate) => {
   const now = moment();
   const weekOld = now.clone().subtract(7, "days").startOf("day");
 
-  employeeLastInteractionDate = new Date(employeeLastInteractionDate._seconds * 1000).toUTCString();
+  employeeLastInteractionDate = new Date(
+    employeeLastInteractionDate._seconds * 1000
+  ).toUTCString();
 
   let interaction = moment(employeeLastInteractionDate);
 
