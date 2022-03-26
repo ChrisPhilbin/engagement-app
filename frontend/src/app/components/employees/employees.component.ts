@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/models/employee-model';
@@ -15,7 +16,8 @@ export class EmployeesComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,17 +31,10 @@ export class EmployeesComponent implements OnInit {
         console.log(this.employees);
       });
     }
-    // this.authService.user.subscribe((user) => {
-    //   this.isAuthenticated = !user ? false : true;
-    //   if (this.isAuthenticated) {
-    //     this.isLoading = true;
-    //     this.employeeService.getAllEmployees();
-    //     this.employeeService.employees.subscribe((employees) => {
-    //       this.employees = employees;
-    //       this.isLoading = false;
-    //       console.log(this.employees);
-    //     });
-    //   }
-    // });
+  }
+
+  editEmployee(employeeId: string) {
+    console.log(employeeId);
+    this.router.navigate(['/employees', employeeId, 'edit']);
   }
 }

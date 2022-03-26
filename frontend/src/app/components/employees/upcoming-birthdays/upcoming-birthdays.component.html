@@ -1,4 +1,4 @@
-<div *ngIf="birthdays.length">
+<div *ngIf="birthdays.length" class="shadow-md p-8 m-4 rounded">
   <strong>Upcoming birthdays:</strong>
   <ul>
     <li *ngFor="let employee of birthdays">
@@ -10,6 +10,6 @@
   </ul>
 </div>
 
-<div *ngIf="!birthdays.length">
+<div *ngIf="!birthdays.length" class="shadow-md p-8 m-4 rounded">
   <strong>No birthdays within the next 7 days!</strong>
 </div>

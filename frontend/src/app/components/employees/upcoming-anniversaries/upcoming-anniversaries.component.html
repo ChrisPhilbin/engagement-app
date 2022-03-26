@@ -1,4 +1,4 @@
-<div *ngIf="anniversaries.length">
+<div *ngIf="anniversaries.length" class="shadow-md p-8 m-4 rounded">
   <strong>Upcoming anniversaries:</strong>
   <ul>
     <li *ngFor="let employee of anniversaries">
@@ -10,6 +10,6 @@
   </ul>
 </div>
 
-<div *ngIf="!anniversaries.length">
+<div *ngIf="!anniversaries.length" class="shadow-md p-8 m-4 rounded">
   <strong>No anniversaries within the next 7 days!</strong>
 </div>

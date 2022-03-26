@@ -3,6 +3,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import {
   EmployeeBirthday,
   EmployeeAnniversary,
+  Employee,
 } from 'src/models/employee-model';
 
 @Component({
@@ -15,8 +16,13 @@ export class AtAGlanceComponent implements OnInit {
 
   upcomingBirthdays: EmployeeBirthday[] = [];
   upcomingAnniversaries: EmployeeAnniversary[] = [];
+  employees: Employee[] = [];
 
   ngOnInit(): void {
+    this.employeeService.employees.subscribe((employees: Employee[]) => {
+      this.employees = employees;
+    });
+
     this.employeeService.employeeBirthdays.subscribe(
       (birthdays: EmployeeBirthday[]) => {
         this.upcomingBirthdays = birthdays;
