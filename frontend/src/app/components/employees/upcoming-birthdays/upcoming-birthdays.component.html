@@ -1,5 +1,5 @@
 <div *ngIf="birthdays.length" class="shadow-md p-8 m-4 rounded">
-  <strong>Upcoming birthdays:</strong>
+  <p class="text-xl font-bold mb-2">Upcoming birthdays</p>
   <ul>
     <li *ngFor="let employee of birthdays">
       <a [routerLink]="['/employees', employee.employeeId]"

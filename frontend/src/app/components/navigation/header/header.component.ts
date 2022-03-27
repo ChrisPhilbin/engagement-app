@@ -38,6 +38,11 @@ export class HeaderComponent implements OnChanges {
         ],
       },
       {
+        label: 'Settings',
+        icon: 'pi pi-fw pi-cog',
+        visible: this.isAuthenticated,
+      },
+      {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
         visible: this.isAuthenticated,

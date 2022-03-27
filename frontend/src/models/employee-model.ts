@@ -28,3 +28,10 @@ export interface EmployeeAnniversary {
   lastName: string;
   hiredate: string;
 }
+
+export interface EmployeeInteraction {
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  lastInteraction: string;
+}
