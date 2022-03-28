@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +24,7 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { PanelModule } from 'primeng/panel';
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 
 @NgModule({
@@ -44,6 +46,7 @@ import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glan
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -51,6 +54,7 @@ import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glan
     MenubarModule,
     InputTextModule,
     ButtonModule,
+    PanelModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
