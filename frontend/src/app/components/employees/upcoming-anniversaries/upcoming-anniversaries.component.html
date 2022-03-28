@@ -1,5 +1,4 @@
-<div *ngIf="anniversaries.length" class="shadow-md p-8 m-4 rounded">
-  <strong>Upcoming anniversaries:</strong>
+<p-panel header="Upcoming Anniversaries" [toggleable]="true">
   <ul>
     <li *ngFor="let employee of anniversaries">
       <a [routerLink]="['/employees', employee.employeeId]"
@@ -8,8 +7,5 @@
       >
     </li>
   </ul>
-</div>
-
-<div *ngIf="!anniversaries.length" class="shadow-md p-8 m-4 rounded">
-  <strong>No anniversaries within the next 7 days!</strong>
-</div>
+  <strong *ngIf="!anniversaries.length">No upcoming anniversaries</strong>
+</p-panel>

@@ -4,6 +4,7 @@ import {
   EmployeeBirthday,
   EmployeeAnniversary,
   Employee,
+  EmployeeInteraction,
 } from 'src/models/employee-model';
 
 @Component({
@@ -17,6 +18,7 @@ export class AtAGlanceComponent implements OnInit {
   upcomingBirthdays: EmployeeBirthday[] = [];
   upcomingAnniversaries: EmployeeAnniversary[] = [];
   employees: Employee[] = [];
+  outstandingInteractions: EmployeeInteraction[] = [];
 
   ngOnInit(): void {
     this.employeeService.employees.subscribe((employees: Employee[]) => {
@@ -32,6 +34,15 @@ export class AtAGlanceComponent implements OnInit {
     this.employeeService.employeeAnniversaries.subscribe(
       (anniversaries: EmployeeAnniversary[]) => {
         this.upcomingAnniversaries = anniversaries;
+      }
+    );
+
+    this.employeeService.getOutstandingInteractions();
+
+    this.employeeService.employeeInteractions.subscribe(
+      (interactions: EmployeeInteraction[]) => {
+        this.outstandingInteractions = interactions;
+        console.log(this.outstandingInteractions, 'interactions');
       }
     );
   }

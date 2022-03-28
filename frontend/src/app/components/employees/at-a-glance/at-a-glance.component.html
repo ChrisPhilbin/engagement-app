@@ -1,6 +1,23 @@
 <p-panel header="Your team at a glance" [toggleable]="true">
+  <ng-template
+    pTemplate="icons"
+    *ngIf="
+      outstandingInteractions || upcomingBirthdays || upcomingAnniversaries
+    "
+  >
+    <button
+      pButton
+      class="p-panel-header-icon p-link"
+      icon="pi pi-info-circle"
+      style="color: red"
+    ></button>
+  </ng-template>
   <ul>
     <li><strong>Total number of employees:</strong> {{ employees.length }}</li>
+    <li>
+      <strong># of overdue interactions:</strong>
+      {{ outstandingInteractions.length }}
+    </li>
     <li>
       <strong># of upcoming birthdays:</strong> {{ upcomingBirthdays.length }}
     </li>

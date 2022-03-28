@@ -1,5 +1,5 @@
-<div *ngIf="birthdays.length" class="shadow-md p-8 m-4 rounded">
-  <strong>Upcoming birthdays:</strong>
+<!-- <div *ngIf="birthdays.length" class="shadow-md p-8 m-4 rounded">
+  <p class="text-xl font-bold mb-2">Upcoming birthdays</p>
   <ul>
     <li *ngFor="let employee of birthdays">
       <a [routerLink]="['/employees', employee.employeeId]"
@@ -12,4 +12,16 @@
 
 <div *ngIf="!birthdays.length" class="shadow-md p-8 m-4 rounded">
   <strong>No birthdays within the next 7 days!</strong>
-</div>
+</div> -->
+
+<p-panel header="Upcoming Birthdays" [toggleable]="true">
+  <ul>
+    <li *ngFor="let employee of birthdays">
+      <a [routerLink]="['/employees', employee.employeeId]"
+        >{{ employee.firstName + " " + employee.lastName }} -
+        {{ employee.birthDate | date: "EEEE, MMMM d" }}</a
+      >
+    </li>
+  </ul>
+  <strong *ngIf="!birthdays.length">No upcoming birthdays</strong>
+</p-panel>

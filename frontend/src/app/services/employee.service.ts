@@ -5,6 +5,7 @@ import {
   Employee,
   EmployeeAnniversary,
   EmployeeBirthday,
+  EmployeeInteraction,
 } from 'src/models/employee-model';
 import { environment } from 'src/environments/environment';
 
@@ -16,6 +17,7 @@ export class EmployeeService {
   employee = new Subject<Employee>();
   employeeBirthdays = new Subject<EmployeeBirthday[]>();
   employeeAnniversaries = new Subject<EmployeeAnniversary[]>();
+  employeeInteractions = new Subject<EmployeeInteraction[]>();
 
   constructor(private http: HttpClient) {}
 
@@ -52,6 +54,16 @@ export class EmployeeService {
       )
       .subscribe((employeeAnniversaries: EmployeeAnniversary[]) => {
         this.employeeAnniversaries.next(employeeAnniversaries);
+      });
+  }
+
+  getOutstandingInteractions() {
+    this.http
+      .get<EmployeeInteraction[]>(
+        `${environment.firebaseApiUrl}/employees/interactions`
+      )
+      .subscribe((employeeInteractions: EmployeeInteraction[]) => {
+        this.employeeInteractions.next(employeeInteractions);
       });
   }
 }
