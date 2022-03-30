@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/models/employee-model';
 
 @Component({
@@ -13,7 +14,11 @@ export class EmployeeFormComponent implements OnInit {
   employeeId: number;
   editMode: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
@@ -75,6 +80,7 @@ export class EmployeeFormComponent implements OnInit {
       //invoke method from within employeeService to update employee record/update app state
     } else {
       //invoke method to create a new employee and update the app state
+      this.employeeService.createNewEmployee(newEmployee);
     }
   }
 

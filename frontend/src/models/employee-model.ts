@@ -1,18 +1,18 @@
 export interface Employee {
-  birthDate: string;
-  createdAt: string;
-  hireDate: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  interests: string[];
-  lastInteraction: string;
-  sportsTeams: string[];
-  userId: string;
-  employeeId: string;
-  hasUpcomingBirthday: boolean;
-  hasUpcomingWorkAnniversary: boolean;
-  hasRecentInteraction: boolean;
+  birthDate?: string;
+  createdAt?: string;
+  hireDate?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  interests?: string[];
+  lastInteraction?: string;
+  sportsTeams?: string[];
+  userId?: string;
+  employeeId?: string;
+  hasUpcomingBirthday?: boolean;
+  hasUpcomingWorkAnniversary?: boolean;
+  hasRecentInteraction?: boolean;
 }
 
 export interface EmployeeBirthday {

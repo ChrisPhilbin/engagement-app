@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   Employee,
@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class EmployeeService {
-  employees = new Subject<Employee[]>();
+  employees = new BehaviorSubject<Employee[]>([]);
   employee = new Subject<Employee>();
   employeeBirthdays = new Subject<EmployeeBirthday[]>();
   employeeAnniversaries = new Subject<EmployeeAnniversary[]>();
@@ -34,6 +34,14 @@ export class EmployeeService {
       .get<Employee>(`${environment.firebaseApiUrl}/employees/${employeeId}`)
       .subscribe((employee: Employee) => {
         this.employee.next(employee);
+      });
+  }
+
+  createNewEmployee(employee: Employee) {
+    this.http
+      .post<Employee>(`${environment.firebaseApiUrl}/employees/`, employee)
+      .subscribe((employee: Employee) => {
+        this.employees.next(this.employees.getValue().concat(employee));
       });
   }
 
