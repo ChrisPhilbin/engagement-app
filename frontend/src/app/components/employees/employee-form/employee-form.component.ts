@@ -10,14 +10,19 @@ import { Employee } from 'src/models/employee-model';
   styleUrls: ['./employee-form.component.css'],
 })
 export class EmployeeFormComponent implements OnInit {
+  //@ts-ignore
   employeeForm: FormGroup;
+  //@ts-ignore
   employeeId: number;
   editMode: boolean = false;
 
+  //@ts-ignore
+  hireDate: Date;
+
   constructor(
+    private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private router: Router,
-    private employeeService: EmployeeService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +48,8 @@ export class EmployeeFormComponent implements OnInit {
       firstName: new FormControl(firstName, Validators.required),
       lastName: new FormControl(lastName, Validators.required),
       email: new FormControl(email, [Validators.required, Validators.email]),
-      hireDate: new FormControl(hireDate, Validators.required),
-      birthDate: new FormControl(birthDate, Validators.required),
+      hireDate: new FormControl(hireDate),
+      birthDate: new FormControl(birthDate),
       lastInteraction: new FormControl(lastInteraction),
       interests: employeeInterests,
     });
@@ -67,21 +72,26 @@ export class EmployeeFormComponent implements OnInit {
     // hasRecentInteraction: boolean;
 
     const newEmployee = {
-      firstName: this.employeeForm.value['firstName'],
-      lastName: this.employeeForm.value['lastName'],
-      email: this.employeeForm.value['email'],
+      firstName: this.employeeForm.value['firstName'] as string,
+      lastName: this.employeeForm.value['lastName'] as string,
+      email: this.employeeForm.value['email'] as string,
       hireDate: this.employeeForm.value['hireDate'],
-      birthDate: this.employeeForm.value['birthDate'],
-      lastInteraction: this.employeeForm.value['lastInteraction'],
-      interests: this.employeeForm.value['employeeInterests'],
+      birthDate: this.employeeForm.value['birthDate'] as string,
+      lastInteraction: this.employeeForm.value['lastInteraction'] as string,
+      interests: this.employeeForm.value['employeeInterests'] as string[],
     };
 
-    if (this.editMode) {
-      //invoke method from within employeeService to update employee record/update app state
-    } else {
-      //invoke method to create a new employee and update the app state
-      this.employeeService.createNewEmployee(newEmployee);
-    }
+    console.log(newEmployee, 'new employee...');
+
+    // if (this.editMode) {
+    //   //invoke method from within employeeService to update employee record/update app state
+    //   //need access to employeeId in order to update single employee record
+    // } else {
+    //   //invoke method to create a new employee and update the app state
+
+    //   //@ts-ignore
+    //   this.employeeService.createNewEmployee(newEmployee);
+    // }
   }
 
   onAddInterest() {

@@ -25,6 +25,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
+import { CalendarModule } from 'primeng/calendar';
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 
 @NgModule({
@@ -55,6 +56,7 @@ import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glan
     InputTextModule,
     ButtonModule,
     PanelModule,
+    CalendarModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

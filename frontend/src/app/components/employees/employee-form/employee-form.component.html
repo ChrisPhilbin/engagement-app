@@ -1,1 +1,45 @@
-<p>employee-form works!</p>
+<div class="grid grid-cols-1 gap-4">
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="firstName">First name</label>
+      <input
+        type="text"
+        id="firstName"
+        formControlName="firstName"
+        class="border-2 m-2 p-3"
+      />
+    </div>
+
+    <div>
+      <label for="lastName">Last name</label>
+      <input
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        class="border-2 m-2 p-3"
+      />
+    </div>
+
+    <div>
+      <label for="email">Email address</label>
+      <input
+        type="text"
+        id="email"
+        formControlName="email"
+        class="border-2 m-2 p-3"
+      />
+    </div>
+
+    <div>
+      <label for="hireDate">Hire date</label>
+      <p-calendar inputId="hireDate" formControlName="hireDate"></p-calendar>
+    </div>
+
+    <div>
+      <label for="birthDate">Birthdate</label>
+      <p-calendar inputId="birthDate" formControlName="birthDate"></p-calendar>
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+</div>
