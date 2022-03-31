@@ -71,17 +71,19 @@ export class EmployeeFormComponent implements OnInit {
     // hasUpcomingWorkAnniversary: boolean;
     // hasRecentInteraction: boolean;
 
-    const newEmployee = {
+    const newEmployee: Employee = {
       firstName: this.employeeForm.value['firstName'] as string,
       lastName: this.employeeForm.value['lastName'] as string,
       email: this.employeeForm.value['email'] as string,
       hireDate: this.employeeForm.value['hireDate'],
       birthDate: this.employeeForm.value['birthDate'] as string,
       lastInteraction: this.employeeForm.value['lastInteraction'] as string,
-      interests: this.employeeForm.value['employeeInterests'] as string[],
+      interests: this.employeeForm.value['interests'] as string[],
     };
 
     console.log(newEmployee, 'new employee...');
+
+    this.employeeService.createNewEmployee(newEmployee);
 
     // if (this.editMode) {
     //   //invoke method from within employeeService to update employee record/update app state
@@ -94,11 +96,19 @@ export class EmployeeFormComponent implements OnInit {
     // }
   }
 
-  onAddInterest() {
+  onAddInterest(): void {
     (<FormArray>this.employeeForm.get('interests')).push(
       new FormGroup({
         name: new FormControl(null, Validators.required),
       })
     );
+  }
+
+  onDeleteInterest(index: number): void {
+    (<FormArray>this.employeeForm.get('interests')).removeAt(index);
+  }
+
+  get controls() {
+    return (<FormArray>this.employeeForm.get('interests')).controls;
   }
 }
