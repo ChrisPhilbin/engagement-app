@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { Employee } from 'src/models/employee-model';
+import { EmployeeInterest } from 'src/models/employee-model';
 
 @Component({
   selector: 'app-employee-form',
@@ -71,18 +71,23 @@ export class EmployeeFormComponent implements OnInit {
     // hasUpcomingWorkAnniversary: boolean;
     // hasRecentInteraction: boolean;
 
-    const newEmployee: Employee = {
-      firstName: this.employeeForm.value['firstName'] as string,
-      lastName: this.employeeForm.value['lastName'] as string,
-      email: this.employeeForm.value['email'] as string,
-      hireDate: this.employeeForm.value['hireDate'],
-      birthDate: this.employeeForm.value['birthDate'] as string,
-      lastInteraction: this.employeeForm.value['lastInteraction'] as string,
-      interests: this.employeeForm.value['interests'] as string[],
+    const newEmployee = {
+      employeeFirstName: this.employeeForm.value['firstName'],
+      employeeLastName: this.employeeForm.value['lastName'],
+      employeeEmail: this.employeeForm.value['email'],
+      employeeHireDate: this.employeeForm.value['hireDate'],
+      employeeBirthDate: this.employeeForm.value['birthDate'],
+      lastInteraction: this.employeeForm.value['lastInteraction'],
+      employeeInterests: this.employeeForm.value['interests'].map(
+        (intObj: EmployeeInterest) => {
+          return intObj.name;
+        }
+      ),
     };
 
     console.log(newEmployee, 'new employee...');
 
+    //@ts-ignore
     this.employeeService.createNewEmployee(newEmployee);
 
     // if (this.editMode) {

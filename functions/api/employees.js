@@ -13,9 +13,9 @@ exports.createEmployee = (request, response) => {
     lastName: request.body.employeeLastName || "",
     email: request.body.employeeEmail || "",
     createdAt: new Date().toISOString(),
-    hireDate: request.body.employeeHireDate || "",
+    hireDate: new Date(request.body.employeeHireDate) || null,
     birthDate: new Date(request.body.employeeBirthDate) || null,
-    lastInteraction: null,
+    lastInteraction: new Date(request.body.lastInteraction) || null,
     interests: request.body.employeeInterests || [],
     sportsTeams: request.body.employeeSportsTeams || [],
   };

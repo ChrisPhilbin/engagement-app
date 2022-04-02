@@ -41,6 +41,11 @@
     </div>
 
     <div>
+      <label for="lastInteraction">Last Interaction</label><br />
+      <p-calendar inputId="lastInteraction" formControlName="lastInteraction"></p-calendar>
+    </div>
+
+    <div>
       <div formArrayName="interests">
         <span *ngIf="controls.length === 0">No interests entered.</span>
           <div class="row" *ngFor="let interestCtrl of controls; let i = index" [formGroupName]="i">
