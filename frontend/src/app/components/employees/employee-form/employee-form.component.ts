@@ -89,6 +89,7 @@ export class EmployeeFormComponent implements OnInit {
 
     //@ts-ignore
     this.employeeService.createNewEmployee(newEmployee);
+    this.router.navigate(['/dashboard']);
 
     // if (this.editMode) {
     //   //invoke method from within employeeService to update employee record/update app state
