@@ -42,7 +42,6 @@ export class AtAGlanceComponent implements OnInit {
     this.employeeService.employeeInteractions.subscribe(
       (interactions: EmployeeInteraction[]) => {
         this.outstandingInteractions = interactions;
-        console.log(this.outstandingInteractions, 'interactions');
       }
     );
   }

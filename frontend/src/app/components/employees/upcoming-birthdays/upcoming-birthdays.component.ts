@@ -23,7 +23,6 @@ export class UpcomingBirthdaysComponent implements OnInit {
     this.employeeService.employeeBirthdays.subscribe(
       (birthdays: EmployeeBirthday[]) => {
         this.birthdays = birthdays;
-        console.log(this.birthdays);
         this.isLoading = false;
       }
     );

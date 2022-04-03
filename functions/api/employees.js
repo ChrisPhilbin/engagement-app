@@ -138,8 +138,8 @@ exports.getAllUpcomingBirthdays = (request, response) => {
             birthDate: doc.data().birthDate.toDate(),
           });
         }
-        return response.status(200).json(employees);
       });
+      return response.status(200).json(employees);
     })
     .catch((error) => {
       response.status(500).json({ error: "Something went wrong." });
@@ -158,11 +158,11 @@ exports.getAllUpcomingAnniversaries = (request, response) => {
             employeeId: doc.id,
             firstName: doc.data().firstName,
             lastName: doc.data().lastName,
-            hiredate: doc.data().hireDate,
+            hiredate: doc.data().hireDate.toDate(),
           });
         }
-        return response.status(200).json(employees);
       });
+      return response.status(200).json(employees);
     })
     .catch((error) => {
       response.status(500).json({ error: "Something went wrong." });
