@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnChanges {
       {
         label: 'Home',
         icon: 'pi pi-fw pi-home',
+        command: () => this.router.navigate(['/dashboard']),
       },
       {
         label: 'Employees',
@@ -29,6 +31,7 @@ export class HeaderComponent implements OnChanges {
           {
             label: 'New',
             icon: 'pi pi-fw pi-user-plus',
+            command: () => this.router.navigate(['/employees/new']),
           },
           {
             label: 'View All',

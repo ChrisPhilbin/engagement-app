@@ -30,8 +30,8 @@
         <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
           <ul>
             <span *ngIf="employee.interests.length">
-              <li *ngFor="let interest of employee.interests" class="inline">
-                {{ interest }}
+              <li *ngFor="let interest of employee.interests; let isLast=last" class="inline">
+                {{ interest }}{{ isLast ? '' : ', ' }}
               </li>
             </span>
             <li *ngIf="!employee.interests.length" class="text-gray-300">
