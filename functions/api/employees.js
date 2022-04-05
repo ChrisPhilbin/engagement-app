@@ -4,20 +4,22 @@ const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 
 exports.createEmployee = (request, response) => {
   if (request.body.employeeFirstName.trim() === "" || !request.user.uid) {
-    return response.status(400).json({ error: "Employee first name cannot be blank." });
+    return response
+      .status(400)
+      .json({ error: "Employee first name cannot be blank." });
   }
 
   const newEmployee = {
     userId: request.user.uid,
-    firstName: request.body.employeeFirstName,
-    lastName: request.body.employeeLastName || "",
-    email: request.body.employeeEmail || "",
+    firstName: request.body.firstName,
+    lastName: request.body.lastName || "",
+    email: request.body.email || "",
     createdAt: new Date().toISOString(),
-    hireDate: new Date(request.body.employeeHireDate) || null,
-    birthDate: new Date(request.body.employeeBirthDate) || null,
+    hireDate: new Date(request.body.hireDate) || null,
+    birthDate: new Date(request.body.birthDate) || null,
     lastInteraction: new Date(request.body.lastInteraction) || null,
-    interests: request.body.employeeInterests || [],
-    sportsTeams: request.body.employeeSportsTeams || [],
+    interests: request.body.interests || [],
+    sportsTeams: request.body.sportsTeams || [],
   };
 
   db.collection("employees")
@@ -48,9 +50,15 @@ exports.getAllEmployees = (request, response) => {
           hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
           birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
           hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
-          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
-          hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
-          lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
+          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(
+            doc.data().hireDate
+          ),
+          hasRecentInteraction: hasRecentInteraction(
+            doc.data().lastInteraction
+          ),
+          lastInteraction: doc.data().lastInteraction
+            ? doc.data().lastInteraction.toDate()
+            : "",
           interests: doc.data().interests,
           sportsTeams: doc.data().sportsTeams,
         });
@@ -74,9 +82,15 @@ exports.getSingleEmployee = (request, response) => {
       }
       employeeData = doc.data();
       employeeData.employeeId = doc.id;
-      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(doc.data().birthDate);
-      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(doc.data().hireDate);
-      employeeData.hasRecentInteraction = hasRecentInteraction(doc.data().lastInteraction);
+      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(
+        doc.data().birthDate
+      );
+      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(
+        doc.data().hireDate
+      );
+      employeeData.hasRecentInteraction = hasRecentInteraction(
+        doc.data().lastInteraction
+      );
       await getInterestUpdates(doc.data().interests).then((interests) => {
         employeeData.newsFeed = interests;
       });
@@ -103,8 +117,8 @@ exports.updateEmployee = (request, response) => {
   let document = db.collection("employees").doc(`${request.params.employeeId}`);
   document
     .update(request.body)
-    .then((updatedPost) => {
-      return response.status(200).json(updatedPost);
+    .then((updatedEmployee) => {
+      return response.status(200).json(updatedEmployee);
     })
     .catch((error) => {
       return response.status(500).json({ error: "Something went wrong." });

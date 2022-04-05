@@ -25,6 +25,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'employees/:employeeId/edit',
+    component: EmployeeFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'employees/:employeeId/meetings/:meetingId',
     component: MeetingDetailsComponent,
     canActivate: [AuthGuard],

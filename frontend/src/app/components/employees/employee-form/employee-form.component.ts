@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { EmployeeInterest } from 'src/models/employee-model';
+import { Employee, EmployeeInterest } from 'src/models/employee-model';
 
 @Component({
   selector: 'app-employee-form',
@@ -10,10 +10,11 @@ import { EmployeeInterest } from 'src/models/employee-model';
   styleUrls: ['./employee-form.component.css'],
 })
 export class EmployeeFormComponent implements OnInit {
+  employee: Employee;
   //@ts-ignore
   employeeForm: FormGroup;
   //@ts-ignore
-  employeeId: number;
+  employeeId: string;
   editMode: boolean = false;
 
   //@ts-ignore
@@ -27,9 +28,16 @@ export class EmployeeFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.employeeId = +params['employeeId'];
+      this.employeeId = params['employeeId'];
       this.editMode = params['employeeId'] != null;
-      this.initForm();
+      this.employeeService.getSingleEmployeeDetails(this.employeeId);
+      this.employeeService.employee.subscribe((employee: Employee): void => {
+        this.employee = employee;
+        this.initForm();
+      });
+      if (!this.editMode) {
+        this.initForm();
+      }
     });
   }
 
@@ -42,7 +50,23 @@ export class EmployeeFormComponent implements OnInit {
     let lastInteraction = '';
     let employeeInterests = new FormArray([]);
 
-    //future: if this.editMode... setup logic to take existing employee data and populate the form with the data
+    if (this.editMode && Object.keys(this.employee)) {
+      firstName = this.employee.firstName;
+      lastName = this.employee.lastName;
+      email = this.employee.email;
+      hireDate = this.employee.hireDate;
+      birthDate = this.employee.birthDate;
+      lastInteraction = this.employee.lastInteraction;
+      if (this.employee.interests) {
+        for (let interest of this.employee.interests) {
+          employeeInterests.push(
+            new FormGroup({
+              name: new FormControl(interest, Validators.required),
+            })
+          );
+        }
+      }
+    }
 
     this.employeeForm = new FormGroup({
       firstName: new FormControl(firstName, Validators.required),
@@ -56,29 +80,14 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   onSubmit() {
-    // birthDate: string;
-    // createdAt: string;
-    // hireDate: string;
-    // email: string;
-    // firstName: string;
-    // lastName: string;
-    // interests: string[];
-    // lastInteraction: string;
-    // sportsTeams: string[];
-    // userId: string;
-    // employeeId: string;
-    // hasUpcomingBirthday: boolean;
-    // hasUpcomingWorkAnniversary: boolean;
-    // hasRecentInteraction: boolean;
-
     const newEmployee = {
-      employeeFirstName: this.employeeForm.value['firstName'],
-      employeeLastName: this.employeeForm.value['lastName'],
-      employeeEmail: this.employeeForm.value['email'],
-      employeeHireDate: this.employeeForm.value['hireDate'],
-      employeeBirthDate: this.employeeForm.value['birthDate'],
+      firstName: this.employeeForm.value['firstName'],
+      lastName: this.employeeForm.value['lastName'],
+      email: this.employeeForm.value['email'],
+      hireDate: this.employeeForm.value['hireDate'],
+      birthDate: this.employeeForm.value['birthDate'],
       lastInteraction: this.employeeForm.value['lastInteraction'],
-      employeeInterests: this.employeeForm.value['interests'].map(
+      interests: this.employeeForm.value['interests'].map(
         (intObj: EmployeeInterest) => {
           return intObj.name;
         }
@@ -87,19 +96,14 @@ export class EmployeeFormComponent implements OnInit {
 
     console.log(newEmployee, 'new employee...');
 
-    //@ts-ignore
-    this.employeeService.createNewEmployee(newEmployee);
+    if (this.editMode) {
+      //@ts-ignore
+      this.employeeService.updateExistingEmployee(newEmployee, this.employeeId);
+    } else {
+      //@ts-ignore
+      this.employeeService.createNewEmployee(newEmployee);
+    }
     this.router.navigate(['/dashboard']);
-
-    // if (this.editMode) {
-    //   //invoke method from within employeeService to update employee record/update app state
-    //   //need access to employeeId in order to update single employee record
-    // } else {
-    //   //invoke method to create a new employee and update the app state
-
-    //   //@ts-ignore
-    //   this.employeeService.createNewEmployee(newEmployee);
-    // }
   }
 
   onAddInterest(): void {
