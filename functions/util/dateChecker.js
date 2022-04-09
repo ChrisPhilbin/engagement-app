@@ -6,7 +6,6 @@ exports.hasUpcomingBirthday = (employeeBirthdate) => {
   }
   const now = moment();
   employeeBirthdate = new Date(employeeBirthdate._seconds * 1000).toUTCString();
-
   let birthday = moment(employeeBirthdate).year(now.year());
   let birthDayNextYear = moment(employeeBirthdate).year(now.year() + 1);
   let daysRemaining = Math.min(Math.abs(birthday.diff(now, "days")), Math.abs(birthDayNextYear.diff(now, "days")));

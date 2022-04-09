@@ -27,6 +27,7 @@ export class EmployeeFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
     this.route.params.subscribe((params: Params) => {
       this.employeeId = params['employeeId'];
       this.editMode = params['employeeId'] != null;
@@ -35,9 +36,6 @@ export class EmployeeFormComponent implements OnInit {
         this.employee = employee;
         this.initForm();
       });
-      if (!this.editMode) {
-        this.initForm();
-      }
     });
   }
 
@@ -45,18 +43,18 @@ export class EmployeeFormComponent implements OnInit {
     let firstName = '';
     let lastName = '';
     let email = '';
-    let hireDate = '';
-    let birthDate = '';
-    let lastInteraction = '';
+    let hireDate;
+    let birthDate;
+    let lastInteraction;
     let employeeInterests = new FormArray([]);
 
     if (this.editMode && Object.keys(this.employee)) {
       firstName = this.employee.firstName;
       lastName = this.employee.lastName;
       email = this.employee.email;
-      hireDate = this.employee.hireDate;
-      birthDate = this.employee.birthDate;
-      lastInteraction = this.employee.lastInteraction;
+      hireDate = this.employee.hireDate ? new Date(this.employee.hireDate) : '';
+      birthDate = this.employee.birthDate ? new Date(this.employee.birthDate) : '';
+      lastInteraction = this.employee.lastInteraction ? new Date(this.employee.lastInteraction) : '';
       if (this.employee.interests) {
         for (let interest of this.employee.interests) {
           employeeInterests.push(
@@ -102,6 +100,7 @@ export class EmployeeFormComponent implements OnInit {
     } else {
       //@ts-ignore
       this.employeeService.createNewEmployee(newEmployee);
+      console.log(newEmployee, "new employee...")
     }
     this.router.navigate(['/dashboard']);
   }

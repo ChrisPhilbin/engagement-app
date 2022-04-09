@@ -3,12 +3,11 @@ const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } 
 const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 
 exports.createEmployee = (request, response) => {
-  if (request.body.employeeFirstName.trim() === "" || !request.user.uid) {
+  if (request.body.firstName.trim() === "" || !request.user.uid) {
     return response
       .status(400)
       .json({ error: "Employee first name cannot be blank." });
   }
-
   const newEmployee = {
     userId: request.user.uid,
     firstName: request.body.firstName,
@@ -81,6 +80,15 @@ exports.getSingleEmployee = (request, response) => {
         return response.status(401).json({ error: "You are not authorized." });
       }
       employeeData = doc.data();
+      employeeData.hireDate = doc.data().hireDate
+        ? doc.data().hireDate.toDate()
+        : null;
+      employeeData.birthDate = doc.data().birthDate
+        ? doc.data().birthDate.toDate()
+        : null;
+      employeeData.lastInteraction = doc.data().lastInteraction
+        ? doc.data().lastInteraction.toDate()
+        : null;
       employeeData.employeeId = doc.id;
       employeeData.hasUpcomingBirthday = hasUpcomingBirthday(
         doc.data().birthDate
@@ -113,6 +121,17 @@ exports.updateEmployee = (request, response) => {
   if (request.body.firstName.trim() === "") {
     return response.status(403).json({ error: "Field cannot be blank" });
   }
+  request.body.birthDate = request.body.birthDate
+    ? new Date(request.body.birthDate)
+    : "";
+  request.body.hireDate = request.body.hireDate
+    ? new Date(request.body.hireDate)
+    : "";
+  request.body.lastInteraction = request.body.lastInteraction
+    ? new Date(request.body.lastInteraction)
+    : "";
+
+  console.log(request.body, "req body");
 
   let document = db.collection("employees").doc(`${request.params.employeeId}`);
   document
