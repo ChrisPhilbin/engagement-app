@@ -35,6 +35,7 @@ export class EmployeeFormComponent implements OnInit {
       this.employeeService.employee.subscribe((employee: Employee): void => {
         this.employee = employee;
         this.initForm();
+        document.title = `Editing ${this.employee.firstName} ${this.employee.lastName}'s information`;
       });
     });
   }

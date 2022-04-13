@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  filter,
+  map,
+  Observable,
+  Subject,
+  throwError,
+} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {
   Employee,
@@ -85,5 +93,43 @@ export class EmployeeService {
       .subscribe((employeeInteractions: EmployeeInteraction[]) => {
         this.employeeInteractions.next(employeeInteractions);
       });
+  }
+
+  filterByName(name: string): Observable<Employee[]> {
+    return this.employees.pipe(
+      map((employees): Employee[] =>
+        employees.filter(
+          (employee) =>
+            employee.firstName.toLowerCase().includes(name.toLowerCase()) ||
+            employee.lastName.toLowerCase().includes(name.toLowerCase())
+        )
+      )
+    );
+  }
+
+  filterByUpComingBirthday() {
+    return this.employees.pipe(
+      map((employees): Employee[] =>
+        employees.filter((employee) => employee.hasUpcomingBirthday === true)
+      )
+    );
+  }
+
+  filterByOverdueInteractions() {
+    return this.employees.pipe(
+      map((employees): Employee[] =>
+        employees.filter((employee) => employee.hasRecentInteraction === false)
+      )
+    );
+  }
+
+  filterByUpcomingAnniversaries() {
+    return this.employees.pipe(
+      map((employees): Employee[] =>
+        employees.filter(
+          (employee) => employee.hasUpcomingWorkAnniversary === true
+        )
+      )
+    );
   }
 }

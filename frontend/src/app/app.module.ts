@@ -27,6 +27,7 @@ import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 
 @NgModule({
@@ -59,6 +60,7 @@ import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glan
     PanelModule,
     CalendarModule,
     CardModule,
+    ToggleButtonModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

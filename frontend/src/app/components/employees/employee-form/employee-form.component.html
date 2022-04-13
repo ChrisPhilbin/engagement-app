@@ -77,12 +77,12 @@
       <div class="">
         <div formArrayName="interests">
           <span *ngIf="controls.length === 0">No interests entered.</span>
-            <div class="flex flex-row" *ngFor="let interestCtrl of controls; let i = index" [formGroupName]="i">
+            <div class="flex flex-row align-middle" *ngFor="let interestCtrl of controls; let i = index" [formGroupName]="i">
                 <div>
                     <input type="text" class="form-control" formControlName="name" class="border-2 m-2 p-3">        
                 </div>
 
-                <div>
+                <div class="align-middle">
                     <p-button label="X" (click)="onDeleteInterest(i)"></p-button>
                 </div>
             </div>
