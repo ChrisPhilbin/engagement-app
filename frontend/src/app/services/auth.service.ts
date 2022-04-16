@@ -86,9 +86,16 @@ export class AuthService {
   }
 
   public logout() {
-    this.cookieService.set('token', '');
-    this.cookieService.set('expirationDate', '');
-    this.cookieService.set('refreshToken', '');
+    // this.cookieService.set('email', '');
+    // this.cookieService.set('userId', '');
+    // this.cookieService.set('token', '');
+    // this.cookieService.set('expirationDate', '');
+    // this.cookieService.set('refreshToken', '');
+    this.cookieService.delete('email', '/');
+    this.cookieService.delete('userId', '/');
+    this.cookieService.delete('token', '/');
+    this.cookieService.delete('expirationDate', '/');
+    this.cookieService.delete('refreshToken', '/');
     this.router.navigate(['login']);
     this.user.next(null);
   }
@@ -104,7 +111,6 @@ export class AuthService {
     this.user.subscribe((user) => {
       localUser = user;
     });
-
     if (!this.jwtHelper.isTokenExpired(token) && localUser === null) {
       //if token is still valid get the user data from the cookie and then set set user.next to value of newly created user object
       //@ts-ignore

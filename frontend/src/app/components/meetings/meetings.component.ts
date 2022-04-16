@@ -19,6 +19,7 @@ export class MeetingsComponent implements OnInit, OnChanges {
     this.meetingService.getEmployeeMeetings(this.employeeId);
     this.meetingService.meetings.subscribe((meetings: Meeting[]) => {
       this.meetings = meetings;
+      console.log(this.meetings, 'meetings');
     });
   }
 }

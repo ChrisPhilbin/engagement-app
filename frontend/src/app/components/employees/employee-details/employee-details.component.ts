@@ -26,6 +26,7 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeService.getSingleEmployeeDetails(this.meetingId);
       this.employeeService.employee.subscribe((employee: Employee) => {
         this.employee = employee;
+        console.log(this.employee, 'current employee details');
         this.isLoading = false;
       });
     });

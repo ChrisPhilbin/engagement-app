@@ -1,3 +1,5 @@
+import { NewsFeedItem } from './newsfeed-model';
+
 export interface Employee {
   birthDate: string;
   createdAt: string;
@@ -13,6 +15,7 @@ export interface Employee {
   hasUpcomingBirthday: boolean;
   hasUpcomingWorkAnniversary: boolean;
   hasRecentInteraction?: boolean;
+  newsFeed: NewsFeedItem[];
 }
 
 export interface EmployeeInterest {

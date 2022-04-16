@@ -10,6 +10,7 @@ export class AuthGuardService {
 
   canActivate() {
     if (!this.authService.isAuthenticated()) {
+      this.authService.logout();
       this.router.navigate(['login']);
       return false;
     }

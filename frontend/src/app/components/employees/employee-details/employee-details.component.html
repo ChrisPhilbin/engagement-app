@@ -1,4 +1,27 @@
 <div *ngIf="employee">
-    {{ employee.firstName }}
-    <app-meetings [employeeId]="employee.employeeId"></app-meetings>
+    <p class="font-bold text-2xl">{{ employee.firstName + ' ' + employee.lastName }} <a [routerLink]="['/employees', employee.employeeId, 'edit']"><i class="pi pi-user-edit"></i></a>
+    </p><br />
+
+    <p-fieldset legend="Details" [toggleable]="true" [style]="{'margin-bottom': '30px'}">
+        <strong>Last interaction: </strong>{{ employee.lastInteraction | date: "fullDate" }}<br />
+        <strong>Hire date: </strong>{{ employee.hireDate | date: "fullDate" }}<br />
+        <strong>Birthday: </strong> <span *ngIf="employee.birthDate">{{ employee.birthDate | date: "MMMM d" }}</span><span *ngIf="!employee.birthDate">----</span><br />
+        <button type="button" class="mt-4 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Details</button>
+    </p-fieldset>
+    <span class="mb-4"> </span>
+    <p-fieldset legend="Newsfeed" [toggleable]="true" [style]="{'margin-bottom': '30px'}">
+        <div class="mb-4">
+            <div class="mb-2"><strong>Curated based on:</strong></div>
+            <p-chip  *ngFor="let interest of employee.interests" [label]="interest" [style]="{'margin-right':'10px'}"></p-chip>
+        </div>
+        <div *ngFor="let newsItem of employee.newsFeed" class="mb-4">
+            <p class="text-xl"><strong>{{ newsItem.articles[0].title }}</strong></p>
+            {{ newsItem.articles[0].description }} <strong><a [href]="newsItem.articles[0].url">Read more</a></strong>
+        </div>
+    </p-fieldset>
+
+    <p-fieldset legend="Meetings" [toggleable]="true" [style]="{'margin-bottom': '30px'}">
+        <a [routerLink]="['/employees', employee.employeeId, 'meetings', 'new']"><p-button label="New Meeting" icon="pi pi-pencil"></p-button></a><br />
+        <app-meetings [employeeId]="employee.employeeId"></app-meetings>
+    </p-fieldset>
 </div>

@@ -1,14 +1,29 @@
 <app-loading *ngIf="isLoading"></app-loading>
 
-<a [routerLink]="['/employees/new']"><p-button label="New employee"></p-button></a><br />
-<div class="grid">
-  <div>
-    <input [disabled]="filterByBirthday || filterByUpcomingAnniversaries || filterByOverdueInteractions" type="text" [ngModel]="searchTerm" (ngModelChange)="onFilterChange($event)" class="border-2 p-4 m-2 font-lg inline"><br />
-    <p-toggleButton [disabled]="filterByOverdueInteractions || filterByUpcomingAnniversaries" [(ngModel)]="filterByBirthday" (click)="onFilterByBirthday()" onLabel="Upcoming birthdays" offLabel="Upcoming birthdays" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px'}"></p-toggleButton>
-    <p-toggleButton [disabled]="filterByBirthday || filterByUpcomingAnniversaries"  [(ngModel)]="filterByOverdueInteractions" (click)="onFilterByOverdueInteractions()" onLabel="Overdue Interactions" offLabel="Overdue Interactions" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px'}"></p-toggleButton>
-    <p-toggleButton [disabled]="filterByBirthday || filterByOverdueInteractions"  [(ngModel)]="filterByUpcomingAnniversaries" (click)="onFilterByUpcomingAnniversaries()" onLabel="Upcoming Anniversaries" offLabel="Upcoming Anniversaries" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px'}"></p-toggleButton>
-  </div>
-</div>
+<a [routerLink]="['/employees/new']"><p-button label="New employee" [style]="{'margin-right': '8px'}"></p-button></a>
+<button type="text" pButton label="Filter" (click)="op.toggle($event)" icon="pi pi-filter"></button>
+<p-overlayPanel #op [showCloseIcon]="true">
+  <ng-template pTemplate>
+    <input placeholder="Filter by name..." [disabled]="filterByBirthday || filterByUpcomingAnniversaries || filterByOverdueInteractions" type="text" [(ngModel)]="searchTerm" (ngModelChange)="onFilterChange($event)" class="border-2 p-4 m-2 font-lg block">
+    <p-toggleButton [disabled]="filterByOverdueInteractions || filterByUpcomingAnniversaries" [(ngModel)]="filterByBirthday" (click)="onFilterByBirthday()" onLabel="Upcoming birthdays" offLabel="Upcoming birthdays" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-bottom': '12px', 'display': 'block'}"></p-toggleButton>
+    <p-toggleButton [disabled]="filterByBirthday || filterByUpcomingAnniversaries"  [(ngModel)]="filterByOverdueInteractions" (click)="onFilterByOverdueInteractions()" onLabel="Overdue Interactions" offLabel="Overdue Interactions" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-bottom': '12px', 'display': 'block'}"></p-toggleButton>
+    <p-toggleButton [disabled]="filterByBirthday || filterByOverdueInteractions"  [(ngModel)]="filterByUpcomingAnniversaries" (click)="onFilterByUpcomingAnniversaries()" onLabel="Upcoming Anniversaries" offLabel="Upcoming Anniversaries" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-bottom': '12px', 'display': 'block'}"></p-toggleButton>
+  </ng-template>
+</p-overlayPanel>
+<p-toast position="top-right"></p-toast>
+
+<!-- <span class="text-center text-red-600">
+  <p *ngIf="searchTerm">Currently filtering by name</p>
+  <p *ngIf="filterByBirthday">Currently filtering by upcoming birthdays</p>
+  <p *ngIf="filterByOverdueInteractions">Currently filtering by overdue interactions</p>
+  <p *ngIf="filterByUpcomingAnniversaries">Currently filtering by upcoming anniversaries</p>
+</span> -->
+  <!-- <div class="grid grid-cols-1 md:grid-cols-4 align-middle">
+    <input [disabled]="filterByBirthday || filterByUpcomingAnniversaries || filterByOverdueInteractions" type="text" [ngModel]="searchTerm" (ngModelChange)="onFilterChange($event)" class="border-2 p-4 m-2 font-lg inline">
+    <p-toggleButton [disabled]="filterByOverdueInteractions || filterByUpcomingAnniversaries" [(ngModel)]="filterByBirthday" (click)="onFilterByBirthday()" onLabel="Upcoming birthdays" offLabel="Upcoming birthdays" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px', 'display': 'inline'}"></p-toggleButton>
+    <p-toggleButton [disabled]="filterByBirthday || filterByUpcomingAnniversaries"  [(ngModel)]="filterByOverdueInteractions" (click)="onFilterByOverdueInteractions()" onLabel="Overdue Interactions" offLabel="Overdue Interactions" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px', 'display': 'inline'}"></p-toggleButton>
+    <p-toggleButton [disabled]="filterByBirthday || filterByOverdueInteractions"  [(ngModel)]="filterByUpcomingAnniversaries" (click)="onFilterByUpcomingAnniversaries()" onLabel="Upcoming Anniversaries" offLabel="Upcoming Anniversaries" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px', 'display': 'inline'}"></p-toggleButton>
+  </div> -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
   <p-card *ngFor="let employee of employees" [header]="employee.firstName + ' ' + employee.lastName" [style]="{'margin-bottom': '2em'}">
     <ng-template pTemplate="header">
@@ -26,7 +41,7 @@
         </span>
       </ul>
     <ng-template pTemplate="footer">
-      <a [routerLink]="['/employees', employee.employeeId, 'edit']"><p-button label="Edit" icon="pi pi-user-edit"></p-button></a>
+      <a [routerLink]="['/employees', employee.employeeId]"><p-button label="Details" icon="pi pi-user-edit"></p-button></a>
       <p-button label="Remove" icon="pi pi-trash" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}"></p-button>
     </ng-template>
   </p-card>

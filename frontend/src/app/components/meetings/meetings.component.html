@@ -1,6 +1,9 @@
-<strong>Meetings</strong>
-<div *ngIf="meetings.length">
+<div *ngIf="meetings.length" class="mt-4">
     <ul>
         <li *ngFor="let meeting of meetings"><a [routerLink]="['/employees', employeeId, 'meetings', meeting.meetingId]">{{ meeting.meetingDate | date:'fullDate' }}</a></li>
     </ul>
+</div>
+
+<div *ngIf="!meetings.length" class="mt-4">
+    <strong>No meetings have taken place yet!</strong>
 </div>

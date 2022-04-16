@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { Employee } from 'src/models/employee-model';
 
@@ -8,6 +9,7 @@ import { Employee } from 'src/models/employee-model';
   selector: 'app-employees',
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.css'],
+  providers: [MessageService],
 })
 export class EmployeesComponent implements OnInit {
   isLoading = false;
@@ -20,6 +22,7 @@ export class EmployeesComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
+    private messageService: MessageService,
     private router: Router
   ) {}
 
@@ -47,10 +50,12 @@ export class EmployeesComponent implements OnInit {
     if (this.filterByBirthday) {
       this.employeeService.filterByUpComingBirthday().subscribe((employees) => {
         this.employees = employees;
+        this.showFilterMessage('Filtering by upcoming birthdays!');
       });
     } else {
       this.employeeService.employees.subscribe((employees) => {
         this.employees = employees;
+        this.clearFilterMessages();
       });
     }
   }
@@ -61,10 +66,12 @@ export class EmployeesComponent implements OnInit {
         .filterByOverdueInteractions()
         .subscribe((employees) => {
           this.employees = employees;
+          this.showFilterMessage('Filtering by overdue interactions!');
         });
     } else {
       this.employeeService.employees.subscribe((employees) => {
         this.employees = employees;
+        this.clearFilterMessages();
       });
     }
   }
@@ -75,11 +82,26 @@ export class EmployeesComponent implements OnInit {
         .filterByUpcomingAnniversaries()
         .subscribe((employees) => {
           this.employees = employees;
+          this.showFilterMessage('Filtering by upcoming work anniversaries!');
         });
     } else {
       this.employeeService.employees.subscribe((employees) => {
         this.employees = employees;
+        this.clearFilterMessages();
       });
     }
+  }
+
+  showFilterMessage(filterMessageDetails: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Filter Applied',
+      detail: filterMessageDetails,
+    });
+  }
+
+  clearFilterMessages() {
+    this.messageService.clear();
+    this.showFilterMessage('Displaying all employees without filters applied!');
   }
 }
