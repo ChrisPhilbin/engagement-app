@@ -1,1 +1,7 @@
-<p>meeting-form works!</p>
+<form [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
+    <strong>Meeting date</strong><br />
+    <p-calendar inputId="meetingDate" formControlName="meetingDate" [style]="{'margin-bottom': '20px'}"></p-calendar><br />
+    <strong>Meeting notes</strong><br />
+    <angular-editor [config]="config" [placeholder]="'Enter meeting notes here...'" formControlName="notes"></angular-editor>
+    <p-button type="submit" label="Save" [style]="{'margin-top':'20px'}"></p-button>
+</form>

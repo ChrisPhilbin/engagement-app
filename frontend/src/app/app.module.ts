@@ -32,6 +32,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ChipModule } from 'primeng/chip';
 import { ToastModule } from 'primeng/toast';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 
 @NgModule({
@@ -69,6 +70,7 @@ import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glan
     FieldsetModule,
     ChipModule,
     ToastModule,
+    AngularEditorModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

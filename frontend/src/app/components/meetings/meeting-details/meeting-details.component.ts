@@ -29,6 +29,7 @@ export class MeetingDetailsComponent implements OnInit {
       );
       this.meetingService.meeting.subscribe((meeting: Meeting) => {
         this.meeting = meeting;
+        console.log(this.meeting, 'meeting');
       });
     });
   }

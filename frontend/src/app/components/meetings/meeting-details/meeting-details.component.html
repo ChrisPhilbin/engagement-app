@@ -1,1 +1,4 @@
-<p>meeting-details works!</p>
+<div *ngIf="meeting">
+    <p class="font-bold text-2xl italic mb-2">{{ meeting.meetingDate | date: "fullDate" }} <i class="pi pi-user-edit"></i></p>
+    <div class="bg-gray-50 p-4 rounded-md" [innerHTML]="meeting.notes"></div>
+</div>
