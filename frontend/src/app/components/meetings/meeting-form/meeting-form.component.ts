@@ -43,6 +43,7 @@ export class MeetingFormComponent implements OnInit {
   }
 
   config: AngularEditorConfig = {
+    sanitize: false,
     editable: true,
     spellcheck: true,
     height: '15rem',
