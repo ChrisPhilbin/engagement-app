@@ -10,6 +10,7 @@ export interface Employee {
   interests: string[];
   lastInteraction: string;
   sportsTeams: string[];
+  relations: [{ type: string; name: string }];
   userId?: string;
   employeeId: string;
   hasUpcomingBirthday: boolean;
@@ -20,6 +21,11 @@ export interface Employee {
 
 export interface EmployeeInterest {
   name: string;
+}
+
+export interface EmployeeRelation {
+  name: string;
+  type: string;
 }
 
 export interface EmployeeBirthday {

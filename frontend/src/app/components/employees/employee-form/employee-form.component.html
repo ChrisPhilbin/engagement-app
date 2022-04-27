@@ -76,8 +76,8 @@
 
       <div class="">
         <div formArrayName="interests">
-          <span *ngIf="controls.length === 0">No interests entered.</span>
-            <div class="flex flex-row align-middle" *ngFor="let interestCtrl of controls; let i = index" [formGroupName]="i">
+          <span *ngIf="interestControls.length === 0">No interests entered.</span>
+            <div class="flex flex-row align-middle" *ngFor="let interestCtrl of interestControls; let i = index" [formGroupName]="i">
                 <div>
                     <input type="text" class="form-control" formControlName="name" class="border-2 m-2 p-3">        
                 </div>
@@ -93,6 +93,32 @@
             </div>
         </div>
       </div>
+      <div class="">
+        <div formArrayName="relations">
+          <span *ngIf="relationControls.length === 0">No relationships defined yet.</span>
+            <div class="flex flex-row align-middle" *ngFor="let relationCtrl of relationControls; let i = index" [formGroupName]="i">
+                <div>
+                    <input type="text" formControlName="name" class="border-2 m-2 p-3">        
+                </div>
+
+                <div>
+                  <select formControlName="type" class="border-2 m-2 p-3">
+                    <option *ngFor="let rel of relations" [value]="rel">{{ rel | titlecase }}</option>
+                  </select>
+              </div>
+
+                <div class="align-middle">
+                    <p-button label="X" (click)="onDeleteRelation(i)"></p-button>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <p-button type="button" (click)="onAddRelation()" label="Add Relationship"></p-button>
+                </div>
+            </div>
+        </div>
+      </div>
+
   </div>
     <p-button type="submit" label="Save"></p-button>
   </form>

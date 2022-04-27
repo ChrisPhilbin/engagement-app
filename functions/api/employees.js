@@ -5,11 +5,13 @@ const { validRelations } = require("../util/relations");
 
 exports.createEmployee = (request, response) => {
   if (request.body.firstName.trim() === "" || !request.user.uid) {
-    return response.status(400).json({ error: "Employee first name cannot be blank." });
+    return response
+      .status(400)
+      .json({ error: "Employee first name cannot be blank." });
   }
 
   request.body.relations?.forEach((relationship) => {
-    if (!validRelations.includes(relationship.type)) {
+    if (!validRelations.includes(relationship.type.toLowerCase())) {
       return response.status(400).json({ error: "Unknown relationship type." });
     }
   });
@@ -24,11 +26,7 @@ exports.createEmployee = (request, response) => {
     birthDate: new Date(request.body.birthDate) || null,
     lastInteraction: new Date(request.body.lastInteraction) || null,
     interests: request.body.interests || [],
-    relations: request.body.relations
-      ? request.body.relations.forEach((relation) => {
-          return { [relation.type]: relation.name };
-        })
-      : null,
+    relations: request.body.relations || [],
     sportsTeams: request.body.sportsTeams || [],
   };
 
@@ -60,9 +58,15 @@ exports.getAllEmployees = (request, response) => {
           hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
           birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
           hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
-          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
-          hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
-          lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
+          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(
+            doc.data().hireDate
+          ),
+          hasRecentInteraction: hasRecentInteraction(
+            doc.data().lastInteraction
+          ),
+          lastInteraction: doc.data().lastInteraction
+            ? doc.data().lastInteraction.toDate()
+            : "",
           interests: doc.data().interests,
           sportsTeams: doc.data().sportsTeams,
           relations: doc.data().relations,

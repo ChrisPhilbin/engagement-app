@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { Employee, EmployeeInterest } from 'src/models/employee-model';
+import {
+  Employee,
+  EmployeeInterest,
+  EmployeeRelation,
+} from 'src/models/employee-model';
+import { relations } from 'src/models/relationship-model';
 
 @Component({
   selector: 'app-employee-form',
@@ -19,6 +24,8 @@ export class EmployeeFormComponent implements OnInit {
 
   //@ts-ignore
   hireDate: Date;
+
+  relations = relations.sort();
 
   constructor(
     private employeeService: EmployeeService,
@@ -48,19 +55,34 @@ export class EmployeeFormComponent implements OnInit {
     let birthDate;
     let lastInteraction;
     let employeeInterests = new FormArray([]);
+    let employeeRelations = new FormArray([]);
 
     if (this.editMode && Object.keys(this.employee)) {
       firstName = this.employee.firstName;
       lastName = this.employee.lastName;
       email = this.employee.email;
       hireDate = this.employee.hireDate ? new Date(this.employee.hireDate) : '';
-      birthDate = this.employee.birthDate ? new Date(this.employee.birthDate) : '';
-      lastInteraction = this.employee.lastInteraction ? new Date(this.employee.lastInteraction) : '';
+      birthDate = this.employee.birthDate
+        ? new Date(this.employee.birthDate)
+        : '';
+      lastInteraction = this.employee.lastInteraction
+        ? new Date(this.employee.lastInteraction)
+        : '';
       if (this.employee.interests) {
         for (let interest of this.employee.interests) {
           employeeInterests.push(
             new FormGroup({
               name: new FormControl(interest, Validators.required),
+            })
+          );
+        }
+      }
+      if (this.employee.relations) {
+        for (let relation of this.employee.relations) {
+          employeeRelations.push(
+            new FormGroup({
+              name: new FormControl(relation.name, Validators.required),
+              type: new FormControl(relation.type, Validators.required),
             })
           );
         }
@@ -75,6 +97,7 @@ export class EmployeeFormComponent implements OnInit {
       birthDate: new FormControl(birthDate),
       lastInteraction: new FormControl(lastInteraction),
       interests: employeeInterests,
+      relations: employeeRelations,
     });
   }
 
@@ -91,6 +114,11 @@ export class EmployeeFormComponent implements OnInit {
           return intObj.name;
         }
       ),
+      relations: this.employeeForm.value['relations'].map(
+        (relObj: EmployeeRelation) => {
+          return { name: relObj.name, type: relObj.type };
+        }
+      ),
     };
 
     console.log(newEmployee, 'new employee...');
@@ -101,7 +129,6 @@ export class EmployeeFormComponent implements OnInit {
     } else {
       //@ts-ignore
       this.employeeService.createNewEmployee(newEmployee);
-      console.log(newEmployee, "new employee...")
     }
     this.router.navigate(['/dashboard']);
   }
@@ -118,7 +145,24 @@ export class EmployeeFormComponent implements OnInit {
     (<FormArray>this.employeeForm.get('interests')).removeAt(index);
   }
 
-  get controls() {
+  get interestControls() {
     return (<FormArray>this.employeeForm.get('interests')).controls;
+  }
+
+  onAddRelation(): void {
+    (<FormArray>this.employeeForm.get('relations')).push(
+      new FormGroup({
+        name: new FormControl(null, Validators.required),
+        type: new FormControl(null, Validators.required),
+      })
+    );
+  }
+
+  onDeleteRelation(index: number): void {
+    (<FormArray>this.employeeForm.get('relations')).removeAt(index);
+  }
+
+  get relationControls() {
+    return (<FormArray>this.employeeForm.get('relations')).controls;
   }
 }

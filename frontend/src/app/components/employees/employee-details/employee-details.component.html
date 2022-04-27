@@ -38,15 +38,24 @@
         [style]="{ 'margin-right': '10px' }"
       ></p-chip>
     </div>
-    <button
-      type="button"
-      class="mt-4 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    >
-      Edit Details
-    </button>
+    <span *ngIf="employee.relations">
+      <strong> {{ employee.firstName + '\'s' }} important people</strong><br />
+        <li *ngFor="let relation of employee.relations">
+          {{ relation.type + ": " + relation.name | titlecase }} 
+        </li>
+    </span>
+    <a [routerLink]="['/employees', employee.employeeId, 'edit']">
+      <button
+        type="button"
+        class="mt-4 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Edit Details
+      </button>
+    </a>
   </p-fieldset>
   <span class="mb-4"> </span>
   <p-fieldset
+    *ngIf="employee.newsFeed"
     legend="Newsfeed"
     [toggleable]="true"
     [style]="{ 'margin-bottom': '30px' }"
