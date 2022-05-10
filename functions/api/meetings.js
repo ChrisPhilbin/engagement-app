@@ -50,6 +50,7 @@ exports.getAllMeetingsForEmployee = (request, response) => {
     });
 
   db.collection(`/employees/${request.params.employeeId}/meetings`)
+    .orderBy("createdAt", "asc")
     .get()
     .then((data) => {
       let meetings = [];

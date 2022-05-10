@@ -21,19 +21,8 @@ import { MeetingDetailsComponent } from './components/meetings/meeting-details/m
 import { EmployeeFormComponent } from './components/employees/employee-form/employee-form.component';
 import { MeetingFormComponent } from './components/meetings/meeting-form/meeting-form.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
-import { MenubarModule } from 'primeng/menubar';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { PanelModule } from 'primeng/panel';
-import { CalendarModule } from 'primeng/calendar';
-import { CardModule } from 'primeng/card';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { FieldsetModule } from 'primeng/fieldset';
-import { ChipModule } from 'primeng/chip';
-import { ToastModule } from 'primeng/toast';
-import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -59,18 +48,7 @@ import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glan
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MenubarModule,
-    InputTextModule,
-    ButtonModule,
-    PanelModule,
-    CalendarModule,
-    CardModule,
-    ToggleButtonModule,
-    OverlayPanelModule,
-    FieldsetModule,
-    ChipModule,
-    ToastModule,
-    AngularEditorModule,
+    SharedModule,
   ],
   providers: [
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
