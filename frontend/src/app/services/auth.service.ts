@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { User } from '../../models/user-model';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -20,14 +20,16 @@ export interface AuthResponseData {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new BehaviorSubject<User | null>(null);
-  errorMessage = new Subject();
+  public isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
     public jwtHelper: JwtHelperService,
     public router: Router
-  ) {}
+  ) {
+    this.isLoggedIn.next(this.isAuthenticated());
+  }
 
   signup(email: string, password: string) {
     return this.http
@@ -77,34 +79,27 @@ export class AuthService {
       );
   }
 
-  getTokenFromLocalStorage() {
-    return localStorage.getItem('AuthToken');
-  }
-
-  isLoggedIn() {
-    return localStorage.getItem('AuthToken') ? true : false;
-  }
-
   public logout() {
-    // this.cookieService.set('email', '');
-    // this.cookieService.set('userId', '');
-    // this.cookieService.set('token', '');
-    // this.cookieService.set('expirationDate', '');
-    // this.cookieService.set('refreshToken', '');
     this.cookieService.delete('email', '/');
     this.cookieService.delete('userId', '/');
     this.cookieService.delete('token', '/');
     this.cookieService.delete('expirationDate', '/');
     this.cookieService.delete('refreshToken', '/');
-    this.router.navigate(['login']);
     this.user.next(null);
+    this.isLoggedIn.next(false);
+    this.router.navigate(['login']);
   }
 
-  public isAuthenticated() {
+  public isAuthenticated(): boolean {
     //need to set cookie with user info upon initial auth
     //then get the token from the cookie and see if it is active
     //@ts-ignore
     const token: string = this.cookieService.get('token');
+
+    if (this.jwtHelper.isTokenExpired(token)) {
+      this.logout();
+      return false;
+    }
 
     let localUser;
 
@@ -123,7 +118,6 @@ export class AuthService {
         this.cookieService.get('expirationDate')
       );
       this.user.next(user);
-      localStorage.setItem('AuthToken', `Bearer ${token}`);
     }
 
     //in future, can setup an option in cookie indicating whether or not user should stay signed in
@@ -149,7 +143,7 @@ export class AuthService {
       'expirationDate',
       JSON.stringify(expirationDate.toString())
     );
-    localStorage.setItem('AuthToken', `Bearer ${token}`);
+    this.isLoggedIn.next(true);
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
