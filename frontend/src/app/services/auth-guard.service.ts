@@ -6,10 +6,15 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuardService {
-  constructor(public authService: AuthService, public router: Router) {}
+  isAuthenticated: boolean = false;
+  constructor(public authService: AuthService, public router: Router) {
+    this.authService.isLoggedIn.subscribe((isLoggedIn) => {
+      this.isAuthenticated = isLoggedIn;
+    });
+  }
 
   canActivate() {
-    if (!this.authService.isAuthenticated()) {
+    if (!this.isAuthenticated) {
       this.authService.logout();
       this.router.navigate(['login']);
       return false;
