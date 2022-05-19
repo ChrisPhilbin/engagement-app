@@ -7,15 +7,13 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'frontend';
   isAuthenticated = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.user.subscribe((user) => {
-      this.isAuthenticated = user ? true : false;
-      // user ? (this.isAuthenticated = true) : (this.isAuthenticated = false);
+    this.authService.isLoggedIn.subscribe((isLoggedIn) => {
+      this.isAuthenticated = isLoggedIn;
     });
   }
 }
