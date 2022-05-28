@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/models/employee-model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-employee-details',
   templateUrl: './employee-details.component.html',
   styleUrls: ['./employee-details.component.css'],
+  providers: [MessageService],
 })
 export class EmployeeDetailsComponent implements OnInit {
   //@ts-ignore
@@ -16,7 +18,8 @@ export class EmployeeDetailsComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -26,9 +29,18 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeService.getSingleEmployeeDetails(this.meetingId);
       this.employeeService.employee.subscribe((employee: Employee) => {
         this.employee = employee;
-        console.log(this.employee, 'current employee details');
         this.isLoading = false;
       });
+    });
+
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['edit'] === 'success') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Employee details have been successfully updated!',
+        });
+      }
     });
   }
 }

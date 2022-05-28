@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -121,16 +121,17 @@ export class EmployeeFormComponent implements OnInit {
       ),
     };
 
-    console.log(newEmployee, 'new employee...');
-
     if (this.editMode) {
       //@ts-ignore
       this.employeeService.updateExistingEmployee(newEmployee, this.employeeId);
+      this.router.navigate(['/employees', this.employeeId], {
+        queryParams: { edit: 'success' },
+      });
     } else {
       //@ts-ignore
       this.employeeService.createNewEmployee(newEmployee);
+      this.router.navigate(['/dashboard']);
     }
-    this.router.navigate(['/dashboard']);
   }
 
   onAddInterest(): void {
