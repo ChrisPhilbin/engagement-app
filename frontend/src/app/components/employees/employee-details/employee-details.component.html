@@ -1,4 +1,5 @@
 <div *ngIf="employee">
+  <p-toast position="top-right"></p-toast>
   <p class="font-bold text-2xl">
     {{ employee.firstName + " " + employee.lastName }}
     <a [routerLink]="['/employees', employee.employeeId, 'edit']"
@@ -39,10 +40,10 @@
       ></p-chip>
     </div>
     <span *ngIf="employee.relations">
-      <strong> {{ employee.firstName + '\'s' }} important people</strong><br />
-        <li *ngFor="let relation of employee.relations">
-          {{ relation.type + ": " + relation.name | titlecase }} 
-        </li>
+      <strong> {{ employee.firstName + "'s" }} important people</strong><br />
+      <li *ngFor="let relation of employee.relations">
+        {{ relation.type + ": " + relation.name | titlecase }}
+      </li>
     </span>
     <a [routerLink]="['/employees', employee.employeeId, 'edit']">
       <button
@@ -88,5 +89,3 @@
     <app-meetings [employeeId]="employee.employeeId"></app-meetings>
   </p-fieldset>
 </div>
-<p-toast position="top-right"></p-toast>
-

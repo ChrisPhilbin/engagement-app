@@ -1,9 +1,7 @@
 <div class="grid grid-cols-1 gap-4 w-full md:w-9/12">
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class="">
-        <label for="firstName">First name</label><br />
-      </div>
+      <div class=""><label for="firstName">First name</label><br /></div>
       <div class="">
         <input
           type="text"
@@ -15,9 +13,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class="">
-        <label for="lastName">Last name</label><br />
-      </div>
+      <div class=""><label for="lastName">Last name</label><br /></div>
       <div class="">
         <input
           type="text"
@@ -29,9 +25,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class="">
-        <label for="email">Email address</label><br />
-      </div>
+      <div class=""><label for="email">Email address</label><br /></div>
       <div class="">
         <input
           type="text"
@@ -43,20 +37,19 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2">
-      <div class="">
-        <label for="hireDate">Hire date</label><br />
-      </div>
+      <div class=""><label for="hireDate">Hire date</label><br /></div>
       <div class="">
         <p-calendar inputId="hireDate" formControlName="hireDate"></p-calendar>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2">
+      <div class=""><label for="birthDate">Birthdate</label><br /></div>
       <div class="">
-        <label for="birthDate">Birthdate</label><br />
-      </div>
-      <div class="">
-        <p-calendar inputId="birthDate" formControlName="birthDate"></p-calendar>
+        <p-calendar
+          inputId="birthDate"
+          formControlName="birthDate"
+        ></p-calendar>
       </div>
     </div>
 
@@ -65,7 +58,10 @@
         <label for="lastInteraction">Last Interaction</label><br />
       </div>
       <div class="">
-        <p-calendar inputId="lastInteraction" formControlName="lastInteraction"></p-calendar>
+        <p-calendar
+          inputId="lastInteraction"
+          formControlName="lastInteraction"
+        ></p-calendar>
       </div>
     </div>
 
@@ -76,50 +72,94 @@
 
       <div class="">
         <div formArrayName="interests">
-          <span *ngIf="interestControls.length === 0">No interests entered.</span>
-            <div class="flex flex-row align-middle" *ngFor="let interestCtrl of interestControls; let i = index" [formGroupName]="i">
-                <div>
-                    <input type="text" class="form-control" formControlName="name" class="border-2 m-2 p-3">        
-                </div>
-
-                <div class="align-middle">
-                    <p-button label="X" (click)="onDeleteInterest(i)"></p-button>
-                </div>
-            </div>
+          <span *ngIf="interestControls.length === 0"
+            >No interests entered.</span
+          >
+          <div
+            class="flex flex-row align-middle"
+            *ngFor="let interestCtrl of interestControls; let i = index"
+            [formGroupName]="i"
+          >
             <div>
-                <div>
-                    <p-button type="button" (click)="onAddInterest()" label="Add Interest"></p-button>
-                </div>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                class="border-2 m-2 p-3"
+              />
             </div>
+
+            <div class="align-middle">
+              <p-button label="X" (click)="onDeleteInterest(i)"></p-button>
+            </div>
+          </div>
+          <div>
+            <div>
+              <p-button
+                type="button"
+                (click)="onAddInterest()"
+                label="Add Interest"
+              ></p-button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="">
         <div formArrayName="relations">
-          <span *ngIf="relationControls.length === 0">No relationships defined yet.</span>
-            <div class="flex flex-row align-middle" *ngFor="let relationCtrl of relationControls; let i = index" [formGroupName]="i">
-                <div>
-                    <input type="text" formControlName="name" class="border-2 m-2 p-3">        
-                </div>
-
-                <div>
-                  <select formControlName="type" class="border-2 m-2 p-3">
-                    <option *ngFor="let rel of relations" [value]="rel">{{ rel | titlecase }}</option>
-                  </select>
-              </div>
-
-                <div class="align-middle">
-                    <p-button label="X" (click)="onDeleteRelation(i)"></p-button>
-                </div>
-            </div>
+          <span *ngIf="relationControls.length === 0"
+            >No relationships defined yet.</span
+          >
+          <div
+            class="flex flex-row align-middle"
+            *ngFor="let relationCtrl of relationControls; let i = index"
+            [formGroupName]="i"
+          >
             <div>
-                <div>
-                    <p-button type="button" (click)="onAddRelation()" label="Add Relationship"></p-button>
-                </div>
+              <input
+                type="text"
+                formControlName="name"
+                class="border-2 m-2 p-3"
+              />
             </div>
+
+            <div>
+              <select formControlName="type" class="border-2 m-2 p-3">
+                <option *ngFor="let rel of relations" [value]="rel">
+                  {{ rel | titlecase }}
+                </option>
+              </select>
+            </div>
+
+            <div class="align-middle">
+              <p-button label="X" (click)="onDeleteRelation(i)"></p-button>
+            </div>
+          </div>
+          <div>
+            <div>
+              <p-button
+                type="button"
+                (click)="onAddRelation()"
+                label="Add Relationship"
+              ></p-button>
+            </div>
+          </div>
         </div>
       </div>
-
-  </div>
-    <p-button type="submit" label="Save"></p-button>
+    </div>
+    <div class="my-4">
+      <button
+        type="submit"
+        class="p-4 mr-4 bg-blue-600 hover:bg-blue-400 rounded-lg font-bold text-white"
+      >
+        Save</button
+      ><a routerLink=".."
+        ><button
+          type="button"
+          class="p-4 mr-4 bg-red-600 hover:bg-red-400 rounded-lg font-bold text-white"
+        >
+          Cancel
+        </button></a
+      >
+    </div>
   </form>
 </div>

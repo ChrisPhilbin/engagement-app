@@ -11,6 +11,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ChipModule } from 'primeng/chip';
 import { ToastModule } from 'primeng/toast';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
@@ -28,6 +30,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     FieldsetModule,
     ChipModule,
     ToastModule,
+    MessageModule,
+    MessagesModule,
     AngularEditorModule,
   ],
 })
