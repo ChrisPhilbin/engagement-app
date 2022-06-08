@@ -38,12 +38,15 @@ export class EmployeeFormComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.employeeId = params['employeeId'];
       this.editMode = params['employeeId'] != null;
-      this.employeeService.getSingleEmployeeDetails(this.employeeId);
-      this.employeeService.employee.subscribe((employee: Employee): void => {
-        this.employee = employee;
-        this.initForm();
-        document.title = `Editing ${this.employee.firstName} ${this.employee.lastName}'s information`;
-      });
+      document.title = 'Engage - Create a new employee record';
+      if (this.editMode) {
+        this.employeeService.getSingleEmployeeDetails(this.employeeId);
+        this.employeeService.employee.subscribe((employee: Employee): void => {
+          this.employee = employee;
+          document.title = `Engage - Editing details for ${this.employee.firstName} + ' ' + ${this.employee.lastName}`;
+          this.initForm();
+        });
+      }
     });
   }
 

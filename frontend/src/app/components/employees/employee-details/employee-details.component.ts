@@ -30,6 +30,9 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeService.employee.subscribe((employee: Employee) => {
         this.employee = employee;
         this.isLoading = false;
+        document.title = `Engage - Viewing details for ${
+          this.employee.firstName + ' ' + this.employee.lastName
+        }`;
       });
     });
 
