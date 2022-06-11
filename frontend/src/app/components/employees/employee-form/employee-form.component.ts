@@ -26,6 +26,7 @@ export class EmployeeFormComponent implements OnInit {
   hireDate: Date;
 
   relations = relations.sort();
+  isLoading = false;
 
   constructor(
     private employeeService: EmployeeService,
@@ -40,11 +41,13 @@ export class EmployeeFormComponent implements OnInit {
       this.editMode = params['employeeId'] != null;
       document.title = 'Engage - Create a new employee record';
       if (this.editMode) {
+        this.isLoading = true;
         this.employeeService.getSingleEmployeeDetails(this.employeeId);
         this.employeeService.employee.subscribe((employee: Employee): void => {
           this.employee = employee;
           document.title = `Engage - Editing details for ${this.employee.firstName} + ' ' + ${this.employee.lastName}`;
           this.initForm();
+          this.isLoading = false;
         });
       }
     });

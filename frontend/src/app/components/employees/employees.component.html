@@ -1,138 +1,120 @@
-<app-loading *ngIf="isLoading"></app-loading>
-
-<a [routerLink]="['/employees/new']"
-  ><p-button label="New employee" [style]="{ 'margin-right': '8px' }"></p-button
-></a>
-<button
-  type="text"
-  pButton
-  label="Filter"
-  (click)="op.toggle($event)"
-  icon="pi pi-filter"
-></button>
-<p-overlayPanel #op [showCloseIcon]="true">
-  <ng-template pTemplate>
-    <input
-      placeholder="Filter by name..."
-      [disabled]="
-        filterByBirthday ||
-        filterByUpcomingAnniversaries ||
-        filterByOverdueInteractions
-      "
-      type="text"
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="onFilterChange($event)"
-      class="border-2 p-4 m-2 font-lg block inline"
-    />
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6 -ml-10 inline cursor-pointer text-gray-400"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      (click)="searchTerm = ''; onFilterChange('')"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-        clip-rule="evenodd"
+<div *ngIf="!isLoading; else loadingEmployees">
+  <a [routerLink]="['/employees/new']"
+    ><p-button
+      label="New employee"
+      [style]="{ 'margin-right': '8px' }"
+    ></p-button
+  ></a>
+  <button
+    type="text"
+    pButton
+    label="Filter"
+    (click)="op.toggle($event)"
+    icon="pi pi-filter"
+  ></button>
+  <p-overlayPanel #op [showCloseIcon]="true">
+    <ng-template pTemplate>
+      <input
+        placeholder="Filter by name..."
+        [disabled]="
+          filterByBirthday ||
+          filterByUpcomingAnniversaries ||
+          filterByOverdueInteractions
+        "
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onFilterChange($event)"
+        class="border-2 p-4 m-2 font-lg block inline"
       />
-    </svg>
-    <!-- <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6 -ml-10 inline cursor-pointer text-gray-300"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-      />
-    </svg> -->
-    <p-toggleButton
-      [disabled]="filterByOverdueInteractions || filterByUpcomingAnniversaries"
-      [(ngModel)]="filterByBirthday"
-      (click)="onFilterByBirthday()"
-      onLabel="Upcoming birthdays"
-      offLabel="Upcoming birthdays"
-      onIcon="pi pi-check"
-      offIcon="pi pi-times"
-      [style]="{ 'margin-bottom': '12px', display: 'block' }"
-    ></p-toggleButton>
-    <p-toggleButton
-      [disabled]="filterByBirthday || filterByUpcomingAnniversaries"
-      [(ngModel)]="filterByOverdueInteractions"
-      (click)="onFilterByOverdueInteractions()"
-      onLabel="Overdue Interactions"
-      offLabel="Overdue Interactions"
-      onIcon="pi pi-check"
-      offIcon="pi pi-times"
-      [style]="{ 'margin-bottom': '12px', display: 'block' }"
-    ></p-toggleButton>
-    <p-toggleButton
-      [disabled]="filterByBirthday || filterByOverdueInteractions"
-      [(ngModel)]="filterByUpcomingAnniversaries"
-      (click)="onFilterByUpcomingAnniversaries()"
-      onLabel="Upcoming Anniversaries"
-      offLabel="Upcoming Anniversaries"
-      onIcon="pi pi-check"
-      offIcon="pi pi-times"
-      [style]="{ 'margin-bottom': '12px', display: 'block' }"
-    ></p-toggleButton>
-  </ng-template>
-</p-overlayPanel>
-<p-toast position="top-right"></p-toast>
-
-<!-- <span class="text-center text-red-600">
-  <p *ngIf="searchTerm">Currently filtering by name</p>
-  <p *ngIf="filterByBirthday">Currently filtering by upcoming birthdays</p>
-  <p *ngIf="filterByOverdueInteractions">Currently filtering by overdue interactions</p>
-  <p *ngIf="filterByUpcomingAnniversaries">Currently filtering by upcoming anniversaries</p>
-</span> -->
-<!-- <div class="grid grid-cols-1 md:grid-cols-4 align-middle">
-    <input [disabled]="filterByBirthday || filterByUpcomingAnniversaries || filterByOverdueInteractions" type="text" [ngModel]="searchTerm" (ngModelChange)="onFilterChange($event)" class="border-2 p-4 m-2 font-lg inline">
-    <p-toggleButton [disabled]="filterByOverdueInteractions || filterByUpcomingAnniversaries" [(ngModel)]="filterByBirthday" (click)="onFilterByBirthday()" onLabel="Upcoming birthdays" offLabel="Upcoming birthdays" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px', 'display': 'inline'}"></p-toggleButton>
-    <p-toggleButton [disabled]="filterByBirthday || filterByUpcomingAnniversaries"  [(ngModel)]="filterByOverdueInteractions" (click)="onFilterByOverdueInteractions()" onLabel="Overdue Interactions" offLabel="Overdue Interactions" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px', 'display': 'inline'}"></p-toggleButton>
-    <p-toggleButton [disabled]="filterByBirthday || filterByOverdueInteractions"  [(ngModel)]="filterByUpcomingAnniversaries" (click)="onFilterByUpcomingAnniversaries()" onLabel="Upcoming Anniversaries" offLabel="Upcoming Anniversaries" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'margin-right': '12px', 'display': 'inline'}"></p-toggleButton>
-  </div> -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-  <p-card
-    *ngFor="let employee of employees"
-    [header]="employee.firstName + ' ' + employee.lastName"
-    [style]="{ 'margin-bottom': '2em' }"
-  >
-    <ng-template pTemplate="header"> </ng-template>
-    <strong>Birthday:</strong> {{ employee.birthDate | date: "MMMM d" }}<br />
-    <strong>Hire date:</strong> {{ employee.hireDate | date: "MMMM d" }}<br />
-    <strong>Last interaction:</strong>
-    {{ employee.lastInteraction | date: "fullDate" }}<br />
-    <strong>Interests: </strong
-    ><span *ngIf="!employee.interests.length">n/a</span><br />
-    <ul>
-      <span *ngIf="employee.interests.length">
-        <li
-          *ngFor="let interest of employee.interests; let isLast = last"
-          class="inline"
-        >
-          {{ interest }}{{ isLast ? "" : ", " }}
-        </li>
-      </span>
-    </ul>
-    <ng-template pTemplate="footer">
-      <a [routerLink]="['/employees', employee.employeeId]"
-        ><p-button label="Details" icon="pi pi-user-edit"></p-button
-      ></a>
-      <p-button
-        label="Remove"
-        icon="pi pi-trash"
-        styleClass="p-button-secondary"
-        [style]="{ 'margin-left': '.5em' }"
-      ></p-button>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 -ml-10 inline cursor-pointer text-gray-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        (click)="searchTerm = ''; onFilterChange('')"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <p-toggleButton
+        [disabled]="
+          filterByOverdueInteractions || filterByUpcomingAnniversaries
+        "
+        [(ngModel)]="filterByBirthday"
+        (click)="onFilterByBirthday()"
+        onLabel="Upcoming birthdays"
+        offLabel="Upcoming birthdays"
+        onIcon="pi pi-check"
+        offIcon="pi pi-times"
+        [style]="{ 'margin-bottom': '12px', display: 'block' }"
+      ></p-toggleButton>
+      <p-toggleButton
+        [disabled]="filterByBirthday || filterByUpcomingAnniversaries"
+        [(ngModel)]="filterByOverdueInteractions"
+        (click)="onFilterByOverdueInteractions()"
+        onLabel="Overdue Interactions"
+        offLabel="Overdue Interactions"
+        onIcon="pi pi-check"
+        offIcon="pi pi-times"
+        [style]="{ 'margin-bottom': '12px', display: 'block' }"
+      ></p-toggleButton>
+      <p-toggleButton
+        [disabled]="filterByBirthday || filterByOverdueInteractions"
+        [(ngModel)]="filterByUpcomingAnniversaries"
+        (click)="onFilterByUpcomingAnniversaries()"
+        onLabel="Upcoming Anniversaries"
+        offLabel="Upcoming Anniversaries"
+        onIcon="pi pi-check"
+        offIcon="pi pi-times"
+        [style]="{ 'margin-bottom': '12px', display: 'block' }"
+      ></p-toggleButton>
     </ng-template>
-  </p-card>
+  </p-overlayPanel>
+  <p-toast position="top-right"></p-toast>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+    <p-card
+      *ngFor="let employee of employees"
+      [header]="employee.firstName + ' ' + employee.lastName"
+      [style]="{ 'margin-bottom': '2em' }"
+    >
+      <ng-template pTemplate="header"> </ng-template>
+      <strong>Birthday:</strong> {{ employee.birthDate | date: "MMMM d" }}<br />
+      <strong>Hire date:</strong> {{ employee.hireDate | date: "MMMM d" }}<br />
+      <strong>Last interaction:</strong>
+      {{ employee.lastInteraction | date: "fullDate" }}<br />
+      <strong>Interests: </strong
+      ><span *ngIf="!employee.interests.length">n/a</span><br />
+      <ul>
+        <span *ngIf="employee.interests.length">
+          <li
+            *ngFor="let interest of employee.interests; let isLast = last"
+            class="inline"
+          >
+            {{ interest }}{{ isLast ? "" : ", " }}
+          </li>
+        </span>
+      </ul>
+      <ng-template pTemplate="footer">
+        <a [routerLink]="['/employees', employee.employeeId]"
+          ><p-button label="Details" icon="pi pi-user-edit"></p-button
+        ></a>
+        <p-button
+          label="Remove"
+          icon="pi pi-trash"
+          styleClass="p-button-secondary"
+          [style]="{ 'margin-left': '.5em' }"
+        ></p-button>
+      </ng-template>
+    </p-card>
+  </div>
 </div>
+<ng-template #loadingEmployees>
+  <app-loading></app-loading>
+</ng-template>
 
 <!-- <div class="container">
   <a [routerLink]="['/employees/new']"><p-button label="New employee"></p-button></a>

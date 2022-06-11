@@ -24,6 +24,9 @@ export class UpcomingBirthdaysComponent implements OnInit {
       (birthdays: EmployeeBirthday[]) => {
         this.birthdays = birthdays;
         this.isLoading = false;
+      },
+      (error) => {
+        console.log(error, 'Error');
       }
     );
   }

@@ -13,7 +13,6 @@ import { Employee } from 'src/models/employee-model';
 })
 export class EmployeesComponent implements OnInit {
   isLoading = false;
-  isAuthenticated = false;
   employees: Employee[] = [];
   searchTerm: string = '';
   filterByBirthday: boolean = false;

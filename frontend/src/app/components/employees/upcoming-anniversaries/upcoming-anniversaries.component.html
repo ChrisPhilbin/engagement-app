@@ -1,11 +1,16 @@
 <p-panel header="Upcoming Anniversaries" [toggleable]="true">
-  <ul>
-    <li *ngFor="let employee of anniversaries">
-      <a [routerLink]="['/employees', employee.employeeId]"
-        >{{ employee.firstName + " " + employee.lastName }} -
-        {{ employee.hiredate | date: "EEEE, MMMM d" }}</a
-      >
-    </li>
-  </ul>
-  <strong *ngIf="!anniversaries.length">No upcoming anniversaries</strong>
+  <div *ngIf="!isLoading; else loadingAnniversaries">
+    <ul>
+      <li *ngFor="let employee of anniversaries">
+        <a [routerLink]="['/employees', employee.employeeId]"
+          >{{ employee.firstName + " " + employee.lastName }} -
+          {{ employee.hiredate | date: "EEEE, MMMM d" }}</a
+        >
+      </li>
+    </ul>
+    <strong *ngIf="!anniversaries.length">No upcoming anniversaries</strong>
+  </div>
+  <ng-template #loadingAnniversaries>
+    <app-loading></app-loading>
+  </ng-template>
 </p-panel>

@@ -1,4 +1,4 @@
-<div *ngIf="employee">
+<div *ngIf="!isLoading; else loading">
   <p-toast position="top-right"></p-toast>
   <p class="font-bold text-2xl">
     {{ employee.firstName + " " + employee.lastName }}
@@ -89,3 +89,6 @@
     <app-meetings [employeeId]="employee.employeeId"></app-meetings>
   </p-fieldset>
 </div>
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

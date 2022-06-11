@@ -9,7 +9,7 @@
       <form
         #authForm="ngForm"
         (ngSubmit)="onSubmit(authForm)"
-        *ngIf="!isLoading"
+        *ngIf="!isLoading; else authLoading"
       >
         <input
           ngModel
@@ -55,6 +55,9 @@
           {{ isLoginMode ? "Log in" : "Create Account" }}
         </button>
       </form>
+      <ng-template #authLoading>
+        <app-loading></app-loading>
+      </ng-template>
 
       <div class="text-center text-sm text-red-600 mt-4" *ngIf="error">
         {{ error }}

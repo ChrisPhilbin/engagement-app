@@ -14,6 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [],
@@ -33,6 +34,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     MessageModule,
     MessagesModule,
     AngularEditorModule,
+    ProgressSpinnerModule,
   ],
 })
 export class SharedModule {}
