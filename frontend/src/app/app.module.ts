@@ -23,6 +23,7 @@ import { MeetingFormComponent } from './components/meetings/meeting-form/meeting
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 import { SharedModule } from './shared/shared.module';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { SharedModule } from './shared/shared.module';
     MeetingFormComponent,
     HeaderComponent,
     AtAGlanceComponent,
+    NavComponent,
   ],
   imports: [
     BrowserModule,
