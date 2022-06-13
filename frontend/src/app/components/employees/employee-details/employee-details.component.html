@@ -61,14 +61,6 @@
     [toggleable]="true"
     [style]="{ 'margin-bottom': '30px' }"
   >
-    <div class="mb-4">
-      <div class="mb-2"><strong>Curated based on:</strong></div>
-      <p-chip
-        *ngFor="let interest of employee.interests"
-        [label]="interest"
-        [style]="{ 'margin-right': '10px' }"
-      ></p-chip>
-    </div>
     <div *ngFor="let newsItem of employee.newsFeed" class="mb-4">
       <p class="text-xl">
         <strong>{{ newsItem.articles[0].title }}</strong>

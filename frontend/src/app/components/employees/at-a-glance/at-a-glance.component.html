@@ -10,19 +10,20 @@
       class="p-panel-header-icon p-link"
       icon="pi pi-info-circle"
       style="color: red"
+      pTooltip="You might have a few items that need attention."
     ></button>
   </ng-template>
   <ul>
     <li><strong>Total number of employees:</strong> {{ employees.length }}</li>
-    <li>
-      <strong># of overdue interactions:</strong>
+    <li [ngClass]="outstandingInteractions.length > 0 ? 'text-red-600' : ''">
+      <strong>Overdue interactions:</strong>
       {{ outstandingInteractions.length }}
     </li>
-    <li>
-      <strong># of upcoming birthdays:</strong> {{ upcomingBirthdays.length }}
+    <li [ngClass]="upcomingBirthdays.length > 0 ? 'text-red-600' : ''">
+      <strong>Upcoming birthdays:</strong> {{ upcomingBirthdays.length }}
     </li>
-    <li>
-      <strong># of upcoming anniversaries:</strong>
+    <li [ngClass]="upcomingAnniversaries.length > 0 ? 'text-red-600' : ''">
+      <strong>Upcoming anniversaries:</strong>
       {{ upcomingAnniversaries.length }}
     </li>
   </ul>

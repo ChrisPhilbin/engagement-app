@@ -94,4 +94,13 @@ export class MeetingFormComponent implements OnInit {
     }
     this.router.navigate(['/dashboard']);
   }
+
+  confirmCancel() {
+    if (
+      confirm('Are you sure you want to cancel? Changes will not be changed.')
+    ) {
+      this.router.navigate(['/employees', this.employeeId]);
+    }
+    return;
+  }
 }
