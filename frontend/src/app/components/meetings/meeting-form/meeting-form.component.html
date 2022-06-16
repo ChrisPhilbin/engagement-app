@@ -1,31 +1,36 @@
-<form [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
-  <strong>Meeting date</strong><br />
-  <p-calendar
-    inputId="meetingDate"
-    formControlName="meetingDate"
-    [style]="{ 'margin-bottom': '20px' }"
-  ></p-calendar
-  ><br />
-  <strong>Meeting notes</strong><br />
-  <angular-editor
-    [config]="config"
-    [placeholder]="'Enter meeting notes here...'"
-    formControlName="notes"
-  ></angular-editor>
-  <p-button
-    type="submit"
-    label="Save"
-    [style]="{ 'margin-top': '20px' }"
-  ></p-button>
-  <p-button
-    (click)="confirmCancel()"
-    type="button"
-    label="Cancel"
-    [style]="{
-      'margin-top': '20px',
-      'margin-left': '6px',
-      backgroundColor: '#FF6347',
-      'border-color': '#FF6347'
-    }"
-  ></p-button>
-</form>
+<div *ngIf="!isLoading">
+  <form [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
+    <strong>Meeting date</strong><br />
+    <p-calendar
+      inputId="meetingDate"
+      formControlName="meetingDate"
+      [style]="{ 'margin-bottom': '20px' }"
+    ></p-calendar
+    ><br />
+    <strong>Meeting notes</strong><br />
+    <angular-editor
+      [config]="config"
+      [placeholder]="'Enter meeting notes here...'"
+      formControlName="notes"
+    ></angular-editor>
+    <p-button
+      type="submit"
+      label="Save"
+      [style]="{ 'margin-top': '20px' }"
+    ></p-button>
+    <p-button
+      (click)="confirmCancel()"
+      type="button"
+      label="Cancel"
+      [style]="{
+        'margin-top': '20px',
+        'margin-left': '6px',
+        backgroundColor: '#FF6347',
+        'border-color': '#FF6347'
+      }"
+    ></p-button>
+  </form>
+</div>
+<div *ngIf="isLoading">
+  <app-loading></app-loading>
+</div>

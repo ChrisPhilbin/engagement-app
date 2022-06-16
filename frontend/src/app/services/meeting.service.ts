@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, filter, Subject } from 'rxjs';
 import { Meeting } from 'src/models/meeting-model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -40,6 +40,27 @@ export class MeetingService {
         newMeeting
       )
       .subscribe((meeting: Meeting) => {
+        this.meetings.next(this.meetings.getValue().concat(meeting));
+      });
+  }
+
+  updateExistingMeeting(
+    employeeId: string,
+    meetingId: string,
+    meeting: Meeting
+  ) {
+    this.http
+      .put<Meeting>(
+        `${environment.firebaseApiUrl}/employees/${employeeId}/meetings/${meetingId}`,
+        meeting
+      )
+      .subscribe((meeting: Meeting) => {
+        //find existing meeting that has the same ID as the meeting coming back from the API call and replace it.
+        this.meetings.next(
+          this.meetings
+            .getValue()
+            .filter((m) => m.meetingId !== meeting.meetingId)
+        );
         this.meetings.next(this.meetings.getValue().concat(meeting));
       });
   }
