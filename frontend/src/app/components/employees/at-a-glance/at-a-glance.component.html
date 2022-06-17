@@ -13,18 +13,25 @@
       pTooltip="You might have a few items that need attention."
     ></button>
   </ng-template>
-  <ul>
-    <li><strong>Total number of employees:</strong> {{ employees.length }}</li>
-    <li [ngClass]="outstandingInteractions.length > 0 ? 'text-red-600' : ''">
-      <strong>Overdue interactions:</strong>
-      {{ outstandingInteractions.length }}
-    </li>
-    <li [ngClass]="upcomingBirthdays.length > 0 ? 'text-red-600' : ''">
-      <strong>Upcoming birthdays:</strong> {{ upcomingBirthdays.length }}
-    </li>
-    <li [ngClass]="upcomingAnniversaries.length > 0 ? 'text-red-600' : ''">
-      <strong>Upcoming anniversaries:</strong>
-      {{ upcomingAnniversaries.length }}
-    </li>
-  </ul>
+  <div *ngIf="!isLoading; else loading">
+    <ul>
+      <li>
+        <strong>Total number of employees:</strong> {{ employees.length }}
+      </li>
+      <li [ngClass]="outstandingInteractions.length > 0 ? 'text-red-600' : ''">
+        <strong>Overdue interactions:</strong>
+        {{ outstandingInteractions.length }}
+      </li>
+      <li [ngClass]="upcomingBirthdays.length > 0 ? 'text-red-600' : ''">
+        <strong>Upcoming birthdays:</strong> {{ upcomingBirthdays.length }}
+      </li>
+      <li [ngClass]="upcomingAnniversaries.length > 0 ? 'text-red-600' : ''">
+        <strong>Upcoming anniversaries:</strong>
+        {{ upcomingAnniversaries.length }}
+      </li>
+    </ul>
+  </div>
+  <ng-template #loading>
+    <app-loading></app-loading>
+  </ng-template>
 </p-panel>

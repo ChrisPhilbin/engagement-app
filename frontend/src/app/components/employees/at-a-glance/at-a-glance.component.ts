@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { combineLatest } from 'rxjs';
 import { EmployeeService } from 'src/app/services/employee.service';
 import {
   EmployeeBirthday,
@@ -19,30 +20,45 @@ export class AtAGlanceComponent implements OnInit {
   upcomingAnniversaries: EmployeeAnniversary[] = [];
   employees: Employee[] = [];
   outstandingInteractions: EmployeeInteraction[] = [];
+  isLoading = false;
 
   ngOnInit(): void {
-    this.employeeService.employees.subscribe((employees: Employee[]) => {
-      this.employees = employees;
-    });
-
-    this.employeeService.employeeBirthdays.subscribe(
-      (birthdays: EmployeeBirthday[]) => {
-        this.upcomingBirthdays = birthdays;
-      }
-    );
-
-    this.employeeService.employeeAnniversaries.subscribe(
-      (anniversaries: EmployeeAnniversary[]) => {
-        this.upcomingAnniversaries = anniversaries;
-      }
-    );
-
+    this.isLoading = true;
     this.employeeService.getOutstandingInteractions();
 
-    this.employeeService.employeeInteractions.subscribe(
-      (interactions: EmployeeInteraction[]) => {
-        this.outstandingInteractions = interactions;
-      }
-    );
+    combineLatest(
+      this.employeeService.employees,
+      this.employeeService.employeeBirthdays,
+      this.employeeService.employeeAnniversaries,
+      this.employeeService.employeeInteractions
+    ).subscribe(([employees, birthdays, anniversaries, interactions]) => {
+      this.employees = employees;
+      this.upcomingBirthdays = birthdays;
+      this.upcomingAnniversaries = anniversaries;
+      this.outstandingInteractions = interactions;
+      this.isLoading = false;
+    });
+
+    // this.employeeService.employees.subscribe((employees: Employee[]) => {
+    //   this.employees = employees;
+    // });
+
+    // this.employeeService.employeeBirthdays.subscribe(
+    //   (birthdays: EmployeeBirthday[]) => {
+    //     this.upcomingBirthdays = birthdays;
+    //   }
+    // );
+
+    // this.employeeService.employeeAnniversaries.subscribe(
+    //   (anniversaries: EmployeeAnniversary[]) => {
+    //     this.upcomingAnniversaries = anniversaries;
+    //   }
+    // );
+
+    // this.employeeService.employeeInteractions.subscribe(
+    //   (interactions: EmployeeInteraction[]) => {
+    //     this.outstandingInteractions = interactions;
+    //   }
+    // );
   }
 }
