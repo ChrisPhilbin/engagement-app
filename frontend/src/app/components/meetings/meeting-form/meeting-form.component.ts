@@ -105,11 +105,9 @@ export class MeetingFormComponent implements OnInit {
       this.meetingService.updateExistingMeeting(
         this.employeeId,
         this.meetingId,
-        //@ts-ignore
         newMeeting
       );
     } else {
-      //@ts-ignore
       this.meetingService.createNewMeeting(this.employeeId, newMeeting);
     }
     this.router.navigate(['/employees', this.employeeId]);

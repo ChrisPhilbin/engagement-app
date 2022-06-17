@@ -1,7 +1,7 @@
 export interface Meeting {
-  createdAt: string;
+  createdAt?: string;
   meetingDate: string;
-  meetingId: string;
+  meetingId?: string;
   notes: string;
-  userId: string;
+  userId?: string;
 }
