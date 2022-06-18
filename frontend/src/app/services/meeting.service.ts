@@ -64,4 +64,16 @@ export class MeetingService {
         this.meetings.next(this.meetings.getValue().concat(meeting));
       });
   }
+
+  deleteMeeting(employeeId: string, meetingId: string) {
+    this.http
+      .delete(
+        `${environment.firebaseApiUrl}/employees/${employeeId}/meetings/${meetingId}`
+      )
+      .subscribe((meetingId) => {
+        this.meetings.next(
+          this.meetings.getValue().filter((m) => m.meetingId !== meetingId)
+        );
+      });
+  }
 }

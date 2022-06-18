@@ -27,6 +27,7 @@ const {
   getAllMeetingsForEmployee,
   getMeetingDetails,
   updatedMeetingDetails,
+  deleteMeeting,
 } = require("./api/meetings");
 
 app.post("/employees", auth, createEmployee);
@@ -38,6 +39,7 @@ app.post("/employees/:employeeId/meetings", auth, createMeeting);
 app.get("/employees/:employeeId/meetings", auth, getAllMeetingsForEmployee);
 app.get("/employees/:employeeId/meetings/:meetingId", auth, getMeetingDetails);
 app.put("/employees/:employeeId/meetings/:meetingId", auth, updatedMeetingDetails);
+app.delete("employees/:employeeId/meetings/:meetingId", auth, deleteMeeting);
 app.get("/employees/:employeeId", auth, getSingleEmployee);
 app.put("/employees/:employeeId", auth, updateEmployee);
 app.delete("/employees/:employeeId", auth, deleteEmployee);

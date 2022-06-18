@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MeetingService } from 'src/app/services/meeting.service';
 import { Meeting } from 'src/models/meeting-model';
 
@@ -16,6 +16,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private meetingService: MeetingService
   ) {}
 
@@ -32,5 +33,12 @@ export class MeetingDetailsComponent implements OnInit {
         console.log(this.meeting, 'meeting');
       });
     });
+  }
+
+  deleteMeeting(meetingId: string) {
+    if (confirm('Are you sure you want to delete this meeting?')) {
+      this.meetingService.deleteMeeting(this.employeeId, meetingId);
+      this.router.navigate(['/employees', this.employeeId]);
+    }
   }
 }
