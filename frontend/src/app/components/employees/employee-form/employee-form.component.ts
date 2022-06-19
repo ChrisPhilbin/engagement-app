@@ -25,7 +25,7 @@ export class EmployeeFormComponent implements OnInit {
   //@ts-ignore
   hireDate: Date;
 
-  relations = relations.sort();
+  relations = relations;
   isLoading = false;
 
   constructor(
@@ -36,6 +36,7 @@ export class EmployeeFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.relations = this.relations.sort();
     this.route.params.subscribe((params: Params) => {
       this.employeeId = params['employeeId'];
       this.editMode = params['employeeId'] != null;
