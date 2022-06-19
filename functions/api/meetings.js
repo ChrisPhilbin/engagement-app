@@ -80,9 +80,7 @@ exports.getMeetingDetails = (request, response) => {
       }
     });
 
-  db.doc(
-    `employees/${request.params.employeeId}/meetings/${request.params.meetingId}`
-  )
+  db.doc(`employees/${request.params.employeeId}/meetings/${request.params.meetingId}`)
     .get()
     .then((doc) => {
       if (doc.data().userId !== request.user.uid) {
@@ -126,6 +124,7 @@ exports.updatedMeetingDetails = (request, response) => {
 };
 
 exports.deleteMeeting = (request, response) => {
+  console.log("deleting meeting...");
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then((doc) => {
