@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/models/employee-model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { PageTitleService } from 'src/app/services/page-title.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -10,7 +11,7 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./employee-details.component.css'],
   providers: [MessageService],
 })
-export class EmployeeDetailsComponent implements OnInit {
+export class EmployeeDetailsComponent implements OnInit, OnChanges {
   //@ts-ignore
   employee: Employee;
   meetingId: string = '';
@@ -19,8 +20,15 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: PageTitleService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.titleService.setPageTitle(
+      `Viewing details for ${this.employee.firstName} ${this.employee.lastName}`
+    );
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
@@ -30,9 +38,9 @@ export class EmployeeDetailsComponent implements OnInit {
       this.employeeService.employee.subscribe((employee: Employee) => {
         this.employee = employee;
         this.isLoading = false;
-        document.title = `Engage - Viewing details for ${
-          this.employee.firstName + ' ' + this.employee.lastName
-        }`;
+        this.titleService.setPageTitle(
+          `Viewing details for ${this.employee.firstName} ${this.employee.lastName}`
+        );
       });
     });
 
