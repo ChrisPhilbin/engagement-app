@@ -173,4 +173,11 @@ export class EmployeeFormComponent implements OnInit {
   get relationControls() {
     return (<FormArray>this.employeeForm.get('relations')).controls;
   }
+
+  cancelEntry() {
+    if (confirm('Are you sure? All changes will be lost.')) {
+      this.employeeForm.reset();
+      this.router.navigate(['/dashboard']);
+    }
+  }
 }
