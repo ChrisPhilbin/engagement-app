@@ -1,18 +1,18 @@
 <nav
-  class="sticky top-0 opacity-95 z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 pt-4 pb-2.5 md:pb-5 rounded dark:bg-gray-800 mb-5 md:mb-10"
+  class="sticky top-0 opacity-95 z-50 bg-emerald-700 border-emerald-700 px-2 sm:px-4 pt-4 pb-2.5 md:pb-5 rounded dark:bg-gray-800"
 >
   <div class="container flex flex-wrap justify-between items-center mx-auto">
     <a href="/" class="flex items-center">
       <img src="#" class="mr-3 h-6 sm:h-9" alt="App Logo" />
       <span
-        class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+        class="self-center text-2xl font-semibold whitespace-nowrap text-white"
         >Engagement</span
       >
     </a>
     <button
       data-collapse-toggle="mobile-menu"
       type="button"
-      class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      class="inline-flex items-center p-2 ml-3 text-sm text-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       aria-controls="mobile-menu"
       aria-expanded="false"
     >
@@ -49,7 +49,7 @@
         <li>
           <a
             href="#"
-            class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             aria-current="page"
             >Home</a
           >
@@ -57,28 +57,28 @@
         <li *ngIf="isLoggedIn">
           <a
             [routerLink]="['/dashboard']"
-            class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >Dashboard</a
           >
         </li>
         <li *ngIf="isLoggedIn">
           <a
             href="#"
-            class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >Employees</a
           >
         </li>
         <li *ngIf="isLoggedIn">
           <a
             [routerLink]="['/employees', 'new']"
-            class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >New Employee</a
           >
         </li>
         <li *ngIf="isLoggedIn">
           <a
             href="#"
-            class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >Settings</a
           >
         </li>
@@ -86,14 +86,14 @@
           <a
             (click)="logout($event)"
             href="#"
-            class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >Logout</a
           >
         </li>
         <li *ngIf="!isLoggedIn">
           <a
             [routerLink]="['/login']"
-            class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+            class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >Login</a
           >
         </li>

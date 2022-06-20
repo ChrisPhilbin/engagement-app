@@ -1,17 +1,19 @@
 <div *ngIf="!isLoading; else loadingEmployees">
-  <a [routerLink]="['/employees/new']"
-    ><p-button
-      label="New employee"
-      [style]="{ 'margin-right': '8px' }"
-    ></p-button
-  ></a>
+  <a [routerLink]="['/employees/new']">
+    <button
+      type="button"
+      class="mt-4 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+    >
+      New Employee
+    </button>
+  </a>
   <button
-    type="text"
-    pButton
-    label="Filter"
+    type="button"
     (click)="op.toggle($event)"
-    icon="pi pi-filter"
-  ></button>
+    class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+  >
+    Filter
+  </button>
   <p-overlayPanel #op [showCloseIcon]="true">
     <ng-template pTemplate>
       <input
@@ -28,7 +30,7 @@
       />
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 -ml-10 inline cursor-pointer text-gray-400"
+        class="h-6 w-6 -ml-10 inline cursor-pointer text-emerald-700"
         viewBox="0 0 20 20"
         fill="currentColor"
         (click)="searchTerm = ''; onFilterChange('')"
@@ -99,15 +101,20 @@
         </span>
       </ul>
       <ng-template pTemplate="footer">
-        <a [routerLink]="['/employees', employee.employeeId]"
-          ><p-button label="Details" icon="pi pi-user-edit"></p-button
-        ></a>
-        <p-button
-          label="Remove"
-          icon="pi pi-trash"
-          styleClass="p-button-secondary"
-          [style]="{ 'margin-left': '.5em' }"
-        ></p-button>
+        <a [routerLink]="['/employees', employee.employeeId]">
+          <button
+            type="button"
+            class="mt-4 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+          >
+            Details
+          </button>
+        </a>
+        <button
+          type="button"
+          class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+        >
+          Remove
+        </button>
       </ng-template>
     </p-card>
   </div>
