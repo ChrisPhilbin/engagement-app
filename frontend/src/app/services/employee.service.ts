@@ -132,4 +132,16 @@ export class EmployeeService {
       )
     );
   }
+
+  deleteEmployeeById(employeeId: string) {
+    this.http
+      .delete(`${environment.firebaseApiUrl}/employees/${employeeId}`)
+      .subscribe((employeeId) => {
+        this.employees.next(
+          this.employees
+            .getValue()
+            .filter((employee) => employee.employeeId !== employeeId)
+        );
+      });
+  }
 }

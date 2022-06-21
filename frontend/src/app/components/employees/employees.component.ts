@@ -20,7 +20,7 @@ export class EmployeesComponent implements OnInit {
   filterByUpcomingAnniversaries: boolean = false;
 
   constructor(
-    private employeeService: EmployeeService,
+    public employeeService: EmployeeService,
     private messageService: MessageService,
     private router: Router
   ) {}
@@ -102,5 +102,11 @@ export class EmployeesComponent implements OnInit {
   clearFilterMessages() {
     this.messageService.clear();
     this.showFilterMessage('Displaying all employees without filters applied!');
+  }
+
+  removeEmployee(employeeId: string) {
+    if (confirm('Are you sure you want to remove this employee?')) {
+      this.employeeService.deleteEmployeeById(employeeId);
+    }
   }
 }
