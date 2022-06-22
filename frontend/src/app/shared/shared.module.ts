@@ -16,6 +16,7 @@ import { MessagesModule } from 'primeng/messages';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [],
@@ -37,6 +38,7 @@ import { TooltipModule } from 'primeng/tooltip';
     AngularEditorModule,
     ProgressSpinnerModule,
     TooltipModule,
+    MenuModule,
   ],
 })
 export class SharedModule {}
