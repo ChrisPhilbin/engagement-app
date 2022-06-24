@@ -56,18 +56,25 @@
   </p-fieldset>
   <span class="mb-4"> </span>
   <p-fieldset
-    *ngIf="employee.newsFeed"
     legend="Newsfeed"
     [toggleable]="true"
     [style]="{ 'margin-bottom': '30px' }"
   >
-    <div *ngFor="let newsItem of employee.newsFeed" class="mb-4">
-      <p class="text-xl">
-        <strong>{{ newsItem.articles[0].title }}</strong>
-      </p>
-      {{ newsItem.articles[0].description }}
-      <strong><a [href]="newsItem.articles[0].url">Read more</a></strong>
+    <div *ngIf="employee.newsFeed; else noNewsFeed">
+      <div *ngFor="let newsItem of employee.newsFeed" class="mb-4">
+        <p class="text-xl">
+          <strong>{{ newsItem.articles[0].title }}</strong>
+        </p>
+        {{ newsItem.articles[0].description }}
+        <strong><a [href]="newsItem.articles[0].url">Read more</a></strong>
+      </div>
     </div>
+    <ng-template #noNewsFeed>
+      <p class="text-xl font-bold">
+        It looks like you haven't assigned any interests yet for
+        {{ employee.firstName }}.
+      </p>
+    </ng-template>
   </p-fieldset>
 
   <p-fieldset

@@ -17,7 +17,9 @@ export class AuthGuardService {
     this.authService.isAuthenticated();
     if (!this.isAuthenticated) {
       this.authService.logout();
-      this.router.navigate(['login']);
+      this.router.navigate(['login'], {
+        queryParams: { sessionExpired: true },
+      });
       return false;
     }
     return true;

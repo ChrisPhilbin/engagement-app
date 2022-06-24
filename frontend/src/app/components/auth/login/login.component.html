@@ -6,6 +6,10 @@
       <h1 class="mb-8 text-3xl text-center">
         {{ isLoginMode ? "Log in" : "Sign up" }}
       </h1>
+      <p *ngIf="sessionExpired" class="text-center text-red-600 font-bold mb-2">
+        Your session has expired.<br />
+        Please login to continue.
+      </p>
       <form
         #authForm="ngForm"
         (ngSubmit)="onSubmit(authForm)"

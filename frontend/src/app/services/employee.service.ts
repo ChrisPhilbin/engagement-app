@@ -60,8 +60,10 @@ export class EmployeeService {
         employee
       )
       .subscribe((employee: Employee) => {
-        this.employee.next(employee);
-        this.employees.next(this.employees.getValue().concat(employee));
+        // this.employee.next(employee);
+        //response from PUT request to API isn't an employee object... backend needs to be updated/corrected.
+        //until then making another call to refresh the list of employee records is the work-around
+        this.getAllEmployees();
       });
   }
 

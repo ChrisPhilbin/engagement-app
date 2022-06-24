@@ -21,6 +21,7 @@ export class EmployeeFormComponent implements OnInit {
   //@ts-ignore
   employeeId: string;
   editMode: boolean = false;
+  initialValues = null;
 
   //@ts-ignore
   hireDate: Date;
@@ -48,6 +49,7 @@ export class EmployeeFormComponent implements OnInit {
           this.employee = employee;
           document.title = `Engage - Editing details for ${this.employee.firstName} + ' ' + ${this.employee.lastName}`;
           this.initForm();
+          this.initialValues = this.employeeForm.value;
           this.isLoading = false;
         });
       }
@@ -178,6 +180,12 @@ export class EmployeeFormComponent implements OnInit {
     if (confirm('Are you sure? All changes will be lost.')) {
       this.employeeForm.reset();
       this.router.navigate(['/dashboard']);
+    }
+  }
+
+  resetFormToInitialValues() {
+    if (confirm('Are you sure you want to revert all form fields?')) {
+      this.employeeForm.reset(this.initialValues);
     }
   }
 }

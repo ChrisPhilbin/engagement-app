@@ -126,6 +126,7 @@ exports.updateEmployee = (request, response) => {
   document
     .update(request.body)
     .then((updatedEmployee) => {
+      updatedEmployee.employeeId = request.params.employeeId;
       return response.status(200).json(updatedEmployee);
     })
     .catch((error) => {
