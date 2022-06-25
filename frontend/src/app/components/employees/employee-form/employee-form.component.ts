@@ -188,4 +188,8 @@ export class EmployeeFormComponent implements OnInit {
       this.employeeForm.reset(this.initialValues);
     }
   }
+
+  get f() {
+    return this.employeeForm.controls;
+  }
 }
