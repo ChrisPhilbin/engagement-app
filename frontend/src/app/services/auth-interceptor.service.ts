@@ -20,8 +20,6 @@ export class AuthInterceptorService implements HttpInterceptor {
       take(1),
       exhaustMap((user) => {
         if (!user) {
-          this.authService.logout();
-          this.router.navigate(['/login']);
           return next.handle(req);
         }
         const modifiedRequest = req.clone({

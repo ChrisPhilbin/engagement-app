@@ -179,7 +179,11 @@ export class EmployeeFormComponent implements OnInit {
   cancelEntry() {
     if (confirm('Are you sure? All changes will be lost.')) {
       this.employeeForm.reset();
-      this.router.navigate(['/dashboard']);
+      if (this.editMode) {
+        this.router.navigate(['/employees', this.employee.employeeId]);
+      } else {
+        this.router.navigate(['/dashboard']);
+      }
     }
   }
 

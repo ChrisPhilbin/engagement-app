@@ -1,11 +1,17 @@
 <div class="grid grid-cols-1 gap-4 w-full md:w-2/5">
+  <p *ngIf="!editMode" class="my-2 font-bold text-3xl">
+    Create a new employee record
+  </p>
+  <p *ngIf="editMode" class="my-2 font-bold text-3xl">
+    Editing details for {{ employee.firstName + " " + employee.lastName }}
+  </p>
   <form
     [formGroup]="employeeForm"
     (ngSubmit)="onSubmit()"
     *ngIf="!isLoading; else loading"
     class="w-full"
   >
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3 bg-amber-100">
       <div class="flex items-center">
         <label for="firstName">First name</label><br />
       </div>
@@ -15,7 +21,7 @@
           id="firstName"
           formControlName="firstName"
           placeholder="first name"
-          class="border-2 m-2 p-3"
+          class="border-2 m-2 p-3 rounded-lg"
           [ngClass]="
             f['firstName'].invalid && f['firstName'].touched
               ? 'border-red-600'
@@ -31,7 +37,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
       <div class="flex items-center">
         <label for="lastName">Last name</label><br />
       </div>
@@ -41,7 +47,7 @@
           id="lastName"
           formControlName="lastName"
           placeholder="last name"
-          class="border-2 m-2 p-3"
+          class="border-2 m-2 p-3 rounded-lg"
           [ngClass]="
             f['lastName'].invalid && f['lastName'].touched
               ? 'border-red-600'
@@ -57,7 +63,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3 bg-amber-100">
       <div class="flex items-center">
         <label for="email">Email address</label><br />
       </div>
@@ -67,7 +73,7 @@
           id="email"
           formControlName="email"
           placeholder="email address"
-          class="border-2 m-2 p-3"
+          class="border-2 m-2 p-3 rounded-lg"
           [ngClass]="
             f['email'].invalid && f['email'].touched ? 'border-red-600' : ''
           "
@@ -81,7 +87,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
       <div class="flex items-center">
         <label for="hireDate">Hire date</label><br />
       </div>
@@ -95,7 +101,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3 bg-amber-100">
       <div class="flex items-center">
         <label for="birthDate">Birthdate</label><br />
       </div>
@@ -109,7 +115,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
       <div class="flex items-center">
         <label for="lastInteraction">Last Interaction</label><br />
       </div>
@@ -123,7 +129,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3 bg-amber-100">
       <div class="flex items-center">
         <label for="interests">Interests</label>
       </div>
@@ -145,16 +151,19 @@
                 formControlName="name"
                 class="border-2 m-2 p-3"
               />
-            </div>
-
-            <div class="align-middle">
-              <button
-                type="button"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 -ml-10 inline cursor-pointer text-emerald-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
                 (click)="onDeleteInterest(i)"
-                class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
               >
-                X
-              </button>
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"
+                />
+              </svg>
             </div>
           </div>
           <div>
@@ -169,6 +178,11 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+      <div class="flex items-center">
+        <label for="relations">Relationships</label>
       </div>
       <div class="">
         <div formArrayName="relations">
@@ -186,6 +200,19 @@
                 formControlName="name"
                 class="border-2 m-2 p-3"
               />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 -ml-10 inline cursor-pointer text-emerald-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                (click)="onDeleteRelation(i)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"
+                />
+              </svg>
             </div>
 
             <div>
@@ -196,7 +223,7 @@
               </select>
             </div>
 
-            <div class="align-middle">
+            <!-- <div class="align-middle">
               <button
                 type="button"
                 (click)="onDeleteRelation(i)"
@@ -204,7 +231,7 @@
               >
                 X
               </button>
-            </div>
+            </div> -->
           </div>
           <div>
             <div>
