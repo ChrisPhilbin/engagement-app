@@ -7,6 +7,8 @@ export interface Employee {
   email: string;
   firstName: string;
   lastName: string;
+  linkedInUrl: string;
+  facebookUrl: string;
   interests: string[];
   lastInteraction: string;
   sportsTeams: string[];

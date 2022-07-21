@@ -28,6 +28,7 @@ export class EmployeeFormComponent implements OnInit {
 
   relations = relations;
   isLoading = false;
+  urlRegEx = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   constructor(
     private employeeService: EmployeeService,
@@ -60,6 +61,8 @@ export class EmployeeFormComponent implements OnInit {
     let firstName = '';
     let lastName = '';
     let email = '';
+    let linkedInUrl = '';
+    let facebookUrl = '';
     let hireDate;
     let birthDate;
     let lastInteraction;
@@ -70,6 +73,8 @@ export class EmployeeFormComponent implements OnInit {
       firstName = this.employee.firstName;
       lastName = this.employee.lastName;
       email = this.employee.email;
+      linkedInUrl = this.employee.linkedInUrl;
+      facebookUrl = this.employee.facebookUrl;
       hireDate = this.employee.hireDate ? new Date(this.employee.hireDate) : '';
       birthDate = this.employee.birthDate
         ? new Date(this.employee.birthDate)
@@ -102,6 +107,12 @@ export class EmployeeFormComponent implements OnInit {
       firstName: new FormControl(firstName, Validators.required),
       lastName: new FormControl(lastName, Validators.required),
       email: new FormControl(email, [Validators.required, Validators.email]),
+      linkedInUrl: new FormControl(linkedInUrl, [
+        Validators.pattern(this.urlRegEx),
+      ]),
+      facebookUrl: new FormControl(facebookUrl, [
+        Validators.pattern(this.urlRegEx),
+      ]),
       hireDate: new FormControl(hireDate),
       birthDate: new FormControl(birthDate),
       lastInteraction: new FormControl(lastInteraction),
@@ -115,6 +126,8 @@ export class EmployeeFormComponent implements OnInit {
       firstName: this.employeeForm.value['firstName'],
       lastName: this.employeeForm.value['lastName'],
       email: this.employeeForm.value['email'],
+      linkedInUrl: this.employeeForm.value['linkedInUrl'],
+      facebookUrl: this.employeeForm.value['facebookUrl'],
       hireDate: this.employeeForm.value['hireDate'],
       birthDate: this.employeeForm.value['birthDate'],
       lastInteraction: this.employeeForm.value['lastInteraction'],

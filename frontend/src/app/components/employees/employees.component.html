@@ -1,20 +1,31 @@
 <div>
   <div *ngIf="!isLoading; else loadingEmployees">
-    <a [routerLink]="['/employees/new']">
-      <button
-        type="button"
-        class="mt-4 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
-      >
-        New Employee
-      </button>
-    </a>
-    <button
-      type="button"
-      (click)="op.toggle($event)"
-      class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
-    >
-      Filter
-    </button>
+    <div class="w-full flex flex-row">
+      <div>
+        <a [routerLink]="['/employees/new']">
+          <button
+            type="button"
+            class="mt-4 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+          >
+            New Employee
+          </button>
+        </a>
+        <button
+          type="button"
+          (click)="op.toggle($event)"
+          class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+        >
+          Filter
+        </button>
+      </div>
+      <div class="text-right grow content-center items-center">
+        <i
+          class="pi pi-table hover:cursor-pointer"
+          [ngClass]="showGridLayout ? 'text-blue-600' : ''"
+          (click)="toggleGridLayout()"
+        ></i>
+      </div>
+    </div>
     <p-overlayPanel #op [showCloseIcon]="true">
       <ng-template pTemplate>
         <input
@@ -78,7 +89,10 @@
     </p-overlayPanel>
     <p-toast position="top-right"></p-toast>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8"
+      *ngIf="!showGridLayout; else showTableLayout"
+    >
       <p-card
         *ngFor="let employee of employees"
         [header]="employee.firstName + ' ' + employee.lastName"
@@ -122,86 +136,94 @@
         </ng-template>
       </p-card>
     </div>
+    <ng-template #showTableLayout>
+      <table
+        class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5"
+      >
+        <thead class="text-white">
+          <tr
+            class="bg-emerald-700 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-2"
+            *ngFor="let _ of employees"
+          >
+            <th class="p-3 text-left">Name</th>
+            <th class="p-3 text-left">Interests</th>
+            <th class="p-3 text-left">Birthday</th>
+            <th class="p-3 text-left">Hire Date</th>
+            <th class="p-3 text-left">Last Interaction</th>
+            <th class="p-3 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="flex-1 sm:flex-none">
+          <tr
+            class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-2 hover:cursor-pointer hover:bg-gray-100"
+            *ngFor="let employee of employees"
+            (click)="router.navigate(['employees/', employee.employeeId])"
+          >
+            <td class="border-grey-light border p-3">
+              {{ employee.firstName + " " + employee.lastName }}
+            </td>
+            <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
+              <ul>
+                <span *ngIf="employee.interests.length">
+                  <li
+                    *ngFor="
+                      let interest of employee.interests;
+                      let isLast = last
+                    "
+                    class="inline"
+                  >
+                    {{ interest }}{{ isLast ? "" : ", " }}
+                  </li>
+                </span>
+                <li *ngIf="!employee.interests.length" class="text-gray-300">
+                  n/a
+                </li>
+              </ul>
+            </td>
+            <td
+              class="border-grey-light border hover:bg-gray-100 p-3"
+              [ngClass]="employee.birthDate ? '' : 'text-gray-300'"
+            >
+              {{
+                employee.birthDate
+                  ? (employee.birthDate | date: "MMMM d")
+                  : "n/a"
+              }}
+            </td>
+            <td
+              class="border-grey-light border hover:bg-gray-100 p-3"
+              [ngClass]="employee.hireDate ? '' : 'text-gray-300'"
+            >
+              {{
+                employee.hireDate
+                  ? (employee.hireDate | date: "fullDate")
+                  : "n/a"
+              }}
+            </td>
+            <td
+              class="border-grey-light border hover:bg-gray-100 p-3"
+              [ngClass]="employee.lastInteraction ? '' : 'text-gray-300'"
+            >
+              {{
+                employee.lastInteraction
+                  ? (employee.lastInteraction | date: "fullDate")
+                  : "n/a"
+              }}
+            </td>
+            <td
+              class="border-grey-light border hover:bg-gray-100 p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer"
+              (click)="
+                router.navigate(['/employees', employee.employeeId, 'edit'])
+              "
+            >
+              Edit
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
   </div>
   <ng-template #loadingEmployees>
     <app-loading></app-loading>
   </ng-template>
 </div>
-
-<!-- <div class="container">
-  <a [routerLink]="['/employees/new']"><p-button label="New employee"></p-button></a>
-  <table
-    class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5"
-  >
-    <thead class="text-white">
-      <tr
-        class="bg-teal-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-2"
-        *ngFor="let _ of employees"
-      >
-        <th class="p-3 text-left">Name</th>
-        <th class="p-3 text-left">Interests</th>
-        <th class="p-3 text-left">Birthday</th>
-        <th class="p-3 text-left">Hire Date</th>
-        <th class="p-3 text-left">Last Interaction</th>
-        <th class="p-3 text-left">Actions</th>
-      </tr>
-    </thead>
-    <tbody class="flex-1 sm:flex-none">
-      <tr
-        class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-2 hover:cursor-pointer"
-        *ngFor="let employee of employees"
-        (click)="editEmployee(employee.employeeId)"
-      >
-        <td class="border-grey-light border hover:bg-gray-100 p-3">
-          {{ employee.firstName + " " + employee.lastName }}
-        </td>
-        <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
-          <ul>
-            <span *ngIf="employee.interests.length">
-              <li *ngFor="let interest of employee.interests; let isLast=last" class="inline">
-                {{ interest }}{{ isLast ? '' : ', ' }}
-              </li>
-            </span>
-            <li *ngIf="!employee.interests.length" class="text-gray-300">
-              n/a
-            </li>
-          </ul>
-        </td>
-        <td
-          class="border-grey-light border hover:bg-gray-100 p-3"
-          [ngClass]="employee.birthDate ? '' : 'text-gray-300'"
-        >
-          {{
-            employee.birthDate
-              ? (employee.birthDate | date: "MMMM d")
-              : "n/a"
-          }}
-        </td>
-        <td
-          class="border-grey-light border hover:bg-gray-100 p-3"
-          [ngClass]="employee.hireDate ? '' : 'text-gray-300'"
-        >
-          {{
-            employee.hireDate ? (employee.hireDate | date: "fullDate") : "n/a"
-          }}
-        </td>
-        <td
-          class="border-grey-light border hover:bg-gray-100 p-3"
-          [ngClass]="employee.lastInteraction ? '' : 'text-gray-300'"
-        >
-          {{
-            employee.lastInteraction
-              ? (employee.lastInteraction | date: "fullDate")
-              : "n/a"
-          }}
-        </td>
-        <td
-          class="border-grey-light border hover:bg-gray-100 p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer"
-          (click)="(null)"
-        >
-          Edit
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
