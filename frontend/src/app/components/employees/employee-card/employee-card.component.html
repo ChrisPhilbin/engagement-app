@@ -1,0 +1,53 @@
+<div
+  class="p-8 m-3 rounded-lg bg-white border-2 shadow-lg relative"
+  [ngClass]="
+    !employee.hasRecentInteraction ||
+    employee.hasUpcomingBirthday ||
+    employee.hasUpcomingWorkAnniversary
+      ? 'border-red-500'
+      : ''
+  "
+>
+  <p class="mb-3 text-2xl font-bold">
+    {{ employee.firstName + " " + employee.lastName }}
+  </p>
+  <br />
+  <p [ngClass]="employee.hasUpcomingBirthday ? 'text-red-600' : ''">
+    <strong>Birthday:</strong> {{ employee.birthDate | date: "MMMM d" }}
+  </p>
+  <p [ngClass]="employee.hasUpcomingWorkAnniversary ? 'text-red-600' : ''">
+    <strong>Hire date:</strong> {{ employee.hireDate | date: "MMMM d" }}
+  </p>
+  <p [ngClass]="!employee.hasRecentInteraction ? 'text-red-600' : ''">
+    <strong>Last interaction:</strong>
+    {{ employee.lastInteraction | date: "fullDate" }}
+  </p>
+  <strong>Interests: </strong><span *ngIf="!employee.interests.length">n/a</span
+  ><br />
+  <ul>
+    <span *ngIf="employee.interests.length">
+      <li
+        *ngFor="let interest of employee.interests; let isLast = last"
+        class="inline"
+      >
+        {{ interest }}{{ isLast ? "" : ", " }}
+      </li>
+    </span>
+  </ul>
+  <div class="h-10"></div>
+  <div class="absolute bottom-2">
+    <a [routerLink]="['/employees', employee.employeeId]"
+      ><button
+        class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold"
+      >
+        Details
+      </button></a
+    >
+    <button
+      class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold"
+      (click)="employeeService.deleteEmployeeById(employee.employeeId)"
+    >
+      Remove
+    </button>
+  </div>
+</div>

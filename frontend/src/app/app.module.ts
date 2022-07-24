@@ -24,6 +24,8 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { AtAGlanceComponent } from './components/employees/at-a-glance/at-a-glance.component';
 import { SharedModule } from './shared/shared.module';
 import { NavComponent } from './nav/nav.component';
+import { EmployeeCardComponent } from './components/employees/employee-card/employee-card.component';
+import { EmployeeTableComponent } from './components/employees/employee-table/employee-table.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { NavComponent } from './nav/nav.component';
     HeaderComponent,
     AtAGlanceComponent,
     NavComponent,
+    EmployeeCardComponent,
+    EmployeeTableComponent,
   ],
   imports: [
     BrowserModule,
