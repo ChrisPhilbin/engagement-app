@@ -10,6 +10,9 @@ import { AtAGlanceComponent } from './at-a-glance/at-a-glance.component';
 import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { EmployeeTableComponent } from './employee-table/employee-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MeetingsComponent } from '../meetings/meetings.component';
+import { MeetingDetailsComponent } from '../meetings/meeting-details/meeting-details.component';
+import { MeetingFormComponent } from '../meetings/meeting-form/meeting-form.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AtAGlanceComponent,
     EmployeeCardComponent,
     EmployeeTableComponent,
+    MeetingsComponent,
+    MeetingDetailsComponent,
+    MeetingFormComponent,
   ],
   exports: [
     EmployeeDetailsComponent,

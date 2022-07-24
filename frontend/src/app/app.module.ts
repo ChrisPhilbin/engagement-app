@@ -5,16 +5,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LoadingComponent } from './components/util/loading/loading.component';
-import { MeetingsComponent } from './components/meetings/meetings.component';
-import { MeetingDetailsComponent } from './components/meetings/meeting-details/meeting-details.component';
-import { MeetingFormComponent } from './components/meetings/meeting-form/meeting-form.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SharedModule } from './shared/shared.module';
 import { NavComponent } from './nav/nav.component';
@@ -25,10 +20,6 @@ import { EmployeesModule } from './components/employees/employees.module';
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    LoadingComponent,
-    MeetingsComponent,
-    MeetingDetailsComponent,
-    MeetingFormComponent,
     HeaderComponent,
     NavComponent,
   ],

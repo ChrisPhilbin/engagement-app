@@ -17,10 +17,11 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
+import { LoadingComponent } from '../components/util/loading/loading.component';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  declarations: [LoadingComponent],
+  imports: [CommonModule, ProgressSpinnerModule],
   exports: [
     MenubarModule,
     InputTextModule,
@@ -39,6 +40,7 @@ import { MenuModule } from 'primeng/menu';
     ProgressSpinnerModule,
     TooltipModule,
     MenuModule,
+    LoadingComponent,
   ],
 })
 export class SharedModule {}
