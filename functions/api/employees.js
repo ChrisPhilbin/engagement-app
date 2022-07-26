@@ -1,17 +1,25 @@
 const { db } = require("../util/admin");
-const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
+const {
+  hasUpcomingBirthday,
+  hasUpcomingWorkAnniversary,
+  hasRecentInteraction,
+} = require("../util/dateChecker");
 const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 const { validRelations } = require("../util/relations");
 
 exports.createEmployee = (request, response) => {
   if (request.body.firstName.trim() === "" || !request.user.uid) {
-    return response.status(400).json({ error: "Employee first name cannot be blank." });
+    return response
+      .status(400)
+      .json({ error: "Employee first name cannot be blank." });
   }
 
   if (request.body.relations) {
     request.body.relations.forEach((relationship) => {
       if (!validRelations.includes(relationship.type.toLowerCase())) {
-        return response.status(400).json({ error: "Unknown relationship type." });
+        return response
+          .status(400)
+          .json({ error: "Unknown relationship type." });
       }
     });
   }
@@ -21,6 +29,8 @@ exports.createEmployee = (request, response) => {
     firstName: request.body.firstName,
     lastName: request.body.lastName || "",
     email: request.body.email || "",
+    linkedInUrl: request.body.linkedInUrl || "",
+    facebookUrl: request.body.facebookUrl || "",
     createdAt: new Date().toISOString(),
     hireDate: new Date(request.body.hireDate) || null,
     birthDate: new Date(request.body.birthDate) || null,
@@ -54,13 +64,21 @@ exports.getAllEmployees = (request, response) => {
           firstName: doc.data().firstName,
           lastName: doc.data().lastName,
           email: doc.data().email,
+          linkedInUrl: doc.data().linkedInUrl,
+          facebookUrl: doc.data().facebookUrl,
           createdAt: doc.data().createdAt,
           hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
           birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
           hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
-          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
-          hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
-          lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
+          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(
+            doc.data().hireDate
+          ),
+          hasRecentInteraction: hasRecentInteraction(
+            doc.data().lastInteraction
+          ),
+          lastInteraction: doc.data().lastInteraction
+            ? doc.data().lastInteraction.toDate()
+            : "",
           interests: doc.data().interests,
           sportsTeams: doc.data().sportsTeams,
           relations: doc.data().relations,
@@ -84,16 +102,34 @@ exports.getSingleEmployee = (request, response) => {
         return response.status(401).json({ error: "You are not authorized." });
       }
       employeeData = doc.data();
-      employeeData.hireDate = doc.data().hireDate ? doc.data().hireDate.toDate() : null;
-      employeeData.birthDate = doc.data().birthDate ? doc.data().birthDate.toDate() : null;
-      employeeData.lastInteraction = doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : null;
+      employeeData.hireDate = doc.data().hireDate
+        ? doc.data().hireDate.toDate()
+        : null;
+      employeeData.birthDate = doc.data().birthDate
+        ? doc.data().birthDate.toDate()
+        : null;
+      employeeData.lastInteraction = doc.data().lastInteraction
+        ? doc.data().lastInteraction.toDate()
+        : null;
       employeeData.employeeId = doc.id;
-      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(doc.data().birthDate);
-      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(doc.data().hireDate);
-      employeeData.hasRecentInteraction = hasRecentInteraction(doc.data().lastInteraction);
-      (employeeData.interests = doc.data().interests ? doc.data().interests : null),
-        (employeeData.sportsTeams = doc.data().sportsTeams ? doc.data().sportsTeams : null),
-        (employeeData.relations = doc.data().relations ? doc.data().relations : null),
+      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(
+        doc.data().birthDate
+      );
+      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(
+        doc.data().hireDate
+      );
+      employeeData.hasRecentInteraction = hasRecentInteraction(
+        doc.data().lastInteraction
+      );
+      (employeeData.interests = doc.data().interests
+        ? doc.data().interests
+        : null),
+        (employeeData.sportsTeams = doc.data().sportsTeams
+          ? doc.data().sportsTeams
+          : null),
+        (employeeData.relations = doc.data().relations
+          ? doc.data().relations
+          : null),
         await getInterestUpdates(doc.data().interests).then((interests) => {
           employeeData.newsFeed = interests;
         });
@@ -116,11 +152,15 @@ exports.updateEmployee = (request, response) => {
   if (request.body.firstName.trim() === "") {
     return response.status(403).json({ error: "Field cannot be blank" });
   }
-  request.body.birthDate = request.body.birthDate ? new Date(request.body.birthDate) : "";
-  request.body.hireDate = request.body.hireDate ? new Date(request.body.hireDate) : "";
-  request.body.lastInteraction = request.body.lastInteraction ? new Date(request.body.lastInteraction) : "";
-
-  console.log(request.body, "req body");
+  request.body.birthDate = request.body.birthDate
+    ? new Date(request.body.birthDate)
+    : "";
+  request.body.hireDate = request.body.hireDate
+    ? new Date(request.body.hireDate)
+    : "";
+  request.body.lastInteraction = request.body.lastInteraction
+    ? new Date(request.body.lastInteraction)
+    : "";
 
   let document = db.collection("employees").doc(`${request.params.employeeId}`);
   document
@@ -204,7 +244,9 @@ exports.getAllOutstandingInteractions = (request, response) => {
             employeeId: doc.id,
             firstName: doc.data().firstName,
             lastName: doc.data().lastName,
-            lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
+            lastInteraction: doc.data().lastInteraction
+              ? doc.data().lastInteraction.toDate()
+              : "",
           });
         }
       });
