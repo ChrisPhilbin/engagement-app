@@ -1,17 +1,31 @@
 <p-panel header="Your team at a glance" [toggleable]="true">
-  <ng-template
-    pTemplate="icons"
-    *ngIf="
-      outstandingInteractions || upcomingBirthdays || upcomingAnniversaries
-    "
-  >
-    <button
-      pButton
-      class="p-panel-header-icon p-link"
-      icon="pi pi-info-circle"
-      style="color: red"
-      pTooltip="You might have a few items that need attention."
-    ></button>
+  <ng-template pTemplate="icons">
+    <div
+      class="inline"
+      *ngIf="
+        outstandingInteractions.length ||
+          upcomingBirthdays.length ||
+          upcomingAnniversaries.length;
+        else showCheckMarkButton
+      "
+    >
+      <button
+        pButton
+        class="p-panel-header-icon p-link"
+        icon="pi pi-info-circle"
+        style="color: red"
+        pTooltip="You might have a few items that need attention."
+      ></button>
+    </div>
+    <ng-template #showCheckMarkButton>
+      <button
+        pButton
+        class="p-panel-header-icon p-link"
+        icon="pi pi-check-circle"
+        style="color: green"
+        pTooltip="It looks like You're all caught up!"
+      ></button>
+    </ng-template>
   </ng-template>
   <div *ngIf="!isLoading; else loading">
     <ul>

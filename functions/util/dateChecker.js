@@ -8,7 +8,10 @@ exports.hasUpcomingBirthday = (employeeBirthdate) => {
   employeeBirthdate = new Date(employeeBirthdate._seconds * 1000).toUTCString();
   let birthday = moment(employeeBirthdate).year(now.year());
   let birthDayNextYear = moment(employeeBirthdate).year(now.year() + 1);
-  let daysRemaining = Math.min(Math.abs(birthday.diff(now, "days")), Math.abs(birthDayNextYear.diff(now, "days")));
+  let daysRemaining = Math.min(
+    birthday.diff(now, "days"),
+    birthDayNextYear.diff(now, "days")
+  );
 
   if (daysRemaining >= 0 && daysRemaining <= 7) {
     return true;
@@ -28,8 +31,8 @@ exports.hasUpcomingWorkAnniversary = (employeeHireDate) => {
   let anniversary = moment(employeeHireDate).year(now.year());
   let anniversaryNextYear = moment(employeeHireDate).year(now.year() + 1);
   let daysRemaining = Math.min(
-    Math.abs(anniversary.diff(now, "days")),
-    Math.abs(anniversaryNextYear.diff(now, "days"))
+    anniversary.diff(now, "days"),
+    anniversaryNextYear.diff(now, "days")
   );
 
   if (daysRemaining >= 0 && daysRemaining <= 7) {
