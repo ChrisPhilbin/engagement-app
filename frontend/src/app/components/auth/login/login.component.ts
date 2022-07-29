@@ -22,13 +22,7 @@ export class LoginComponent implements OnInit {
   sessionExpired = false;
 
   ngOnInit(): void {
-    // console.log(this.authError)
-    // this.authService.errorMessage.subscribe((error) => {
-    //   this.authError = error
-    //   console.log(this.authError, "auth error")
-    // })
     this.route.queryParams.subscribe((params: Params) => {
-      console.log(params, 'params passed in to login component');
       if (params['sessionExpired']) {
         this.sessionExpired = true;
       }
