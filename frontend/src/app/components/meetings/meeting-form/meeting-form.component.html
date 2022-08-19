@@ -13,6 +13,54 @@
       [placeholder]="'Enter meeting notes here...'"
       formControlName="notes"
     ></angular-editor>
+    <div class="mt-5" formArrayName="agreedUponActions">
+      <strong>Agreed upon actions</strong><br />
+      <span *ngIf="agreedUponActionControls.length === 0"
+        >None entered yet.</span
+      ><br />
+      <div
+        class="flex flex-row align-middle"
+        *ngFor="let actionCtrl of agreedUponActionControls; let i = index"
+        [formGroupName]="i"
+      >
+        <div class="inline">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 inline cursor-pointer text-emerald-700"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            (click)="deleteAgreedUponAction(i)"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <input
+            type="text"
+            size="30"
+            class="form-control"
+            formControlName="notes"
+            class="border-2 m-2 p-3 inline"
+          />
+          <input
+            type="checkbox"
+            formControlName="isComplete"
+            id="isComplete"
+            value="isComplete"
+            class="form-control ml-2 inline"
+          />
+        </div>
+      </div>
+      <button
+        type="button"
+        class="my-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+        (click)="addAgreedUponAction()"
+      >
+        Add action
+      </button>
+    </div>
     <p-button
       type="submit"
       label="Save"
