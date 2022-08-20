@@ -153,6 +153,10 @@ export class MeetingFormComponent implements OnInit {
     return (<FormArray>this.meetingForm.get('agreedUponActions')).controls;
   }
 
+  get agreedUponActionValues() {
+    return this.meetingForm.get('agreedUponActions')!.value;
+  }
+
   confirmCancel() {
     if (
       confirm('Are you sure you want to cancel? Changes will not be saved.')

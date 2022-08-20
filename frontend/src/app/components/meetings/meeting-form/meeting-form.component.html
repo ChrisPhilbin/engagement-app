@@ -40,9 +40,13 @@
           <input
             type="text"
             size="30"
-            class="form-control"
             formControlName="notes"
-            class="border-2 m-2 p-3 inline"
+            class="form-control border-2 m-2 p-3 inline"
+            [ngClass]="
+              agreedUponActionValues.at(i).isComplete
+                ? 'bg-slate-200 line-through'
+                : ''
+            "
           />
           <input
             type="checkbox"
