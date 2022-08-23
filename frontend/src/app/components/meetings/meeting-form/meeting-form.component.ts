@@ -119,7 +119,11 @@ export class MeetingFormComponent implements OnInit {
           return actionObj;
         }
       ),
+      hasOutstandingActionItems: false,
     };
+
+    newMeeting.hasOutstandingActionItems =
+      this.checkMeetingForOutstandingActions(newMeeting.agreedUponActions);
 
     if (this.editMode) {
       this.meetingService.updateExistingMeeting(
@@ -164,5 +168,18 @@ export class MeetingFormComponent implements OnInit {
       this.router.navigate(['/employees', this.employeeId]);
     }
     return;
+  }
+
+  checkMeetingForOutstandingActions(
+    agreedUponActions: AgreedUponAction[]
+  ): boolean {
+    let hasOutstanding = false;
+    agreedUponActions.forEach((actionObj) => {
+      if (!actionObj.isComplete) {
+        hasOutstanding = true;
+      }
+    });
+
+    return hasOutstanding;
   }
 }

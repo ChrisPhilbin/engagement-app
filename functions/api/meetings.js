@@ -23,6 +23,7 @@ exports.createMeeting = (request, response) => {
     meetingDate: request.body.meetingDate,
     createdAt: new Date().toISOString(),
     agreedUponActions: request.body.agreedUponActions,
+    hasOutstandingActionItems: request.body.hasOutstandingActionItems,
   };
 
   db.collection(`employees/${request.params.employeeId}/meetings`)

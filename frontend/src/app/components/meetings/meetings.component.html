@@ -1,9 +1,20 @@
 <div *ngIf="meetings.length" class="mt-4">
-    <ul>
-        <li *ngFor="let meeting of meetings"><a [routerLink]="['/employees', employeeId, 'meetings', meeting.meetingId]">{{ meeting.meetingDate | date:'fullDate' }}</a></li>
-    </ul>
+  <ul>
+    <li *ngFor="let meeting of meetings">
+      <a
+        [routerLink]="['/employees', employeeId, 'meetings', meeting.meetingId]"
+        class="font-bold"
+        >{{ meeting.meetingDate | date: "fullDate" }}</a
+      >
+      <span
+        class="italic ml-2 text-red-400"
+        *ngIf="meeting.hasOutstandingActionItems"
+        >has outstanding action items</span
+      >
+    </li>
+  </ul>
 </div>
 
 <div *ngIf="!meetings.length" class="mt-4">
-    <strong>No meetings have taken place yet!</strong>
+  <strong>No meetings have taken place yet!</strong>
 </div>

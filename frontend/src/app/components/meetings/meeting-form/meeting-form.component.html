@@ -41,6 +41,7 @@
             type="text"
             size="30"
             formControlName="notes"
+            [readonly]="agreedUponActionValues.at(i).isComplete"
             class="form-control border-2 m-2 p-3 inline"
             [ngClass]="
               agreedUponActionValues.at(i).isComplete

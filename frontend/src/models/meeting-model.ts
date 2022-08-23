@@ -5,6 +5,7 @@ export interface Meeting {
   notes: string;
   userId?: string;
   agreedUponActions?: AgreedUponAction[];
+  hasOutstandingActionItems?: boolean;
 }
 
 export interface AgreedUponAction {
