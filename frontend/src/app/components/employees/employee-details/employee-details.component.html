@@ -60,6 +60,10 @@
     ><span *ngIf="!employee.birthDate">----</span><br />
     <strong>Email:</strong>
     {{ this.employee.email ? this.employee.email : "----" }}<br />
+    <strong>Interests:</strong><br />
+    <li *ngFor="let interest of employee.interests">
+      {{ interest | titlecase }}
+    </li>
     <strong>Favorite sports teams:</strong><br />
     <li *ngFor="let team of employee.sportsTeams">
       {{ team }}
