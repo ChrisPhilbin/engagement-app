@@ -139,6 +139,26 @@
       </div>
     </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3 bg-amber-100">
+      <div class="flex items-center">
+        <label for="email">Profile Picture</label><br />
+      </div>
+      <div class="">
+        <input
+          type="file"
+          id="profilePicture"
+          class="border-2 m-2 p-3 rounded-lg"
+          (change)="handleImageUpload($event)"
+        />
+        <p
+          *ngIf="f['linkedInUrl'].invalid && f['linkedInUrl'].touched"
+          class="text-red-600 pl-3"
+        >
+          Valid URL is required.
+        </p>
+      </div>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 p-3">
       <div class="flex items-center">
         <label for="hireDate">Hire date</label><br />

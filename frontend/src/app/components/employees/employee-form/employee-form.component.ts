@@ -2,6 +2,7 @@ import { Component, OnInit, QueryList } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { UploadService } from 'src/app/services/upload.service';
 import {
   Employee,
   EmployeeInterest,
@@ -33,7 +34,8 @@ export class EmployeeFormComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private uploader: UploadService
   ) {}
 
   ngOnInit(): void {
@@ -208,5 +210,12 @@ export class EmployeeFormComponent implements OnInit {
 
   get f() {
     return this.employeeForm.controls;
+  }
+
+  handleImageUpload(event: Event) {
+    // console.log((event.target as HTMLFormElement)['value'], 'event');
+    this.uploader.uploadProfilePicture(
+      (event.target as HTMLFormElement)['value']
+    );
   }
 }
