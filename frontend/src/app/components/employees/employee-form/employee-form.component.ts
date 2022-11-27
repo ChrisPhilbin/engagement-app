@@ -28,8 +28,8 @@ export class EmployeeFormComponent implements OnInit {
 
   relations = relations;
   isLoading = false;
-  urlRegEx = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
+  urlRegEx =
+    /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
@@ -61,6 +61,7 @@ export class EmployeeFormComponent implements OnInit {
     let firstName = '';
     let lastName = '';
     let email = '';
+    let profilePictureUrl = '';
     let linkedInUrl = '';
     let facebookUrl = '';
     let hireDate;
@@ -73,6 +74,7 @@ export class EmployeeFormComponent implements OnInit {
       firstName = this.employee.firstName;
       lastName = this.employee.lastName;
       email = this.employee.email;
+      profilePictureUrl = this.employee.profilePictureUrl;
       linkedInUrl = this.employee.linkedInUrl;
       facebookUrl = this.employee.facebookUrl;
       hireDate = this.employee.hireDate ? new Date(this.employee.hireDate) : '';
@@ -107,6 +109,9 @@ export class EmployeeFormComponent implements OnInit {
       firstName: new FormControl(firstName, Validators.required),
       lastName: new FormControl(lastName, Validators.required),
       email: new FormControl(email, [Validators.required, Validators.email]),
+      profilePictureUrl: new FormControl(profilePictureUrl, [
+        Validators.pattern(this.urlRegEx),
+      ]),
       linkedInUrl: new FormControl(linkedInUrl, [
         Validators.pattern(this.urlRegEx),
       ]),
@@ -126,6 +131,7 @@ export class EmployeeFormComponent implements OnInit {
       firstName: this.employeeForm.value['firstName'],
       lastName: this.employeeForm.value['lastName'],
       email: this.employeeForm.value['email'],
+      profilePictureUrl: this.employeeForm.value['profilePictureUrl'],
       linkedInUrl: this.employeeForm.value['linkedInUrl'],
       facebookUrl: this.employeeForm.value['facebookUrl'],
       hireDate: this.employeeForm.value['hireDate'],

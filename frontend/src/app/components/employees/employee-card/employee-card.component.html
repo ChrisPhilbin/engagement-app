@@ -8,10 +8,30 @@
       : ''
   "
 >
-  <p class="mb-1 text-2xl font-bold">
-    {{ employee.firstName + " " + employee.lastName }}
-  </p>
-  <div *ngIf="employee.linkedInUrl || employee.facebookUrl" class="pt-1">
+  <div class="grid grid-cols-2 gap-2">
+    <div>
+      <p class="text-3xl font-bold font-nunito">
+        {{ employee.firstName }} <br />
+        {{ employee.lastName }}
+      </p>
+    </div>
+
+    <div class="flex justify-end">
+      <div
+        class="h-24 w-24 rounded-full bg-emerald-700 flex items-center justify-center text-2xl font-bold text-white"
+      >
+        <span *ngIf="!employee.profilePictureUrl">
+          {{ employee.firstName[0] + " " + employee.lastName[0] }}
+        </span>
+        <span *ngIf="employee.profilePictureUrl">
+          <a [routerLink]="['/employees', employee.employeeId]">
+            <img [src]="employee.profilePictureUrl" class="rounded-full" />
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="employee.linkedInUrl || employee.facebookUrl" class="my-4">
     <a
       [href]="employee.linkedInUrl"
       target="_blank"
@@ -43,24 +63,38 @@
       </svg>
     </a>
   </div>
-  <br />
-  <p [ngClass]="employee.hasUpcomingBirthday ? 'text-red-600' : ''">
+  <p class="font-nunito">
+    <strong>Full name:</strong> {{ employee.firstName + " " + employee.lastName
+    }}<br />
+  </p>
+  <p
+    class="font-nunito"
+    [ngClass]="employee.hasUpcomingBirthday ? 'text-red-600' : ''"
+  >
     <strong>Birthday:</strong> {{ employee.birthDate | date: "MMMM d" }}
   </p>
-  <p [ngClass]="employee.hasUpcomingWorkAnniversary ? 'text-red-600' : ''">
-    <strong>Hire date:</strong> {{ employee.hireDate | date: "MMMM d" }}
+  <p
+    class="font-nunito"
+    [ngClass]="employee.hasUpcomingWorkAnniversary ? 'text-red-600' : ''"
+  >
+    <strong>Hire date:</strong> {{ employee.hireDate | date: "longDate" }}
   </p>
-  <p [ngClass]="!employee.hasRecentInteraction ? 'text-red-600' : ''">
+  <p
+    class="font-nunito"
+    [ngClass]="!employee.hasRecentInteraction ? 'text-red-600' : ''"
+  >
     <strong>Last interaction:</strong>
-    {{ employee.lastInteraction | date: "fullDate" }}
+    {{ employee.lastInteraction | date: "longDate" }}
   </p>
-  <strong>Interests: </strong><span *ngIf="!employee.interests.length">n/a</span
-  ><br />
+  <p class="font-nunito inline">
+    <strong>Interests: </strong
+    ><span *ngIf="!employee.interests.length">n/a</span><br />
+  </p>
   <ul>
     <span *ngIf="employee.interests.length">
       <li
         *ngFor="let interest of employee.interests; let isLast = last"
-        class="inline"
+        class="inline font-nunito"
       >
         {{ interest }}{{ isLast ? "" : ", " }}
       </li>
@@ -70,13 +104,13 @@
   <div class="absolute bottom-2">
     <a [routerLink]="['/employees', employee.employeeId]"
       ><button
-        class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold"
+        class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
       >
         Details
       </button></a
     >
     <button
-      class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold"
+      class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
       (click)="employeeService.deleteEmployeeById(employee.employeeId)"
     >
       Remove

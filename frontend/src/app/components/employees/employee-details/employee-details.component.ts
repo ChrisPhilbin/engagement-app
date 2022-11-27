@@ -18,7 +18,7 @@ export class EmployeeDetailsComponent implements OnInit, OnChanges {
   isLoading = false;
 
   constructor(
-    private employeeService: EmployeeService,
+    public employeeService: EmployeeService,
     private route: ActivatedRoute,
     private messageService: MessageService,
     private titleService: PageTitleService

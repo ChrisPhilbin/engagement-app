@@ -1,108 +1,106 @@
-<div>
-  <div *ngIf="!isLoading; else loadingEmployees">
-    <div class="w-full flex flex-row">
-      <div>
-        <a [routerLink]="['/employees/new']">
-          <button
-            type="button"
-            class="mt-4 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
-          >
-            New Employee
-          </button>
-        </a>
+<div *ngIf="!isLoading">
+  <div class="w-full flex flex-row">
+    <div>
+      <a [routerLink]="['/employees/new']">
         <button
           type="button"
-          (click)="op.toggle($event)"
-          class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+          class="mt-4 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
         >
-          Filter
+          New Employee
         </button>
-      </div>
-      <!-- <div class="text-right grow content-center items-center">
+      </a>
+      <button
+        type="button"
+        (click)="op.toggle($event)"
+        class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+      >
+        Filter
+      </button>
+    </div>
+    <!-- <div class="text-right grow content-center items-center">
         <i
           class="pi pi-table hover:cursor-pointer"
           [ngClass]="showGridLayout ? 'text-blue-600' : ''"
           (click)="toggleGridLayout()"
         ></i>
       </div> -->
-    </div>
-    <p-overlayPanel #op [showCloseIcon]="true">
-      <ng-template pTemplate>
-        <input
-          placeholder="Filter by name..."
-          [disabled]="
-            filterByBirthday ||
-            filterByUpcomingAnniversaries ||
-            filterByOverdueInteractions
-          "
-          type="text"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="onFilterChange($event)"
-          class="border-2 p-4 m-2 font-lg block inline"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 -ml-10 inline cursor-pointer text-emerald-700"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          (click)="searchTerm = ''; onFilterChange('')"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-            clip-rule="evenodd"
-          />
-        </svg>
-        <p-toggleButton
-          [disabled]="
-            filterByOverdueInteractions || filterByUpcomingAnniversaries
-          "
-          [(ngModel)]="filterByBirthday"
-          (click)="onFilterByBirthday()"
-          onLabel="Upcoming birthdays"
-          offLabel="Upcoming birthdays"
-          onIcon="pi pi-check"
-          offIcon="pi pi-times"
-          [style]="{ 'margin-bottom': '12px', display: 'block' }"
-        ></p-toggleButton>
-        <p-toggleButton
-          [disabled]="filterByBirthday || filterByUpcomingAnniversaries"
-          [(ngModel)]="filterByOverdueInteractions"
-          (click)="onFilterByOverdueInteractions()"
-          onLabel="Overdue Interactions"
-          offLabel="Overdue Interactions"
-          onIcon="pi pi-check"
-          offIcon="pi pi-times"
-          [style]="{ 'margin-bottom': '12px', display: 'block' }"
-        ></p-toggleButton>
-        <p-toggleButton
-          [disabled]="filterByBirthday || filterByOverdueInteractions"
-          [(ngModel)]="filterByUpcomingAnniversaries"
-          (click)="onFilterByUpcomingAnniversaries()"
-          onLabel="Upcoming Anniversaries"
-          offLabel="Upcoming Anniversaries"
-          onIcon="pi pi-check"
-          offIcon="pi pi-times"
-          [style]="{ 'margin-bottom': '12px', display: 'block' }"
-        ></p-toggleButton>
-      </ng-template>
-    </p-overlayPanel>
-    <p-toast position="top-right"></p-toast>
-
-    <div
-      class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8"
-      *ngIf="!showGridLayout; else showTableLayout"
-    >
-      <app-employee-card
-        *ngFor="let employee of employees"
-        [employee]="employee"
-      ></app-employee-card>
-    </div>
-    <ng-template #showTableLayout>
-      <app-employee-table [employees]="employees"></app-employee-table>
-    </ng-template>
   </div>
-  <ng-template #loadingEmployees>
-    <app-loading></app-loading>
+  <p-overlayPanel #op [showCloseIcon]="true">
+    <ng-template pTemplate>
+      <input
+        placeholder="Filter by name..."
+        [disabled]="
+          filterByBirthday ||
+          filterByUpcomingAnniversaries ||
+          filterByOverdueInteractions
+        "
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onFilterChange($event)"
+        class="border-2 p-4 m-2 font-lg block inline"
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 -ml-10 inline cursor-pointer text-emerald-700"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        (click)="searchTerm = ''; onFilterChange('')"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <p-toggleButton
+        [disabled]="
+          filterByOverdueInteractions || filterByUpcomingAnniversaries
+        "
+        [(ngModel)]="filterByBirthday"
+        (click)="onFilterByBirthday()"
+        onLabel="Upcoming birthdays"
+        offLabel="Upcoming birthdays"
+        onIcon="pi pi-check"
+        offIcon="pi pi-times"
+        [style]="{ 'margin-bottom': '12px', display: 'block' }"
+      ></p-toggleButton>
+      <p-toggleButton
+        [disabled]="filterByBirthday || filterByUpcomingAnniversaries"
+        [(ngModel)]="filterByOverdueInteractions"
+        (click)="onFilterByOverdueInteractions()"
+        onLabel="Overdue Interactions"
+        offLabel="Overdue Interactions"
+        onIcon="pi pi-check"
+        offIcon="pi pi-times"
+        [style]="{ 'margin-bottom': '12px', display: 'block' }"
+      ></p-toggleButton>
+      <p-toggleButton
+        [disabled]="filterByBirthday || filterByOverdueInteractions"
+        [(ngModel)]="filterByUpcomingAnniversaries"
+        (click)="onFilterByUpcomingAnniversaries()"
+        onLabel="Upcoming Anniversaries"
+        offLabel="Upcoming Anniversaries"
+        onIcon="pi pi-check"
+        offIcon="pi pi-times"
+        [style]="{ 'margin-bottom': '12px', display: 'block' }"
+      ></p-toggleButton>
+    </ng-template>
+  </p-overlayPanel>
+  <p-toast position="top-right"></p-toast>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8"
+    *ngIf="!showGridLayout; else showTableLayout"
+  >
+    <app-employee-card
+      *ngFor="let employee of employees"
+      [employee]="employee"
+    ></app-employee-card>
+  </div>
+  <ng-template #showTableLayout>
+    <app-employee-table [employees]="employees"></app-employee-table>
   </ng-template>
 </div>
+<ng-template *ngIf="isLoading">
+  <app-loading></app-loading>
+</ng-template>
