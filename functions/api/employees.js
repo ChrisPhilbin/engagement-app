@@ -2,6 +2,7 @@ const { db } = require("../util/admin");
 const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
 const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 const { validRelations } = require("../util/relations");
+const { meetingsHelper } = require("./meetings");
 
 exports.createEmployee = (request, response) => {
   if (request.body.firstName.trim() === "" || !request.user.uid) {
@@ -44,38 +45,47 @@ exports.createEmployee = (request, response) => {
     });
 };
 
-exports.getAllEmployees = (request, response) => {
-  db.collection("employees")
-    .where("userId", "==", request.user.uid)
-    .get()
-    .then((data) => {
-      let employees = [];
-      data.forEach((doc) => {
-        employees.push({
-          employeeId: doc.id,
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          email: doc.data().email,
-          linkedInUrl: doc.data().linkedInUrl,
-          facebookUrl: doc.data().facebookUrl,
-          profilePictureUrl: doc.data().profilePictureUrl,
-          createdAt: doc.data().createdAt,
-          hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
-          birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
-          hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
-          hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
-          hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
-          lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
-          interests: doc.data().interests,
-          sportsTeams: doc.data().sportsTeams,
-          relations: doc.data().relations,
-        });
+exports.getAllEmployees = async (request, response) => {
+  try {
+    const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
+    let employees = [];
+    employeesRef.forEach((doc) => {
+      employees.push({
+        employeeId: doc.id,
+        firstName: doc.data().firstName,
+        lastName: doc.data().lastName,
+        email: doc.data().email,
+        linkedInUrl: doc.data().linkedInUrl,
+        facebookUrl: doc.data().facebookUrl,
+        profilePictureUrl: doc.data().profilePictureUrl,
+        createdAt: doc.data().createdAt,
+        hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
+        birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
+        hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
+        hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
+        hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
+        lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
+        interests: doc.data().interests,
+        sportsTeams: doc.data().sportsTeams,
+        relations: doc.data().relations,
       });
-      return response.status(200).json(employees);
-    })
-    .catch((error) => {
-      return response.status(500).json({ error: "Something went wrong" });
     });
+    for (const singleEmployee of employees) {
+      const meetingsSnapshot = await db
+        .collection(`/employees/${singleEmployee.employeeId}/meetings`)
+        .orderBy("createdAt", "asc")
+        .get();
+      let meetings = [];
+      meetingsSnapshot.forEach((meetingData) => {
+        meetings.push({ ...meetingData.data(), meetingId: meetingData.id });
+      });
+      singleEmployee.meetings = meetings;
+    }
+    return response.status(200).json(employees);
+  } catch (error) {
+    console.error(error, "Something went wrong");
+    return response.status(500).json({ error: "Something went wrong." });
+  }
 };
 
 exports.getSingleEmployee = (request, response) => {
