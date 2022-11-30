@@ -63,6 +63,12 @@
       </svg>
     </a>
   </div>
+  <p
+    *ngIf="employeeHasOutstandingActionItems(employee.meetings)"
+    class="font-nunito font-bold text-red-600"
+  >
+    <strong>There are some outstanding meeting action items</strong>
+  </p>
   <p class="font-nunito">
     <strong>Full name:</strong> {{ employee.firstName + " " + employee.lastName
     }}<br />

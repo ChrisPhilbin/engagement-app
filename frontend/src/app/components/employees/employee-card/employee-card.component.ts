@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/models/employee-model';
+import { Meeting } from 'src/models/meeting-model';
 
 @Component({
   selector: 'app-employee-card',
@@ -13,4 +14,10 @@ export class EmployeeCardComponent implements OnInit {
   @Input() employee: Employee;
 
   ngOnInit(): void {}
+
+  employeeHasOutstandingActionItems(meetings: Meeting[]) {
+    return meetings.some(
+      (meeting) => meeting.hasOutstandingActionItems === true
+    );
+  }
 }
