@@ -110,13 +110,19 @@
   <div class="absolute bottom-2">
     <a [routerLink]="['/employees', employee.employeeId]"
       ><button
-        class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
+        class="p-2 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
       >
         Details
       </button></a
     >
     <button
-      class="p-2 m-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
+      class="p-2 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
+      (click)="employeeService.updateEmployeeLastInteraction(employee)"
+    >
+      Log Interaction
+    </button>
+    <button
+      class="p-2 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
       (click)="employeeService.deleteEmployeeById(employee.employeeId)"
     >
       Remove

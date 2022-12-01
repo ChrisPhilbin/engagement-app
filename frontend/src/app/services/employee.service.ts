@@ -67,6 +67,22 @@ export class EmployeeService {
       });
   }
 
+  updateEmployeeLastInteraction(employee: Employee): void {
+    this.http
+      .put<Employee>(
+        `${environment.firebaseApiUrl}/employees/${employee.employeeId}`,
+        {
+          firstName: employee.firstName,
+          birthDate: employee.birthDate,
+          hireDate: employee.hireDate,
+          lastInteraction: new Date(),
+        }
+      )
+      .subscribe((employee: Employee) => {
+        this.getAllEmployees();
+      });
+  }
+
   getUpcomingBirthdays() {
     this.http
       .get<EmployeeBirthday[]>(
