@@ -14,6 +14,7 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { SharedModule } from './shared/shared.module';
 import { NavComponent } from './nav/nav.component';
 import { EmployeesModule } from './components/employees/employees.module';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { EmployeesModule } from './components/employees/employees.module';
     DashboardComponent,
     HeaderComponent,
     NavComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
