@@ -1,1 +1,68 @@
-<p>settings works!</p>
+<div class="grid grid-cols-1 gap-4">
+  <form
+    [formGroup]="settingsForm"
+    (ngSubmit)="formSubmit()"
+    *ngIf="!isLoading; else loading"
+    class="w-full"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+      <div class="flex items-center">
+        <label for="lastInteractionThreshold">Last interaction threshold</label
+        ><br />
+      </div>
+
+      <div>
+        <input
+          type="number"
+          id="lastInteractionThreshold"
+          formControlName="lastInteractionThreshold"
+          placeholder="7 Days"
+          class="border-2 m-2 p-3 rounded-lg"
+          min="1"
+          max="60"
+        />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+      <div class="flex items-center">
+        <label for="birthdateThreshold">Birthday threshold</label><br />
+      </div>
+
+      <div>
+        <input
+          type="number"
+          id="birthdateThreshold"
+          formControlName="birthdateThreshold"
+          placeholder="7 Days"
+          class="border-2 m-2 p-3 rounded-lg"
+          min="1"
+          max="60"
+        />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+      <div class="flex items-center">
+        <label for="workAnniversaryThreshold">Work Anniversary threshold</label
+        ><br />
+      </div>
+
+      <div>
+        <input
+          type="number"
+          id="workAnniversaryThreshold"
+          formControlName="workAnniversaryThreshold"
+          placeholder="7 Days"
+          class="border-2 m-2 p-3 rounded-lg"
+          min="1"
+          max="60"
+        />
+      </div>
+    </div>
+  </form>
+
+  <ng-template #loading>
+    <app-loading></app-loading>
+  </ng-template>
+</div>
