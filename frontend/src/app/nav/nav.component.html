@@ -52,6 +52,7 @@
         </li>
         <li *ngIf="isLoggedIn">
           <a
+            (click)="toggleSettingsModal($event)"
             href="#"
             class="block py-2 pr-4 pl-3 text-white md:p-0 text-white font-bold text-lg hover:underline"
             >Settings</a
@@ -76,3 +77,4 @@
     </div>
   </div>
 </nav>
+<app-settings *ngIf="showSettingsModal"></app-settings>

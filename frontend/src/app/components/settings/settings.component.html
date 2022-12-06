@@ -1,68 +1,169 @@
-<div class="grid grid-cols-1 gap-4">
-  <form
-    [formGroup]="settingsForm"
-    (ngSubmit)="formSubmit()"
-    *ngIf="!isLoading; else loading"
-    class="w-full"
+<div
+  class="fixed z-50 inset-0 overflow-y-auto"
+  [ngClass]="{ hidden: !isVisible }"
+  id="modal"
+>
+  <div
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
   >
-    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
-      <div class="flex items-center">
-        <label for="lastInteractionThreshold">Last interaction threshold</label
-        ><br />
-      </div>
-
-      <div>
-        <input
-          type="number"
-          id="lastInteractionThreshold"
-          formControlName="lastInteractionThreshold"
-          placeholder="7 Days"
-          class="border-2 m-2 p-3 rounded-lg"
-          min="1"
-          max="60"
-        />
-      </div>
+    <!-- Modal BG Overlay -->
+    <div class="fixed inset-0 transition-opacity" (click)="(null)">
+      <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
-      <div class="flex items-center">
-        <label for="birthdateThreshold">Birthday threshold</label><br />
-      </div>
+    <!-- This element is to trick the browser into centering the modal contents. -->
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+      >&#8203;</span
+    >
 
-      <div>
-        <input
-          type="number"
-          id="birthdateThreshold"
-          formControlName="birthdateThreshold"
-          placeholder="7 Days"
-          class="border-2 m-2 p-3 rounded-lg"
-          min="1"
-          max="60"
-        />
+    <div
+      class="inline-block align-bottom bg-secondary rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+    >
+      <!-- Add margin if you want to see some of the overlay behind the modal-->
+      <div class="py-4 text-left px-6">
+        <!--Title-->
+        <div class="flex justify-between items-center pb-4">
+          <ng-content select="[heading]"></ng-content>
+          <!-- Modal Close Button -->
+          <div class="modal-close cursor-pointer z-50" (click)="(null)">
+            &#x2715;
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4">
+          <form
+            [formGroup]="settingsForm"
+            (ngSubmit)="formSubmit()"
+            *ngIf="!isLoading; else loading"
+            class="w-full"
+          >
+            <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+              <div class="flex items-center">
+                <label for="lastInteractionThreshold"
+                  >Last interaction threshold</label
+                ><br />
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  id="lastInteractionThreshold"
+                  formControlName="lastInteractionThreshold"
+                  placeholder="7 Days"
+                  class="border-2 m-2 p-3 rounded-lg"
+                  [ngClass]="
+                    f['lastInteractionThreshold'].invalid &&
+                    f['lastInteractionThreshold'].touched
+                      ? 'border-red-600'
+                      : ''
+                  "
+                  min="1"
+                  max="60"
+                />
+                <p
+                  *ngIf="
+                    f['lastInteractionThreshold'].invalid &&
+                    f['lastInteractionThreshold'].touched
+                  "
+                  class="text-red-600 pl-3"
+                >
+                  Interaction threshold is required with a min. value of 1 and
+                  max of 60.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+              <div class="flex items-center">
+                <label for="birthdateThreshold">Birthday threshold</label><br />
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  id="birthdateThreshold"
+                  formControlName="birthdateThreshold"
+                  placeholder="7 Days"
+                  class="border-2 m-2 p-3 rounded-lg"
+                  [ngClass]="
+                    f['birthdateThreshold'].invalid &&
+                    f['birthdateThreshold'].touched
+                      ? 'border-red-600'
+                      : ''
+                  "
+                  min="1"
+                  max="60"
+                />
+                <p
+                  *ngIf="
+                    f['birthdateThreshold'].invalid &&
+                    f['birthdateThreshold'].touched
+                  "
+                  class="text-red-600 pl-3"
+                >
+                  Birthday threshold is required with a min. value of 1 and max
+                  of 60.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+              <div class="flex items-center">
+                <label for="workAnniversaryThreshold"
+                  >Work Anniversary threshold</label
+                ><br />
+              </div>
+
+              <div>
+                <input
+                  type="number"
+                  id="workAnniversaryThreshold"
+                  formControlName="workAnniversaryThreshold"
+                  placeholder="7 Days"
+                  class="border-2 m-2 p-3 rounded-lg"
+                  [ngClass]="
+                    f['workAnniversaryThreshold'].invalid &&
+                    f['workAnniversaryThreshold'].touched
+                      ? 'border-red-600'
+                      : ''
+                  "
+                  min="1"
+                  max="60"
+                />
+                <p
+                  *ngIf="
+                    f['workAnniversaryThreshold'].invalid &&
+                    f['workAnniversaryThreshold'].touched
+                  "
+                  class="text-red-600 pl-3"
+                >
+                  Anniversary threshold is required with a min. value of 1 and
+                  max of 60.
+                </p>
+              </div>
+
+              <div class="my-4">
+                <button
+                  type="submit"
+                  [disabled]="settingsForm.invalid"
+                  class="p-4 mr-4 bg-emerald-700 hover:bg-emerald-800 rounded-lg font-bold text-white"
+                  [ngClass]="
+                    settingsForm.invalid
+                      ? 'cursor-not-allowed'
+                      : 'cursor-pointer'
+                  "
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <ng-template #loading>
+            <app-loading></app-loading>
+          </ng-template>
+        </div>
       </div>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
-      <div class="flex items-center">
-        <label for="workAnniversaryThreshold">Work Anniversary threshold</label
-        ><br />
-      </div>
-
-      <div>
-        <input
-          type="number"
-          id="workAnniversaryThreshold"
-          formControlName="workAnniversaryThreshold"
-          placeholder="7 Days"
-          class="border-2 m-2 p-3 rounded-lg"
-          min="1"
-          max="60"
-        />
-      </div>
-    </div>
-  </form>
-
-  <ng-template #loading>
-    <app-loading></app-loading>
-  </ng-template>
+  </div>
 </div>

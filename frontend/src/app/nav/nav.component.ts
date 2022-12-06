@@ -2,6 +2,7 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
 import { Router } from '@angular/router';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,11 +13,13 @@ export class NavComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private primengConfig: PrimeNGConfig,
-    private router: Router
+    private router: Router,
+    public settingsService: SettingsService
   ) {}
 
   isLoggedIn = false;
   showMobileMenu = false;
+  showSettingsModal = false;
   items: MenuItem[];
 
   ngOnInit(): void {
@@ -50,6 +53,7 @@ export class NavComponent implements OnInit {
               label: 'Settings',
               icon: 'pi pi-fw pi-cog',
               visible: this.isLoggedIn,
+              command: ($event) => this.toggleSettingsModal($event),
             },
             {
               label: 'Logout',
@@ -76,6 +80,10 @@ export class NavComponent implements OnInit {
 
   toggleMobileMenu() {
     this.showMobileMenu = !this.showMobileMenu;
-    console.log(this.showMobileMenu);
+  }
+
+  toggleSettingsModal($event: Event) {
+    $event.preventDefault();
+    this.settingsService.toggleSettingsModal();
   }
 }

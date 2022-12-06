@@ -9,6 +9,7 @@ import { Settings } from 'src/models/settings-model';
 })
 export class SettingsService {
   settings = new Subject<Settings>();
+  showSettingsModal = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {}
 
@@ -26,5 +27,9 @@ export class SettingsService {
       .subscribe((settings: Settings) => {
         this.settings.next(settings);
       });
+  }
+
+  toggleSettingsModal() {
+    this.showSettingsModal.next(!this.showSettingsModal.value);
   }
 }

@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -13,6 +12,7 @@ export class HeaderComponent implements OnInit {
   constructor(private AuthService: AuthService, private router: Router) {}
 
   items: MenuItem[] = [];
+  showSettingsModal: boolean = false;
 
   ngOnInit() {
     this.AuthService.isLoggedIn.subscribe((isLoggedIn) => {
@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit {
           label: 'Settings',
           icon: 'pi pi-fw pi-cog',
           visible: isLoggedIn,
+          command: () => this.toggleSettingsModal(),
         },
         {
           label: 'Logout',
@@ -62,5 +63,10 @@ export class HeaderComponent implements OnInit {
 
   redirectToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  toggleSettingsModal() {
+    this.showSettingsModal = !this.showSettingsModal;
+    console.log('Toggle settings modal');
   }
 }

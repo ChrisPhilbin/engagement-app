@@ -22,13 +22,15 @@ export class SettingsComponent implements OnInit {
   isLoading: boolean = false;
   hasErrors: boolean = false;
 
-  @Input() isVisible: boolean;
+  // @Input() isVisible: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private settingsService: SettingsService
+    public settingsService: SettingsService
   ) {}
+
+  isVisible = false;
 
   ngOnInit(): void {
     this.initForm();
@@ -50,6 +52,10 @@ export class SettingsComponent implements OnInit {
         );
       },
     });
+    this.settingsService.showSettingsModal.subscribe((showModal) => {
+      console.log(showModal, 'show modal value from subscription');
+      this.isVisible = showModal;
+    });
   }
 
   private initForm(): void {
@@ -59,7 +65,7 @@ export class SettingsComponent implements OnInit {
     let dailyDigest = false;
     let weeklyDigest = false;
 
-    if (Object.keys(this.settings)) {
+    if (this.settings) {
       lastInteractionThreshold = this.settings.lastInteractionThreshold;
       birthdateThreshold = this.settings.birthdateThreshold;
       workAnniversaryThreshold = this.settings.workAnniversaryThreshold;
@@ -100,5 +106,9 @@ export class SettingsComponent implements OnInit {
     };
 
     this.settingsService.updateAppSettings(newSettings);
+  }
+
+  get f() {
+    return this.settingsForm.controls;
   }
 }
