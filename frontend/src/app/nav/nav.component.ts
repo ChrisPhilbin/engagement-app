@@ -25,6 +25,10 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     this.primengConfig.ripple = true;
 
+    this.settingsService.showSettingsModal.subscribe((settingsModal) => {
+      this.showSettingsModal = settingsModal;
+    });
+
     this.authService.isLoggedIn.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
 
@@ -53,7 +57,8 @@ export class NavComponent implements OnInit {
               label: 'Settings',
               icon: 'pi pi-fw pi-cog',
               visible: this.isLoggedIn,
-              command: ($event) => this.toggleSettingsModal($event),
+              command: ($event) =>
+                this.settingsService.toggleSettingsModal($event),
             },
             {
               label: 'Logout',
@@ -82,8 +87,8 @@ export class NavComponent implements OnInit {
     this.showMobileMenu = !this.showMobileMenu;
   }
 
-  toggleSettingsModal($event: Event) {
-    $event.preventDefault();
-    this.settingsService.toggleSettingsModal();
-  }
+  // toggleSettingsModal($event: Event) {
+  //   $event.preventDefault();
+  //   this.settingsService.toggleSettingsModal();
+  // }
 }

@@ -29,7 +29,8 @@ export class SettingsService {
       });
   }
 
-  toggleSettingsModal() {
+  toggleSettingsModal($event: Event) {
+    $event.preventDefault();
     this.showSettingsModal.next(!this.showSettingsModal.value);
   }
 }

@@ -44,6 +44,7 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
+          console.log(responseData, 'response data after signup.');
           this.handleAuthentication(
             responseData.email,
             responseData.localId,
