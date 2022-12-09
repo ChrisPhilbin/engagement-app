@@ -7,6 +7,7 @@ firebase.initializeApp(config);
 const { validateLoginData, validateSignUpData } = require("../util/validators");
 
 exports.loginUser = (request, response) => {
+  console.log("Logging user in...");
   const user = {
     email: request.body.email,
     password: request.body.password,
@@ -113,5 +114,30 @@ exports.getUserDetail = (request, response) => {
     .catch((error) => {
       console.error(error);
       return response.status(500).json({ error: error.code });
+    });
+};
+
+exports.getUserAppSettings = (request, response) => {
+  const defaultAppSettings = {
+    birthdateThreshold: 7,
+    lastInteractionThreshold: 7,
+    workAnniversaryThreshold: 7,
+    dailyDigest: false,
+    weeklyDigest: false,
+  };
+
+  let userAppSettings = {};
+
+  db.doc(`/users/${request.user.uid}`)
+    .get()
+    .then((settingsDoc) => {
+      if (doc.exists) {
+        userAppSettings = settingsDoc.data().appSettings ? settingsDoc.data().appSettings : defaultAppSettings;
+        return response.status(200).json(userAppSettings);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return response.status(500).json({ error: error });
     });
 };
