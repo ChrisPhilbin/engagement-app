@@ -2,7 +2,8 @@ const { db } = require("../util/admin");
 const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
 const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 const { validRelations } = require("../util/relations");
-const { meetingsHelper } = require("./meetings");
+const { meetingsHelper, defaultAppSettings } = require("./meetings");
+const configureUserAppSettings = require("../util/settingsHelper");
 
 exports.createEmployee = (request, response) => {
   if (request.body.firstName.trim() === "" || !request.user.uid) {
