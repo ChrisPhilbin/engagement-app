@@ -26,6 +26,7 @@ export class SettingsService {
     this.http
       .put<Settings>(`${environment.firebaseApiUrl}/user/settings`, newSettings)
       .subscribe((settings: Settings) => {
+        console.log(settings, 'Settings being sent to backend');
         this.settings.next(settings);
       });
   }

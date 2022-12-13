@@ -51,8 +51,9 @@ app.get("/user", auth, getUserDetail);
 app.post("/user", signUpUser);
 app.post("/user/auth", isUserSignedIn);
 
-const { getSettings } = require("./api/settings");
+const { getSettings, saveSettings } = require("./api/settings");
 
 app.get("/user/settings", auth, getSettings);
+app.put("/user/settings", auth, saveSettings);
 
 exports.engagement = functions.https.onRequest(app);

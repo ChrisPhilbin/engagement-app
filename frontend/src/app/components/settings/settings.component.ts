@@ -89,8 +89,8 @@ export class SettingsComponent implements OnInit {
         Validators.min(1),
         Validators.max(60),
       ]),
-      dailyDigest: new FormControl(dailyDigest, Validators.required),
-      weeklyDigest: new FormControl(weeklyDigest, Validators.required),
+      dailyDigest: new FormControl(dailyDigest),
+      weeklyDigest: new FormControl(weeklyDigest),
     });
   }
 
