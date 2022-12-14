@@ -6,8 +6,7 @@ firebase.initializeApp(config);
 
 const { validateLoginData, validateSignUpData } = require("../util/validators");
 
-exports.loginUser = (request, response) => {
-  console.log("Logging user in...");
+exports.loginUser = async (request, response) => {
   const user = {
     email: request.body.email,
     password: request.body.password,
@@ -16,19 +15,17 @@ exports.loginUser = (request, response) => {
   const { valid, errors } = validateLoginData(user);
   if (!valid) return response.status(400).json(errors);
 
-  firebase
-    .auth()
-    .signInWithEmailAndPassword(user.email, user.password)
-    .then((data) => {
-      return data.user.getIdToken();
-    })
-    .then((token) => {
-      return response.json({ token });
-    })
-    .catch((error) => {
-      console.error(error);
-      return response.status(403).json({ general: "wrong credentials, please try again" });
-    });
+  try {
+    const signedInUser = await firebase.auth().signInWithEmailAndPassword(user.email, user.password);
+    if (signedInUser) {
+      const userInfoRef = await db.collection("users").where("userId", "==", signedInUser.user.uid).get();
+      return response.status(200).json(userInfoRef.docs[0].data());
+    } else {
+      return response.status(200).json({ error: "Something went wrong trying to login." });
+    }
+  } catch (error) {
+    console.log(error, "Something went wrong logging the user in.");
+  }
 };
 
 exports.isUserSignedIn = (request, response) => {
