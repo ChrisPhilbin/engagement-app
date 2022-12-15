@@ -50,7 +50,8 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      authObs = this.authService.login(email, password);
+      //@ts-ignore
+      authObs = this.authService.testLogin(email, password);
     } else {
       authObs = this.authService.signup(email, password);
     }

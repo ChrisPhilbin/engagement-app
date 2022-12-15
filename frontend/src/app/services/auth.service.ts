@@ -2,10 +2,17 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  forkJoin,
+  Observable,
+  Subject,
+  throwError,
+} from 'rxjs';
 import { User } from '../../models/user-model';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 export interface AuthResponseData {
   kind: string;
@@ -15,6 +22,18 @@ export interface AuthResponseData {
   expiresIn: string;
   localId: string;
   registered?: boolean;
+}
+
+export interface UserResponseData {
+  createdAt: string;
+  appSettings: {
+    birthdateThreshold: number;
+    workAnniversaryThreshold: number;
+    lastInteractionThreshold: number;
+  };
+  username: string;
+  email: string;
+  userId: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -54,6 +73,38 @@ export class AuthService {
           );
         })
       );
+  }
+
+  testLogin(email: string, password: string) {
+    return forkJoin({
+      authResponseData: this.http.post<AuthResponseData>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }
+      ),
+      userData: this.http.post<UserResponseData>(
+        `${environment.firebaseApiUrl}/login`,
+        {
+          email: email,
+          password: password,
+        }
+      ),
+    }).pipe(
+      catchError(this.handleError),
+      tap((responseData) => {
+        console.log(responseData, 'RESPONSE DATA...');
+        this.handleAuthentication(
+          responseData.authResponseData.email,
+          responseData.authResponseData.localId,
+          responseData.authResponseData.refreshToken,
+          responseData.authResponseData.idToken,
+          +responseData.authResponseData.expiresIn
+        );
+      })
+    );
   }
 
   login(email: string, password: string) {
