@@ -5,6 +5,7 @@ const firebase = require("firebase");
 firebase.initializeApp(config);
 
 const { validateLoginData, validateSignUpData } = require("../util/validators");
+const { defaultAppSettings } = require("../util/settingsHelper");
 
 exports.loginUser = async (request, response) => {
   const user = {
@@ -21,10 +22,36 @@ exports.loginUser = async (request, response) => {
       const userInfoRef = await db.collection("users").where("userId", "==", signedInUser.user.uid).get();
       return response.status(200).json(userInfoRef.docs[0].data());
     } else {
-      return response.status(200).json({ error: "Something went wrong trying to login." });
+      return response.status(400).json({ error: "Something went wrong trying to login." });
     }
   } catch (error) {
     console.log(error, "Something went wrong logging the user in.");
+  }
+};
+
+exports.signUpUser = async (request, response) => {
+  if (!request.body.email || !request.body.userId) {
+    return response.status(400).json({ error: "Missing email or userId field. Cannot create user record!" });
+  }
+
+  const newUser = {
+    email: request.body.email,
+    userId: request.body.userId,
+    createdAt: new Date(),
+    appSettings: defaultAppSettings,
+  };
+
+  try {
+    const doesUserExist = await db.collection("users").where("userId", "==", newUser.userId).limit(1).get();
+    if (doesUserExist.docs.length === 0) {
+      const newUserRecord = await db.collection("users").add(newUser);
+      return response.status(200).json(newUser);
+    } else {
+      return response.status(400).json({ error: "Error creating new user record." });
+    }
+  } catch (error) {
+    console.log(error, "Something went wrong setting up the new user record.");
+    return response.status(500).json({ error: "Something went wrong setting up the new user record." });
   }
 };
 
@@ -46,55 +73,6 @@ exports.isUserSignedIn = (request, response) => {
     .catch((error) => {
       console.error(error);
       return response.status(500).json({ general: "valid token not supplied" });
-    });
-};
-
-exports.signUpUser = (request, response) => {
-  const newUser = {
-    email: request.body.email,
-    password: request.body.password,
-    confirmPassword: request.body.confirmPassword,
-    username: request.body.username,
-  };
-
-  const { valid, errors } = validateSignUpData(newUser);
-
-  if (!valid) return response.status(400).json(errors);
-
-  let token, userId;
-  db.doc(`/users/${newUser.username}`)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        return response.status(400).json({ username: "this username is already taken" });
-      } else {
-        return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
-      }
-    })
-    .then((data) => {
-      userId = data.user.uid;
-      return data.user.getIdToken();
-    })
-    .then((idtoken) => {
-      token = idtoken;
-      const userCredentials = {
-        username: newUser.username,
-        email: newUser.email,
-        createdAt: new Date().toISOString(),
-        userId,
-      };
-      return db.doc(`/users/${newUser.username}`).set(userCredentials);
-    })
-    .then(() => {
-      return response.status(201).json({ token });
-    })
-    .catch((err) => {
-      console.error(err);
-      if (err.code === "auth/email-already-in-use") {
-        return response.status(400).json({ email: "Email already in use" });
-      } else {
-        return response.status(500).json({ general: "Something went wrong, please try again" });
-      }
     });
 };
 

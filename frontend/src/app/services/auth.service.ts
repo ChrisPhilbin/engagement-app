@@ -64,13 +64,32 @@ export class AuthService {
         catchError(this.handleError),
         tap((responseData) => {
           console.log(responseData, 'response data after signup.');
-          this.handleAuthentication(
-            responseData.email,
-            responseData.localId,
-            responseData.refreshToken,
-            responseData.idToken,
-            +responseData.expiresIn
-          );
+          this.http
+            .post<UserResponseData>(`${environment.firebaseApiUrl}/signup`, {
+              email: email,
+              userId: responseData.localId,
+            })
+            .subscribe((userData) => {
+              console.log(responseData, 'Response data from firebase');
+              console.log(userData, 'User data from signing in');
+              this.handleAuthentication(
+                responseData.email,
+                responseData.localId,
+                responseData.refreshToken,
+                responseData.idToken,
+                +responseData.expiresIn,
+                userData.appSettings.workAnniversaryThreshold,
+                userData.appSettings.lastInteractionThreshold,
+                userData.appSettings.birthdateThreshold
+              );
+            });
+          // this.handleAuthentication(
+          //   responseData.email,
+          //   responseData.localId,
+          //   responseData.refreshToken,
+          //   responseData.idToken,
+          //   +responseData.expiresIn
+          // );
         })
       );
   }
@@ -101,35 +120,38 @@ export class AuthService {
           responseData.authResponseData.localId,
           responseData.authResponseData.refreshToken,
           responseData.authResponseData.idToken,
-          +responseData.authResponseData.expiresIn
+          +responseData.authResponseData.expiresIn,
+          responseData.userData.appSettings.workAnniversaryThreshold,
+          responseData.userData.appSettings.lastInteractionThreshold,
+          responseData.userData.appSettings.birthdateThreshold
         );
       })
     );
   }
 
-  login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap((responseData) => {
-          this.handleAuthentication(
-            responseData.email,
-            responseData.localId,
-            responseData.refreshToken,
-            responseData.idToken,
-            +responseData.expiresIn
-          );
-        })
-      );
-  }
+  // login(email: string, password: string) {
+  //   return this.http
+  //     .post<AuthResponseData>(
+  //       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBhJGSfs_u0THw9gg1q-4CH9ohcyy6PUco',
+  //       {
+  //         email: email,
+  //         password: password,
+  //         returnSecureToken: true,
+  //       }
+  //     )
+  //     .pipe(
+  //       catchError(this.handleError),
+  //       tap((responseData) => {
+  //         this.handleAuthentication(
+  //           responseData.email,
+  //           responseData.localId,
+  //           responseData.refreshToken,
+  //           responseData.idToken,
+  //           +responseData.expiresIn,
+  //         );
+  //       })
+  //     );
+  // }
 
   public logout() {
     this.cookieService.delete('email', '/');
@@ -182,10 +204,22 @@ export class AuthService {
     userId: string,
     refreshToken: string,
     token: string,
-    expiresIn: number
+    expiresIn: number,
+    workAnniversaryThreshold: number,
+    lastInteractionThreshold: number,
+    birthdateThreshold: number
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, refreshToken, token, expirationDate);
+    const user = new User(
+      email,
+      userId,
+      refreshToken,
+      birthdateThreshold,
+      lastInteractionThreshold,
+      workAnniversaryThreshold,
+      token,
+      expirationDate
+    );
     this.user.next(user);
     this.cookieService.set('email', email);
     this.cookieService.set('userId', userId);
@@ -195,6 +229,15 @@ export class AuthService {
       'expirationDate',
       JSON.stringify(expirationDate.toString())
     );
+    this.cookieService.set(
+      'workAnniversaryThreshold',
+      workAnniversaryThreshold.toString()
+    );
+    this.cookieService.set(
+      'lastInteractionThreshold',
+      lastInteractionThreshold.toString()
+    );
+    this.cookieService.set('birthdateThreshold', birthdateThreshold.toString());
     this.isLoggedIn.next(true);
   }
 

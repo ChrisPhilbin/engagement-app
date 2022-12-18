@@ -47,6 +47,7 @@ exports.createEmployee = (request, response) => {
 };
 
 exports.getAllEmployees = async (request, response) => {
+  console.log(request.body, "request body");
   try {
     const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
     let employees = [];

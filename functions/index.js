@@ -48,7 +48,7 @@ const { loginUser, getUserDetail, isUserSignedIn, signUpUser } = require("./api/
 
 app.post("/login", loginUser);
 app.get("/user", auth, getUserDetail);
-app.post("/user", signUpUser);
+app.post("/signup", signUpUser);
 app.post("/user/auth", isUserSignedIn);
 
 const { getSettings, saveSettings } = require("./api/settings");
