@@ -27,16 +27,15 @@ export class AuthInterceptorService implements HttpInterceptor {
             'authorization',
             `Bearer ${user.token}`
           ),
-          // body: {
-          //   ...req.body,
-          //   appSettings: {
-          //     birthdateThreshold: user.birthdateThreshold,
-          //     lastInteractionThreshold: user.lastInteractionThreshold,
-          //     workAnniversaryThreshold: user.workAnniversaryThreshold,
-          //   },
-          // },
+          body: {
+            ...req.body,
+            appSettings: {
+              birthdateThreshold: user.birthdateThreshold,
+              lastInteractionThreshold: user.lastInteractionThreshold,
+              workAnniversaryThreshold: user.workAnniversaryThreshold,
+            },
+          },
         });
-        console.log(modifiedRequest);
         return next.handle(modifiedRequest);
       })
     );

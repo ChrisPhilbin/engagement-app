@@ -78,9 +78,9 @@ export class AuthService {
                 responseData.refreshToken,
                 responseData.idToken,
                 +responseData.expiresIn,
-                userData.appSettings.workAnniversaryThreshold,
-                userData.appSettings.lastInteractionThreshold,
-                userData.appSettings.birthdateThreshold
+                userData.appSettings.workAnniversaryThreshold.toString(),
+                userData.appSettings.lastInteractionThreshold.toString(),
+                userData.appSettings.birthdateThreshold.toString()
               );
             });
           // this.handleAuthentication(
@@ -121,9 +121,9 @@ export class AuthService {
           responseData.authResponseData.refreshToken,
           responseData.authResponseData.idToken,
           +responseData.authResponseData.expiresIn,
-          responseData.userData.appSettings.workAnniversaryThreshold,
-          responseData.userData.appSettings.lastInteractionThreshold,
-          responseData.userData.appSettings.birthdateThreshold
+          responseData.userData.appSettings.workAnniversaryThreshold.toString(),
+          responseData.userData.appSettings.lastInteractionThreshold.toString(),
+          responseData.userData.appSettings.birthdateThreshold.toString()
         );
       })
     );
@@ -154,17 +154,22 @@ export class AuthService {
   // }
 
   public logout() {
-    this.cookieService.delete('email', '/');
-    this.cookieService.delete('userId', '/');
-    this.cookieService.delete('token', '/');
-    this.cookieService.delete('expirationDate', '/');
-    this.cookieService.delete('refreshToken', '/');
+    this.cookieService.deleteAll();
+    // this.cookieService.delete('email', '/');
+    // this.cookieService.delete('userId', '/');
+    // this.cookieService.delete('token', '/');
+    // this.cookieService.delete('expirationDate', '/');
+    // this.cookieService.delete('refreshToken', '/');
+    // this.cookieService.delete('birthdateThreshold', '/');
+    // this.cookieService.delete('lastInteractionThreshold', '/');
+    // this.cookieService.delete('workAnniversaryThreshold', '/');
     this.user.next(null);
     this.isLoggedIn.next(false);
     this.router.navigate(['login']);
   }
 
   public isAuthenticated(): boolean {
+    console.log('isAuthenticated method is running');
     //need to set cookie with user info upon initial auth
     //then get the token from the cookie and see if it is active
     //@ts-ignore
@@ -187,6 +192,9 @@ export class AuthService {
         this.cookieService.get('email'),
         this.cookieService.get('userId'),
         this.cookieService.get('refreshToken'),
+        this.cookieService.get('birthdateThreshold'),
+        this.cookieService.get('lastInteractionThreshold'),
+        this.cookieService.get('workAnniversaryThreshold'),
         this.cookieService.get('token'),
         //@ts-ignore
         this.cookieService.get('expirationDate')
@@ -205,9 +213,9 @@ export class AuthService {
     refreshToken: string,
     token: string,
     expiresIn: number,
-    workAnniversaryThreshold: number,
-    lastInteractionThreshold: number,
-    birthdateThreshold: number
+    workAnniversaryThreshold: string,
+    lastInteractionThreshold: string,
+    birthdateThreshold: string
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(
