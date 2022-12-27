@@ -47,7 +47,7 @@ exports.createEmployee = (request, response) => {
 };
 
 exports.getAllEmployees = async (request, response) => {
-  console.log(request.body, "request body");
+  const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } = request.headers;
   try {
     const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
     let employees = [];
@@ -63,9 +63,9 @@ exports.getAllEmployees = async (request, response) => {
         createdAt: doc.data().createdAt,
         hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
         birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
-        hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate),
-        hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate),
-        hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction),
+        hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold),
+        hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate, workanniversarythreshold),
+        hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold),
         lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
         interests: doc.data().interests,
         sportsTeams: doc.data().sportsTeams,
@@ -91,6 +91,7 @@ exports.getAllEmployees = async (request, response) => {
 };
 
 exports.getSingleEmployee = (request, response) => {
+  const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } = request.headers;
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then(async (doc) => {
@@ -105,9 +106,12 @@ exports.getSingleEmployee = (request, response) => {
       employeeData.birthDate = doc.data().birthDate ? doc.data().birthDate.toDate() : null;
       employeeData.lastInteraction = doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : null;
       employeeData.employeeId = doc.id;
-      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(doc.data().birthDate);
-      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(doc.data().hireDate);
-      employeeData.hasRecentInteraction = hasRecentInteraction(doc.data().lastInteraction);
+      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold);
+      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(
+        doc.data().hireDate,
+        workanniversarythreshold
+      );
+      employeeData.hasRecentInteraction = hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold);
       (employeeData.interests = doc.data().interests ? doc.data().interests : null),
         (employeeData.sportsTeams = doc.data().sportsTeams ? doc.data().sportsTeams : null),
         (employeeData.relations = doc.data().relations ? doc.data().relations : null),
@@ -162,13 +166,14 @@ exports.deleteEmployee = (request, response) => {
 };
 
 exports.getAllUpcomingBirthdays = (request, response) => {
+  const { birthdatethreshold } = request.headers;
   db.collection("employees")
     .where("userId", "==", request.user.uid)
     .get()
     .then((data) => {
       let employees = [];
       data.forEach((doc) => {
-        if (hasUpcomingBirthday(doc.data().birthDate)) {
+        if (hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold)) {
           employees.push({
             employeeId: doc.id,
             firstName: doc.data().firstName,
@@ -185,13 +190,14 @@ exports.getAllUpcomingBirthdays = (request, response) => {
 };
 
 exports.getAllUpcomingAnniversaries = (request, response) => {
+  const { workanniversarythreshold } = request.headers;
   db.collection("employees")
     .where("userId", "==", request.user.uid)
     .get()
     .then((data) => {
       let employees = [];
       data.forEach((doc) => {
-        if (hasUpcomingWorkAnniversary(doc.data().hireDate)) {
+        if (hasUpcomingWorkAnniversary(doc.data().hireDate, workanniversarythreshold)) {
           employees.push({
             employeeId: doc.id,
             firstName: doc.data().firstName,
@@ -208,13 +214,14 @@ exports.getAllUpcomingAnniversaries = (request, response) => {
 };
 
 exports.getAllOutstandingInteractions = (request, response) => {
+  const { lastinteractionthreshold } = request.headers;
   db.collection("employees")
     .where("userId", "==", request.user.uid)
     .get()
     .then((data) => {
       let employees = [];
       data.forEach((doc) => {
-        if (!hasRecentInteraction(doc.data().lastInteraction)) {
+        if (!hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold)) {
           employees.push({
             employeeId: doc.id,
             firstName: doc.data().firstName,

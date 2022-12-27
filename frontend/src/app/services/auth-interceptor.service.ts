@@ -23,18 +23,11 @@ export class AuthInterceptorService implements HttpInterceptor {
           return next.handle(req);
         }
         const modifiedRequest = req.clone({
-          headers: new HttpHeaders().set(
-            'authorization',
-            `Bearer ${user.token}`
-          ),
-          body: {
-            ...req.body,
-            appSettings: {
-              birthdateThreshold: user.birthdateThreshold,
-              lastInteractionThreshold: user.lastInteractionThreshold,
-              workAnniversaryThreshold: user.workAnniversaryThreshold,
-            },
-          },
+          headers: new HttpHeaders()
+            .set('authorization', `Bearer ${user.token}`)
+            .set('birthdateThreshold', user.birthdateThreshold)
+            .set('lastInteractionThreshold', user.lastInteractionThreshold)
+            .set('workAnniversaryThreshold', user.workAnniversaryThreshold),
         });
         return next.handle(modifiedRequest);
       })

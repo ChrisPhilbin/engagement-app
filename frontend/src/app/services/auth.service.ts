@@ -13,6 +13,7 @@ import { User } from '../../models/user-model';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Settings } from 'src/models/settings-model';
 
 export interface AuthResponseData {
   kind: string;
@@ -39,6 +40,7 @@ export interface UserResponseData {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new BehaviorSubject<User | null>(null);
+
   public isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(
