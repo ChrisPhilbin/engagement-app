@@ -148,7 +148,10 @@
                 </p>
               </div>
 
-              <div class="my-4">
+              <div class="my-4 col-span-2">
+                <p class="text-center text-green-600 font-bold">
+                  {{ settingsService.successMessage }}
+                </p>
                 <button
                   type="submit"
                   [disabled]="settingsForm.invalid"

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AuthResponseData, AuthService } from '../../../services/auth.service';
 
@@ -8,23 +9,32 @@ import { AuthResponseData, AuthService } from '../../../services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styles: [],
+  providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
 
   isLoginMode = true;
   isLoading = false;
   error: string = '';
   sessionExpired = false;
+  showDemoGreeting = false;
+  demoGreetingMessage = '';
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
       if (params['sessionExpired']) {
         this.sessionExpired = true;
+      }
+      if (params['demo'] === 'true') {
+        this.showDemoGreeting = true;
+        this.demoGreetingMessage =
+          '<strong>Welcome!</strong> Looks like this app is in demo mode given the route query params! Please use the following credentials to login:<br /> <strong>Username:</strong> chris@test.com<br /> <strong>Password:</strong> password123';
       }
     });
   }

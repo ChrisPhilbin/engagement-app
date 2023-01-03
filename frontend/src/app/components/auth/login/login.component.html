@@ -10,6 +10,13 @@
         Your session has expired.<br />
         Please login to continue.
       </p>
+      <div *ngIf="showDemoGreeting" class="mb-4">
+        <p-messages severity="info">
+          <ng-template pTemplate>
+            <p innerHTML="{{ demoGreetingMessage }}"></p>
+          </ng-template>
+        </p-messages>
+      </div>
       <form
         #authForm="ngForm"
         (ngSubmit)="onSubmit(authForm)"

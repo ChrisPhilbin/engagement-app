@@ -45,7 +45,7 @@ exports.hasRecentInteraction = (
   if (!employeeLastInteractionDate) {
     return false;
   }
-
+  console.log(threshold, "last interaction threshold");
   const now = moment();
   const weekOld = now.clone().subtract(threshold, "days").startOf("day");
 

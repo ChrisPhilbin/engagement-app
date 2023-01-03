@@ -104,7 +104,6 @@ export class SettingsComponent implements OnInit {
       dailyEmailDigest: this.settingsForm.value['dailyEmailDigest'],
       weeklyEmailDigest: this.settingsForm.value['weeklyEmailDigest'],
     };
-
     this.settingsService.updateAppSettings(newSettings);
   }
 

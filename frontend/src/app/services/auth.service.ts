@@ -209,6 +209,21 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
+  public setUpUser() {
+    let user = new User(
+      this.cookieService.get('email'),
+      this.cookieService.get('userId'),
+      this.cookieService.get('refreshToken'),
+      this.cookieService.get('birthdateThreshold'),
+      this.cookieService.get('lastInteractionThreshold'),
+      this.cookieService.get('workAnniversaryThreshold'),
+      this.cookieService.get('token'),
+      //@ts-ignore
+      this.cookieService.get('expirationDate')
+    );
+    this.user.next(user);
+  }
+
   private handleAuthentication(
     email: string,
     userId: string,

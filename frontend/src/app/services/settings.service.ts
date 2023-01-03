@@ -5,6 +5,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Settings } from 'src/models/settings-model';
 import { AuthService } from './auth.service';
+import { EmployeeService } from './employee.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +14,13 @@ export class SettingsService {
   settings = new Subject<Settings>();
   // user = new BehaviorSubject<User | null>(null);
   showSettingsModal = new BehaviorSubject<boolean>(false);
+  successMessage: string = '';
 
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
-    private authService: AuthService
+    private authService: AuthService,
+    private employeeService: EmployeeService
   ) {}
 
   getAppSettings() {
@@ -35,17 +38,27 @@ export class SettingsService {
       .subscribe((settings: Settings) => {
         this.cookieService.set(
           'birthdateThreshold',
-          settings.birthdateThreshold.toString()
+          settings.birthdateThreshold.toString(),
+          { path: '/' }
         );
         this.cookieService.set(
           'lastInteractionThreshold',
-          settings.workAnniversaryThreshold.toString()
+          settings.workAnniversaryThreshold.toString(),
+          { path: '/' }
         );
         this.cookieService.set(
           'workAnniversaryThreshold',
-          settings.workAnniversaryThreshold.toString()
+          settings.workAnniversaryThreshold.toString(),
+          { path: '/' }
         );
         this.settings.next(settings);
+        this.successMessage = 'Settings sucessfully saved!';
+        this.authService.setUpUser();
+        setTimeout(() => {
+          this.employeeService.getAllEmployees();
+          this.showSettingsModal.next(false);
+          this.successMessage = '';
+        }, 3500);
       });
   }
 
