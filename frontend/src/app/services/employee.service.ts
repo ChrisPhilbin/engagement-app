@@ -81,6 +81,7 @@ export class EmployeeService {
       )
       .subscribe((employee: Employee) => {
         this.getAllEmployees();
+        this.getOutstandingInteractions();
       });
   }
 

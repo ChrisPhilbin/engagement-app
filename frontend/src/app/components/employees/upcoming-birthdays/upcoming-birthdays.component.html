@@ -4,7 +4,7 @@
       <li *ngFor="let employee of birthdays">
         <a [routerLink]="['/employees', employee.employeeId]"
           >{{ employee.firstName + " " + employee.lastName }} -
-          {{ employee.birthDate | date: "EEEE, MMMM d" }}</a
+          {{ employee.birthDate | date: "MMMM d" }}</a
         >
       </li>
     </ul>

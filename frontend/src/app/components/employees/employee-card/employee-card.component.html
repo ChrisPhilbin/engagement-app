@@ -3,7 +3,8 @@
   [ngClass]="
     !employee.hasRecentInteraction ||
     employee.hasUpcomingBirthday ||
-    employee.hasUpcomingWorkAnniversary
+    employee.hasUpcomingWorkAnniversary ||
+    employeeHasOutstandingActionItems(employee.meetings)
       ? 'border-red-500'
       : ''
   "

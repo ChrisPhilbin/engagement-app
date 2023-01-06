@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       if (params['sessionExpired']) {
         this.sessionExpired = true;
       }
-      if (params['demo'] === 'true') {
+      if (params['demo'] === 'true' && this.isLoginMode) {
         this.showDemoGreeting = true;
         this.demoGreetingMessage =
           '<strong>Welcome!</strong> Looks like this app is in demo mode given the route query params! Please use the following credentials to login:<br /> <strong>Username:</strong> chris@test.com<br /> <strong>Password:</strong> password123';
@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
+    this.showDemoGreeting = !this.showDemoGreeting;
   }
 
   onSubmit(form: NgForm) {
