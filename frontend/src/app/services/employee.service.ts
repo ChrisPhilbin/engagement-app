@@ -30,7 +30,6 @@ export class EmployeeService {
   constructor(private http: HttpClient) {}
 
   getAllEmployees() {
-    console.log('Getting all employees');
     this.http
       .get<Employee[]>(`${environment.firebaseApiUrl}/employees`)
       .subscribe((employees: Employee[]) => {

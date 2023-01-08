@@ -29,12 +29,6 @@ export class AuthInterceptorService implements HttpInterceptor {
             .set('lastInteractionThreshold', user.lastInteractionThreshold)
             .set('workAnniversaryThreshold', user.workAnniversaryThreshold),
         });
-        console.log(
-          user.birthdateThreshold,
-          user.lastInteractionThreshold,
-          user.workAnniversaryThreshold,
-          'user app settings from auth interceptor'
-        );
         return next.handle(modifiedRequest);
       })
     );

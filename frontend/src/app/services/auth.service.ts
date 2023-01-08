@@ -171,7 +171,6 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    console.log('isAuthenticated method is running');
     //need to set cookie with user info upon initial auth
     //then get the token from the cookie and see if it is active
     //@ts-ignore
