@@ -57,8 +57,7 @@ export class NavComponent implements OnInit {
               label: 'Settings',
               icon: 'pi pi-fw pi-cog',
               visible: this.isLoggedIn,
-              command: ($event) =>
-                this.settingsService.toggleSettingsModal($event),
+              command: () => this.settingsService.toggleSettingsModal(),
             },
             {
               label: 'Logout',

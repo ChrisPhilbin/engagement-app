@@ -2,7 +2,6 @@ const moment = require("moment");
 const { defaultAppSettings } = require("./settingsHelper");
 
 exports.hasUpcomingBirthday = (employeeBirthdate, threshold = defaultAppSettings.birthdateThreshold) => {
-  console.log(threshold, "threshold from hasupcomingbirthday");
   if (!employeeBirthdate) {
     return false;
   }
@@ -45,7 +44,6 @@ exports.hasRecentInteraction = (
   if (!employeeLastInteractionDate) {
     return false;
   }
-  console.log(threshold, "last interaction threshold");
   const now = moment();
   const weekOld = now.clone().subtract(threshold, "days").startOf("day");
 

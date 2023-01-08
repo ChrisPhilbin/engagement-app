@@ -9,7 +9,7 @@
     <!-- Modal BG Overlay -->
     <div
       class="fixed inset-0 transition-opacity"
-      (click)="settingsService.toggleSettingsModal($event)"
+      (click)="settingsService.toggleSettingsModal()"
     >
       <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
     </div>
@@ -30,7 +30,7 @@
           <!-- Modal Close Button -->
           <div
             class="modal-close cursor-pointer z-50"
-            (click)="settingsService.toggleSettingsModal($event)"
+            (click)="settingsService.toggleSettingsModal()"
           >
             &#x2715;
           </div>
@@ -46,7 +46,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 p-3">
               <div class="flex items-center">
                 <label for="lastInteractionThreshold"
-                  >Last interaction threshold</label
+                  ><p class="text-sm md:text-base">
+                    Last interaction threshold
+                  </p></label
                 ><br />
               </div>
 
@@ -81,7 +83,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 p-3">
               <div class="flex items-center">
-                <label for="birthdateThreshold">Birthday threshold</label><br />
+                <label for="birthdateThreshold"
+                  ><p class="text-sm md:text-base">Birthday threshold</p></label
+                ><br />
               </div>
 
               <div>
@@ -116,7 +120,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 p-3">
               <div class="flex items-center">
                 <label for="workAnniversaryThreshold"
-                  >Work Anniversary threshold</label
+                  ><p class="text-sm md:text-base">
+                    Work Anniversary threshold
+                  </p></label
                 ><br />
               </div>
 
@@ -147,24 +153,22 @@
                   max of 60.
                 </p>
               </div>
+            </div>
 
-              <div class="my-4 col-span-2">
-                <p class="text-center text-green-600 font-bold">
-                  {{ settingsService.successMessage }}
-                </p>
-                <button
-                  type="submit"
-                  [disabled]="settingsForm.invalid"
-                  class="p-4 mr-4 bg-emerald-700 hover:bg-emerald-800 rounded-lg font-bold text-white"
-                  [ngClass]="
-                    settingsForm.invalid
-                      ? 'cursor-not-allowed'
-                      : 'cursor-pointer'
-                  "
-                >
-                  Save
-                </button>
-              </div>
+            <div class="my-4 col-span-2">
+              <p class="text-center text-green-600 font-bold">
+                {{ settingsService.successMessage }}
+              </p>
+              <button
+                type="submit"
+                [disabled]="settingsForm.invalid"
+                class="p-4 mr-4 bg-emerald-700 hover:bg-emerald-800 rounded-lg font-bold text-white"
+                [ngClass]="
+                  settingsForm.invalid ? 'cursor-not-allowed' : 'cursor-pointer'
+                "
+              >
+                Save
+              </button>
             </div>
           </form>
 

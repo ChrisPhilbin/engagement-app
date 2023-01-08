@@ -33,6 +33,7 @@ export class SettingsComponent implements OnInit {
   isVisible = false;
 
   ngOnInit(): void {
+    console.log('Settings modal mounted.');
     this.initForm();
     this.isLoading = true;
     this.settingsService.getAppSettings();
