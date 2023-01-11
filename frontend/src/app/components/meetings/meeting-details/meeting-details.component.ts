@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MeetingService } from 'src/app/services/meeting.service';
 import { Meeting } from 'src/models/meeting-model';
@@ -17,7 +18,8 @@ export class MeetingDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private meetingService: MeetingService
+    private meetingService: MeetingService,
+    public sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +32,6 @@ export class MeetingDetailsComponent implements OnInit {
       );
       this.meetingService.meeting.subscribe((meeting: Meeting) => {
         this.meeting = meeting;
-        console.log(this.meeting, 'meeting');
       });
     });
   }

@@ -20,7 +20,10 @@
   >
     Delete Meeting
   </button>
-  <div class="bg-gray-50 p-4 my-4 rounded-md" [innerHTML]="meeting.notes"></div>
+  <div
+    class="bg-gray-50 p-4 my-4 rounded-md"
+    [innerHTML]="sanitizer.bypassSecurityTrustHtml(meeting.notes)"
+  ></div>
   <div *ngIf="meeting.agreedUponActions">
     <p class="font-bold text-xl mb-2">Agreed upon actions</p>
     <li *ngFor="let action of meeting.agreedUponActions">

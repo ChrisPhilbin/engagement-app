@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { MessageService } from 'primeng/api';
 import { MeetingService } from 'src/app/services/meeting.service';
 import { environment } from 'src/environments/environment';
 import { AgreedUponAction, Meeting } from 'src/models/meeting-model';
@@ -10,6 +11,7 @@ import { AgreedUponAction, Meeting } from 'src/models/meeting-model';
   selector: 'app-meeting-form',
   templateUrl: './meeting-form.component.html',
   styleUrls: ['./meeting-form.component.css'],
+  providers: [MessageService],
 })
 export class MeetingFormComponent implements OnInit {
   meeting: Meeting;
@@ -22,7 +24,8 @@ export class MeetingFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private meetingService: MeetingService
+    private meetingService: MeetingService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -131,10 +134,23 @@ export class MeetingFormComponent implements OnInit {
         this.meetingId,
         newMeeting
       );
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Changes successfully made!',
+        detail: 'The changes you made to the meeting have been saved.',
+      });
+      setTimeout(() => {
+        this.router.navigate([
+          '/employees',
+          this.employeeId,
+          'meetings',
+          this.meetingId,
+        ]);
+      }, 3000);
     } else {
       this.meetingService.createNewMeeting(this.employeeId, newMeeting);
+      this.router.navigate(['/employees', this.employeeId]);
     }
-    this.router.navigate(['/employees', this.employeeId]);
   }
 
   addAgreedUponAction() {
