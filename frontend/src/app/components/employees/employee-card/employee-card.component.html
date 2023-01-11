@@ -118,7 +118,9 @@
     >
     <button
       class="p-2 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold font-nunito"
-      (click)="employeeService.updateEmployeeLastInteraction(employee)"
+      appPreventDoubleClick
+      (throttledClick)="employeeService.updateEmployeeLastInteraction(employee)"
+      [throttleTime]="1500"
     >
       Log Interaction
     </button>

@@ -18,9 +18,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
 import { LoadingComponent } from '../components/util/loading/loading.component';
+import { PreventDoubleClickDirective } from './click.directive';
 
 @NgModule({
-  declarations: [LoadingComponent],
+  declarations: [LoadingComponent, PreventDoubleClickDirective],
   imports: [CommonModule, ProgressSpinnerModule],
   exports: [
     MenubarModule,
@@ -41,6 +42,7 @@ import { LoadingComponent } from '../components/util/loading/loading.component';
     TooltipModule,
     MenuModule,
     LoadingComponent,
+    PreventDoubleClickDirective,
   ],
 })
 export class SharedModule {}
