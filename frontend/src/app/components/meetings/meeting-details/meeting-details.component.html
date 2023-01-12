@@ -5,6 +5,16 @@
       ><i class="pi pi-user-edit"></i
     ></a>
   </p>
+  <p class="text-gray-500 italic underline mb-2 hover:text-black">
+    <a [routerLink]="['/employees', employeeId]"
+      ><< Back to
+      <span *ngIf="employeeRecord"
+        >{{ employeeRecord.firstName + " " + employeeRecord.lastName }}'s</span
+      >
+      <span *ngIf="!employeeRecord">employee</span>
+      details</a
+    >
+  </p>
   <a [routerLink]="['/employees', employeeId, 'meetings', meetingId, 'edit']">
     <button
       type="button"

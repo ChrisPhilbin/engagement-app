@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { MeetingService } from 'src/app/services/meeting.service';
+import { Employee } from 'src/models/employee-model';
 import { Meeting } from 'src/models/meeting-model';
 
 @Component({
@@ -14,12 +16,14 @@ export class MeetingDetailsComponent implements OnInit {
   meetingId: string = '';
   //@ts-ignore
   meeting: Meeting;
+  employeeRecord: Employee | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private meetingService: MeetingService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +36,11 @@ export class MeetingDetailsComponent implements OnInit {
       );
       this.meetingService.meeting.subscribe((meeting: Meeting) => {
         this.meeting = meeting;
+      });
+      this.employeeService.employees.subscribe((employees) => {
+        this.employeeRecord = employees.find((employee) => {
+          return employee.employeeId === this.employeeId;
+        });
       });
     });
   }

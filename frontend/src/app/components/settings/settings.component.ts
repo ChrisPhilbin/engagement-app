@@ -33,7 +33,6 @@ export class SettingsComponent implements OnInit {
   isVisible = false;
 
   ngOnInit(): void {
-    console.log('Settings modal mounted.');
     this.initForm();
     this.isLoading = true;
     this.settingsService.getAppSettings();
@@ -54,7 +53,6 @@ export class SettingsComponent implements OnInit {
       },
     });
     this.settingsService.showSettingsModal.subscribe((showModal) => {
-      console.log(showModal, 'show modal value from subscription');
       this.isVisible = showModal;
     });
   }
