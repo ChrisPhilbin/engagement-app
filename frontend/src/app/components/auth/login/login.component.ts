@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AuthResponseData, AuthService } from '../../../services/auth.service';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,16 @@ export class LoginComponent implements OnInit {
   sessionExpired = false;
   showDemoGreeting = false;
   demoGreetingMessage = '';
+
+  // ngOnInit(): void {
+  //   // this.route.paramMap.subscribe((params: Params) => {
+  //   //   console.log(params, 'demo from login component');
+  //   // });
+  //   this.route.queryParams.pipe(skip(1)).subscribe((params: Params) => {
+  //     console.log(params, 'Params from login component');
+  //   });
+  //   console.log(window.location.href);
+  // }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {

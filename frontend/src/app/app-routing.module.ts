@@ -9,7 +9,6 @@ import { MeetingFormComponent } from './components/meetings/meeting-form/meeting
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
@@ -46,6 +45,7 @@ const routes: Routes = [
     component: MeetingFormComponent,
     canActivate: [AuthGuard],
   },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -116,7 +116,6 @@ export class AuthService {
     }).pipe(
       catchError(this.handleError),
       tap((responseData) => {
-        console.log(responseData, 'RESPONSE DATA...');
         this.handleAuthentication(
           responseData.authResponseData.email,
           responseData.authResponseData.localId,
@@ -156,6 +155,7 @@ export class AuthService {
   // }
 
   public logout() {
+    console.log('Logging out.');
     this.cookieService.deleteAll();
     // this.cookieService.delete('email', '/');
     // this.cookieService.delete('userId', '/');
@@ -175,6 +175,10 @@ export class AuthService {
     //then get the token from the cookie and see if it is active
     //@ts-ignore
     const token: string = this.cookieService.get('token');
+
+    if (!token) {
+      return false;
+    }
 
     if (this.jwtHelper.isTokenExpired(token)) {
       this.logout();
