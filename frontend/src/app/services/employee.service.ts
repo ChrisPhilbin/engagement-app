@@ -16,6 +16,7 @@ import {
   EmployeeInteraction,
 } from 'src/models/employee-model';
 import { environment } from 'src/environments/environment';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -112,6 +113,25 @@ export class EmployeeService {
       .subscribe((employeeInteractions: EmployeeInteraction[]) => {
         this.employeeInteractions.next(employeeInteractions);
       });
+  }
+
+  uploadEmployeeProfilePicture(file: File, uniqueId: string) {
+    const formData = new FormData();
+    formData.append('inboundProfilePicture', file);
+    formData.append('uniqueId', uniqueId);
+
+    const headers = new HttpHeaders().set(
+      'content-type',
+      'multipart/form-data'
+    );
+
+    return this.http.post<any>(
+      `${environment.firebaseApiUrl}/files`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
   }
 
   filterByName(name: string): Observable<Employee[]> {

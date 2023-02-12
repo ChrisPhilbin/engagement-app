@@ -1,7 +1,11 @@
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
+const config = require("./config");
+const { getStorage } = require("firebase-admin/storage");
 
-admin.initializeApp();
+admin.initializeApp(config);
 
 const db = admin.firestore();
 
-module.exports = { admin, db };
+const bucket = getStorage().bucket("profile-pictures");
+
+module.exports = { admin, db, bucket };

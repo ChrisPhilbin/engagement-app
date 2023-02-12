@@ -8,6 +8,7 @@ import {
   EmployeeRelation,
 } from 'src/models/employee-model';
 import { relations } from 'src/models/relationship-model';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-employee-form',
@@ -22,6 +23,8 @@ export class EmployeeFormComponent implements OnInit {
   employeeId: string;
   editMode: boolean = false;
   initialValues = null;
+  hasUploadedProfilePicture = false;
+  uploadedPictureUrl = '';
 
   //@ts-ignore
   hireDate: Date;
@@ -210,6 +213,23 @@ export class EmployeeFormComponent implements OnInit {
     if (confirm('Are you sure you want to revert all form fields?')) {
       this.employeeForm.reset(this.initialValues);
     }
+  }
+
+  uploadProfilePicture($event: Event) {
+    const profilePictureUuid = uuid();
+    const target = $event.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+
+    this.employeeService
+      .uploadEmployeeProfilePicture(file, profilePictureUuid)
+      .subscribe((incomingProfilePictureUrl) => {
+        this.hasUploadedProfilePicture = true;
+        this.uploadedPictureUrl = incomingProfilePictureUrl.profilePictureUrl;
+        this.employeeForm.patchValue({
+          profilePictureUrl: this.uploadedPictureUrl,
+        });
+        this.employeeForm.controls['profilePictureUrl'].disable();
+      });
   }
 
   get f() {

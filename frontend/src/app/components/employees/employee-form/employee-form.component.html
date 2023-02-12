@@ -115,6 +115,22 @@
       </div>
     </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 p-3">
+      <div class="flex items-center">
+        <label for="email">Upload profile picture</label><br />
+      </div>
+      <div class="">
+        <input
+          type="file"
+          id="profilePictureFile"
+          formControlName="profilePictureFile"
+          placeholder="Upload profile picture"
+          class="border-2 m-2 p-3 rounded-lg"
+          (change)="uploadProfilePicture($event)"
+        />
+      </div>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 p-3 bg-amber-100">
       <div class="flex items-center">
         <label for="email">Facebook Profile</label><br />

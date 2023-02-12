@@ -1,8 +1,14 @@
+const { readFileSync } = require("node:fs");
 const { db, admin } = require("../util/admin");
 const { config } = require("../util/config");
-const firebase = require("firebase");
+const { initializeApp } = require("firebase/app");
+const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
+const { ref, uploadBytes, getDownloadURL, getStorage } = require("firebase/storage");
+const formidable = require("formidable-serverless");
 
-firebase.initializeApp(config);
+const firebaseApp = initializeApp(config);
+const auth = getAuth(firebaseApp);
+const storage = getStorage(firebaseApp);
 
 const { validateLoginData, validateSignUpData } = require("../util/validators");
 const { defaultAppSettings } = require("../util/settingsHelper");
@@ -17,7 +23,7 @@ exports.loginUser = async (request, response) => {
   if (!valid) return response.status(400).json(errors);
 
   try {
-    const signedInUser = await firebase.auth().signInWithEmailAndPassword(user.email, user.password);
+    const signedInUser = await signInWithEmailAndPassword(auth, user.email, user.password);
     if (signedInUser) {
       const userInfoRef = await db.collection("users").where("userId", "==", signedInUser.user.uid).get();
       return response.status(200).json(userInfoRef.docs[0].data());
@@ -115,4 +121,30 @@ exports.getUserAppSettings = (request, response) => {
       console.error(error);
       return response.status(500).json({ error: error });
     });
+};
+
+exports.uploadFile = (request, response) => {
+  const form = formidable({ multiples: true });
+  form.parse(request, (error, fields, files) => {
+    if (error) {
+      console.log(error);
+      return response.status(400).json({ error: "Something went wrong. Please try again." });
+    }
+
+    if (!files.inboundProfilePicture) {
+      return response.status(400).json({ error: "Photo cannot be blank." });
+    }
+
+    if (!files.inboundProfilePicture.type.includes("image")) {
+      return response.status(400).json({ error: "File must be an image." });
+    }
+
+    const storageRef = ref(storage, `/profile-pictures/${fields.uniqueId}`);
+
+    uploadBytes(storageRef, readFileSync(files.inboundProfilePicture.path)).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        return response.status(200).json({ profilePictureUrl: url });
+      });
+    });
+  });
 };
