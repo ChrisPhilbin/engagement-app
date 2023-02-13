@@ -139,7 +139,7 @@ exports.uploadFile = (request, response) => {
       return response.status(400).json({ error: "File must be an image." });
     }
 
-    const storageRef = ref(storage, `/profile-pictures/${fields.uniqueId}`);
+    const storageRef = ref(storage, `profile-pictures/${fields.uniqueId}`);
 
     uploadBytes(storageRef, readFileSync(files.inboundProfilePicture.path)).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {

@@ -57,6 +57,6 @@ app.get("/user/settings", auth, getSettings);
 app.put("/user/settings", auth, saveSettings);
 
 const { uploadFile } = require("./api/users");
-app.post("/files", uploadFile);
+app.post("/files", auth, uploadFile);
 
 exports.engagement = functions.https.onRequest(app);

@@ -32,7 +32,7 @@ export class EmployeeFormComponent implements OnInit {
   relations = relations;
   isLoading = false;
   urlRegEx =
-    /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/;
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
@@ -65,6 +65,7 @@ export class EmployeeFormComponent implements OnInit {
     let lastName = '';
     let email = '';
     let profilePictureUrl = '';
+    let profilePictureFile: File | null = null;
     let linkedInUrl = '';
     let facebookUrl = '';
     let hireDate;
@@ -115,6 +116,7 @@ export class EmployeeFormComponent implements OnInit {
       profilePictureUrl: new FormControl(profilePictureUrl, [
         Validators.pattern(this.urlRegEx),
       ]),
+      profilePictureFile: new FormControl(profilePictureFile),
       linkedInUrl: new FormControl(linkedInUrl, [
         Validators.pattern(this.urlRegEx),
       ]),
@@ -228,7 +230,6 @@ export class EmployeeFormComponent implements OnInit {
         this.employeeForm.patchValue({
           profilePictureUrl: this.uploadedPictureUrl,
         });
-        this.employeeForm.controls['profilePictureUrl'].disable();
       });
   }
 
