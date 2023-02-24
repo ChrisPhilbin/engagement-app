@@ -1,5 +1,5 @@
-<div *ngIf="!isLoading">
-  <div class="w-full flex flex-row">
+<div *ngIf="!isLoading" class="md:px-8 sm:px-1">
+  <div class="w-full flex flex-row ml-5">
     <div>
       <a [routerLink]="['/employees/new']">
         <button
@@ -17,13 +17,6 @@
         Filter
       </button>
     </div>
-    <!-- <div class="text-right grow content-center items-center">
-        <i
-          class="pi pi-table hover:cursor-pointer"
-          [ngClass]="showGridLayout ? 'text-blue-600' : ''"
-          (click)="toggleGridLayout()"
-        ></i>
-      </div> -->
   </div>
   <p-overlayPanel #op [showCloseIcon]="true">
     <ng-template pTemplate>

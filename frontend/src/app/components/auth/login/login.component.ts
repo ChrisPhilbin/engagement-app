@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
   sessionExpired = false;
   showDemoGreeting = false;
   demoGreetingMessage = '';
+  email = '';
+  password = '';
 
   // ngOnInit(): void {
   //   // this.route.paramMap.subscribe((params: Params) => {
@@ -50,9 +52,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  prePopulateFields() {
+    this.email = 'chris@test.com';
+    this.password = 'password123';
+  }
+
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
-    this.showDemoGreeting = !this.showDemoGreeting;
   }
 
   onSubmit(form: NgForm) {
