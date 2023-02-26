@@ -73,20 +73,24 @@ export class EmployeeFormComponent implements OnInit {
     let lastInteraction;
     let employeeInterests = new FormArray([]);
     let employeeRelations = new FormArray([]);
+    let employeeFavoriteSportsTeams = new FormArray([]);
 
     if (this.editMode && Object.keys(this.employee)) {
+      console.log(this.employee);
       firstName = this.employee.firstName;
       lastName = this.employee.lastName;
       email = this.employee.email;
       profilePictureUrl = this.employee.profilePictureUrl;
       linkedInUrl = this.employee.linkedInUrl;
       facebookUrl = this.employee.facebookUrl;
-      hireDate = this.employee.hireDate ? new Date(this.employee.hireDate) : '';
+      hireDate = this.employee.hireDate
+        ? new Date(this.employee.hireDate).toISOString().split('T')[0]
+        : '';
       birthDate = this.employee.birthDate
-        ? new Date(this.employee.birthDate)
+        ? new Date(this.employee.birthDate).toISOString().split('T')[0]
         : '';
       lastInteraction = this.employee.lastInteraction
-        ? new Date(this.employee.lastInteraction)
+        ? new Date(this.employee.lastInteraction).toISOString().split('T')[0]
         : '';
       if (this.employee.interests) {
         for (let interest of this.employee.interests) {
@@ -103,6 +107,15 @@ export class EmployeeFormComponent implements OnInit {
             new FormGroup({
               name: new FormControl(relation.name, Validators.required),
               type: new FormControl(relation.type, Validators.required),
+            })
+          );
+        }
+      }
+      if (this.employee.sportsTeams) {
+        for (let team of this.employee.sportsTeams) {
+          employeeFavoriteSportsTeams.push(
+            new FormGroup({
+              teamName: new FormControl(team, Validators.required),
             })
           );
         }
@@ -128,6 +141,7 @@ export class EmployeeFormComponent implements OnInit {
       lastInteraction: new FormControl(lastInteraction),
       interests: employeeInterests,
       relations: employeeRelations,
+      sportsTeams: employeeFavoriteSportsTeams,
     });
   }
 
@@ -139,9 +153,9 @@ export class EmployeeFormComponent implements OnInit {
       profilePictureUrl: this.employeeForm.value['profilePictureUrl'],
       linkedInUrl: this.employeeForm.value['linkedInUrl'],
       facebookUrl: this.employeeForm.value['facebookUrl'],
-      hireDate: this.employeeForm.value['hireDate'],
-      birthDate: this.employeeForm.value['birthDate'],
-      lastInteraction: this.employeeForm.value['lastInteraction'],
+      hireDate: new Date(this.employeeForm.value['hireDate']),
+      birthDate: new Date(this.employeeForm.value['birthDate']),
+      lastInteraction: new Date(this.employeeForm.value['lastInteraction']),
       interests: this.employeeForm.value['interests'].map(
         (intObj: EmployeeInterest) => {
           return intObj.name;
@@ -152,7 +166,14 @@ export class EmployeeFormComponent implements OnInit {
           return { name: relObj.name, type: relObj.type };
         }
       ),
+      sportsTeams: this.employeeForm.value['sportsTeams'].map(
+        (teamObj: any) => {
+          return teamObj.teamName;
+        }
+      ),
     };
+
+    console.log(newEmployee);
 
     if (this.editMode) {
       //@ts-ignore
@@ -198,6 +219,22 @@ export class EmployeeFormComponent implements OnInit {
 
   get relationControls() {
     return (<FormArray>this.employeeForm.get('relations')).controls;
+  }
+
+  onDeleteSportsTeam(index: number): void {
+    (<FormArray>this.employeeForm.get('sportsTeams')).removeAt(index);
+  }
+
+  onAddSportsTeam(): void {
+    (<FormArray>this.employeeForm.get('sportsTeams')).push(
+      new FormGroup({
+        teamName: new FormControl(null, Validators.required),
+      })
+    );
+  }
+
+  get sportsTeamControls() {
+    return (<FormArray>this.employeeForm.get('sportsTeams')).controls;
   }
 
   cancelEntry() {
