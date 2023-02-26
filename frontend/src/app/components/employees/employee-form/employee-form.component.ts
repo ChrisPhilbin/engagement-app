@@ -76,7 +76,6 @@ export class EmployeeFormComponent implements OnInit {
     let employeeFavoriteSportsTeams = new FormArray([]);
 
     if (this.editMode && Object.keys(this.employee)) {
-      console.log(this.employee);
       firstName = this.employee.firstName;
       lastName = this.employee.lastName;
       email = this.employee.email;
