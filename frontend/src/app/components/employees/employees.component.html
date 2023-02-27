@@ -1,4 +1,4 @@
-<div *ngIf="!isLoading" class="md:px-8 sm:px-1">
+<div *ngIf="!isLoading; else loading" class="md:px-8 sm:px-1">
   <div class="w-full flex flex-row ml-5">
     <div>
       <a [routerLink]="['/employees/new']">
@@ -94,6 +94,6 @@
     <app-employee-table [employees]="employees"></app-employee-table>
   </ng-template>
 </div>
-<ng-template *ngIf="isLoading">
+<ng-template #loading>
   <app-loading></app-loading>
 </ng-template>
