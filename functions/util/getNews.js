@@ -7,12 +7,13 @@ exports.getInterestUpdates = async (interests) => {
   }
 
   let today = new Date();
-  now = today.toISOString().split("T")[0]; //returns YYYY-MM-DD
+  const yesterday = new Date(today.setDate(today.getDate() - 1)).toISOString().split("T")[0];
+
   let promisesUrl = [];
 
   interests.forEach((interest) => {
     promisesUrl.push(
-      `http://newsapi.org/v2/everything?q=${interest}&from=${now}&sortBy=popularity&pageSize=1&apiKey=${newsApiKey}`
+      `http://newsapi.org/v2/everything?q=${interest}&from=${yesterday}&to=${yesterday}&sortBy=popularity&pageSize=1&apiKey=${newsApiKey}`
     );
   });
 
