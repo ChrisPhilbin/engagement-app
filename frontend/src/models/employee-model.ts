@@ -14,6 +14,7 @@ export interface Employee {
   interests: string[];
   lastInteraction: string;
   sportsTeams: string[];
+  pets: IPet[];
   relations: [{ type: string; name: string }];
   userId?: string;
   employeeId: string;
@@ -22,6 +23,11 @@ export interface Employee {
   hasRecentInteraction?: boolean;
   newsFeed: NewsFeedItem[];
   meetings: Meeting[];
+}
+
+export interface IPet {
+  name: string;
+  type: string;
 }
 
 export interface EmployeeInterest {

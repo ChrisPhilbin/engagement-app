@@ -6,6 +6,7 @@ import {
   Employee,
   EmployeeInterest,
   EmployeeRelation,
+  IPet,
 } from 'src/models/employee-model';
 import { relations } from 'src/models/relationship-model';
 import { v4 as uuid } from 'uuid';
@@ -74,6 +75,7 @@ export class EmployeeFormComponent implements OnInit {
     let employeeInterests = new FormArray([]);
     let employeeRelations = new FormArray([]);
     let employeeFavoriteSportsTeams = new FormArray([]);
+    let employeePets = new FormArray([]);
 
     if (this.editMode && Object.keys(this.employee)) {
       firstName = this.employee.firstName;
@@ -119,6 +121,16 @@ export class EmployeeFormComponent implements OnInit {
           );
         }
       }
+      if (this.employee.pets) {
+        for (let pet of this.employee.pets) {
+          employeePets.push(
+            new FormGroup({
+              name: new FormControl(pet.name, Validators.required),
+              type: new FormControl(pet.type, Validators.required),
+            })
+          );
+        }
+      }
     }
 
     this.employeeForm = new FormGroup({
@@ -141,6 +153,7 @@ export class EmployeeFormComponent implements OnInit {
       interests: employeeInterests,
       relations: employeeRelations,
       sportsTeams: employeeFavoriteSportsTeams,
+      pets: employeePets,
     });
   }
 
@@ -170,6 +183,9 @@ export class EmployeeFormComponent implements OnInit {
           return teamObj.teamName;
         }
       ),
+      pets: this.employeeForm.value['pets'].map((pet: IPet) => {
+        return pet;
+      }),
     };
 
     console.log(newEmployee);
@@ -234,6 +250,23 @@ export class EmployeeFormComponent implements OnInit {
 
   get sportsTeamControls() {
     return (<FormArray>this.employeeForm.get('sportsTeams')).controls;
+  }
+
+  onDeletePet(index: number): void {
+    (<FormArray>this.employeeForm.get('pets')).removeAt(index);
+  }
+
+  onAddPet(): void {
+    (<FormArray>this.employeeForm.get('pets')).push(
+      new FormGroup({
+        name: new FormControl(null, Validators.required),
+        type: new FormControl(null, Validators.required),
+      })
+    );
+  }
+
+  get petControls() {
+    return (<FormArray>this.employeeForm.get('pets')).controls;
   }
 
   cancelEntry() {
