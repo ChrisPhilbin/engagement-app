@@ -32,6 +32,7 @@ exports.createEmployee = (request, response) => {
     interests: request.body.interests || [],
     relations: request.body.relations || [],
     sportsTeams: request.body.sportsTeams || [],
+    pets: request.body.pets || [],
   };
 
   db.collection("employees")
@@ -69,6 +70,7 @@ exports.getAllEmployees = async (request, response) => {
         lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
         interests: doc.data().interests,
         sportsTeams: doc.data().sportsTeams,
+        pets: doc.data().pets ? doc.data().pets : null,
         relations: doc.data().relations,
       });
     });
@@ -114,6 +116,7 @@ exports.getSingleEmployee = (request, response) => {
       employeeData.hasRecentInteraction = hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold);
       (employeeData.interests = doc.data().interests ? doc.data().interests : null),
         (employeeData.sportsTeams = doc.data().sportsTeams ? doc.data().sportsTeams : null),
+        (employeeData.pets = doc.data().pets ? doc.data().pets : null),
         (employeeData.relations = doc.data().relations ? doc.data().relations : null),
         await getInterestUpdates(doc.data().interests).then((interests) => {
           employeeData.newsFeed = interests;
