@@ -68,6 +68,8 @@
     <li *ngFor="let interest of employee.interests">
       {{ interest | titlecase }}
     </li>
+    <strong>Pets:</strong><br />
+    <li *ngFor="let pet of employee.pets">{{ pet.name }} - {{ pet.type }}</li>
     <strong>Favorite sports teams:</strong><br />
     <li *ngFor="let team of employee.sportsTeams">
       {{ team }}

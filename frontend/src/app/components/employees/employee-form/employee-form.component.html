@@ -300,7 +300,9 @@
         </div>
       </div>
     </div>
-    <div class="grid md:grid-cols-2 md:gap-6">
+    <div
+      class="grid md:grid-cols-2 md:gap-6 border-b-2 border-emerald-300 mb-6"
+    >
       <div class="relative z-0 w-full mb-6 group">
         <p class="font-bold text-gray-900">Favorite sports teams</p>
       </div>
@@ -352,6 +354,79 @@
                 class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
               >
                 Add Team
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 md:gap-6">
+      <div class="relative z-0 w-full mb-6 group">
+        <p class="font-bold text-gray-900">Pets</p>
+      </div>
+      <div class="relative z-0 w-full mb-6 group">
+        <div formArrayName="pets">
+          <span *ngIf="petControls.length === 0"
+            ><p class="italic text-gray-500 text-sm">
+              No pets defined yet.
+            </p></span
+          >
+          <div
+            class="w-full flex flex-row align-middle"
+            *ngFor="let petCtrl of petControls; let i = index"
+            [formGroupName]="i"
+          >
+            <div class="w-full relative mt-3 px-1">
+              <input
+                formControlName="name"
+                type="text"
+                id="name"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
+              />
+              <label
+                for="name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Pet's name</label
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 absolute top-4 right-0 inline cursor-pointer text-emerald-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                (click)="onDeletePet(i)"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+
+            <div class="w-full mt-3 px-1 relative">
+              <input
+                formControlName="type"
+                type="text"
+                id="type"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
+              />
+              <label
+                for="type"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Pet type</label
+              >
+            </div>
+          </div>
+          <div>
+            <div>
+              <button
+                type="button"
+                (click)="onAddPet()"
+                class="mt-4 ml-2 px-3 py-2 text-sm font-bold text-center text-white bg-emerald-700 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+              >
+                Add Pet
               </button>
             </div>
           </div>
