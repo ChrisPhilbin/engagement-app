@@ -188,8 +188,6 @@ export class EmployeeFormComponent implements OnInit {
       }),
     };
 
-    console.log(newEmployee);
-
     if (this.editMode) {
       //@ts-ignore
       this.employeeService.updateExistingEmployee(newEmployee, this.employeeId);

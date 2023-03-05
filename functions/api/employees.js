@@ -4,6 +4,7 @@ const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 const { validRelations } = require("../util/relations");
 const { meetingsHelper, defaultAppSettings } = require("./meetings");
 const configureUserAppSettings = require("../util/settingsHelper");
+const { setupEmployeeObject, setupEmployeeObjectWithNews } = require("../util/employeeHelper");
 
 exports.createEmployee = (request, response) => {
   if (request.body.firstName.trim() === "" || !request.user.uid) {
@@ -52,27 +53,14 @@ exports.getAllEmployees = async (request, response) => {
   try {
     const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
     let employees = [];
-    employeesRef.forEach((doc) => {
-      employees.push({
-        employeeId: doc.id,
-        firstName: doc.data().firstName,
-        lastName: doc.data().lastName,
-        email: doc.data().email,
-        linkedInUrl: doc.data().linkedInUrl,
-        facebookUrl: doc.data().facebookUrl,
-        profilePictureUrl: doc.data().profilePictureUrl,
-        createdAt: doc.data().createdAt,
-        hireDate: doc.data().hireDate ? doc.data().hireDate.toDate() : "",
-        birthDate: doc.data().birthDate ? doc.data().birthDate.toDate() : "",
-        hasUpcomingBirthday: hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold),
-        hasUpcomingWorkAnniversary: hasUpcomingWorkAnniversary(doc.data().hireDate, workanniversarythreshold),
-        hasRecentInteraction: hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold),
-        lastInteraction: doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : "",
-        interests: doc.data().interests,
-        sportsTeams: doc.data().sportsTeams,
-        pets: doc.data().pets ? doc.data().pets : null,
-        relations: doc.data().relations,
-      });
+    employeesRef.forEach((employeeDocument) => {
+      employees.push(
+        setupEmployeeObject(employeeDocument, {
+          birthdatethreshold,
+          lastinteractionthreshold,
+          workanniversarythreshold,
+        })
+      );
     });
     for (const singleEmployee of employees) {
       const meetingsSnapshot = await db
@@ -103,26 +91,10 @@ exports.getSingleEmployee = (request, response) => {
       if (doc.data().userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
-      employeeData = doc.data();
-      employeeData.hireDate = doc.data().hireDate ? doc.data().hireDate.toDate() : null;
-      employeeData.birthDate = doc.data().birthDate ? doc.data().birthDate.toDate() : null;
-      employeeData.lastInteraction = doc.data().lastInteraction ? doc.data().lastInteraction.toDate() : null;
-      employeeData.employeeId = doc.id;
-      employeeData.hasUpcomingBirthday = hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold);
-      employeeData.hasUpcomingWorkAnniversary = hasUpcomingWorkAnniversary(
-        doc.data().hireDate,
-        workanniversarythreshold
-      );
-      employeeData.hasRecentInteraction = hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold);
-      (employeeData.interests = doc.data().interests ? doc.data().interests : null),
-        (employeeData.sportsTeams = doc.data().sportsTeams ? doc.data().sportsTeams : null),
-        (employeeData.pets = doc.data().pets ? doc.data().pets : null),
-        (employeeData.relations = doc.data().relations ? doc.data().relations : null),
-        await getInterestUpdates(doc.data().interests).then((interests) => {
-          employeeData.newsFeed = interests;
-        });
-      await getInterestUpdates(doc.data().sportsTeams).then((sportsNews) => {
-        employeeData.sportsNews = sportsNews;
+      let employeeData = await setupEmployeeObjectWithNews(doc, {
+        birthdatethreshold,
+        lastinteractionthreshold,
+        workanniversarythreshold,
       });
       return response.status(200).json(employeeData);
     })
@@ -132,7 +104,8 @@ exports.getSingleEmployee = (request, response) => {
     });
 };
 
-exports.updateEmployee = (request, response) => {
+exports.updateEmployee = async (request, response) => {
+  const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } = request.headers;
   if (request.body.createdAt || request.body.employeeId) {
     return response.status(403).json({ error: "Not allowed to edit" });
   }
@@ -145,9 +118,15 @@ exports.updateEmployee = (request, response) => {
   request.body.lastInteraction = request.body.lastInteraction ? new Date(request.body.lastInteraction) : "";
 
   let document = db.collection("employees").doc(`${request.params.employeeId}`);
-  document
-    .update(request.body)
-    .then((updatedEmployee) => {
+  document.update(request.body);
+  db.doc(`/employees/${request.params.employeeId}`)
+    .get()
+    .then(async (updatedEmployeeDocument) => {
+      let updatedEmployee = await setupEmployeeObjectWithNews(updatedEmployeeDocument, {
+        birthdatethreshold,
+        lastinteractionthreshold,
+        workanniversarythreshold,
+      });
       updatedEmployee.employeeId = request.params.employeeId;
       return response.status(200).json(updatedEmployee);
     })
