@@ -46,11 +46,13 @@ export class EmployeeDetailsComponent implements OnInit, OnChanges {
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params['edit'] === 'success') {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success!',
-          detail: 'Employee details have been successfully updated!',
-        });
+        setTimeout(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Employee details have been successfully updated!',
+          });
+        }, 500);
       }
     });
   }
