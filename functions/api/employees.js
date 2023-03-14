@@ -1,9 +1,6 @@
 const { db } = require("../util/admin");
 const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
-const { fetchInterests, getInterestUpdates } = require("../util/getNews");
 const { validRelations } = require("../util/relations");
-const { meetingsHelper, defaultAppSettings } = require("./meetings");
-const configureUserAppSettings = require("../util/settingsHelper");
 const { setupEmployeeObject, setupEmployeeObjectWithNews } = require("../util/employeeHelper");
 
 exports.createEmployee = (request, response) => {
@@ -49,18 +46,11 @@ exports.createEmployee = (request, response) => {
 };
 
 exports.getAllEmployees = async (request, response) => {
-  const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } = request.headers;
   try {
     const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
     let employees = [];
     employeesRef.forEach((employeeDocument) => {
-      employees.push(
-        setupEmployeeObject(employeeDocument, {
-          birthdatethreshold,
-          lastinteractionthreshold,
-          workanniversarythreshold,
-        })
-      );
+      employees.push(setupEmployeeObject(employeeDocument, request.headers));
     });
     for (const singleEmployee of employees) {
       const meetingsSnapshot = await db
@@ -81,7 +71,6 @@ exports.getAllEmployees = async (request, response) => {
 };
 
 exports.getSingleEmployee = (request, response) => {
-  const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } = request.headers;
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then(async (doc) => {
@@ -91,11 +80,7 @@ exports.getSingleEmployee = (request, response) => {
       if (doc.data().userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
-      let employeeData = await setupEmployeeObjectWithNews(doc, {
-        birthdatethreshold,
-        lastinteractionthreshold,
-        workanniversarythreshold,
-      });
+      let employeeData = await setupEmployeeObjectWithNews(doc, request.headers);
       return response.status(200).json(employeeData);
     })
     .catch((error) => {
@@ -105,7 +90,6 @@ exports.getSingleEmployee = (request, response) => {
 };
 
 exports.updateEmployee = async (request, response) => {
-  const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } = request.headers;
   if (request.body.createdAt || request.body.employeeId) {
     return response.status(403).json({ error: "Not allowed to edit" });
   }
@@ -122,11 +106,7 @@ exports.updateEmployee = async (request, response) => {
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then(async (updatedEmployeeDocument) => {
-      let updatedEmployee = await setupEmployeeObjectWithNews(updatedEmployeeDocument, {
-        birthdatethreshold,
-        lastinteractionthreshold,
-        workanniversarythreshold,
-      });
+      let updatedEmployee = await setupEmployeeObjectWithNews(updatedEmployeeDocument, request.headers);
       updatedEmployee.employeeId = request.params.employeeId;
       return response.status(200).json(updatedEmployee);
     })

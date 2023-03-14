@@ -4,6 +4,5 @@ exports.getAppSettingsFromHeader = (requestHeader) => {
     lastinteractionthreshold: requestHeader.lastinteractionthreshold,
     workanniversarythreshold: requestHeader.workanniversarythreshold,
   };
-
   return configData;
 };
