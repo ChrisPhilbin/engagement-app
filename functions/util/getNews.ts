@@ -1,15 +1,16 @@
-const axios = require("axios");
-const { newsApiKey } = require("./config");
+import axios from "axios";
+import { INews } from "../api/models/news-model";
+import { newsApiKey } from "./config";
 
-exports.getInterestUpdates = async (interests) => {
+export const getInterestUpdates = async (interests: string[]): Promise<INews[] | null> => {
   if (!interests || interests.length === 0) {
     return null;
   }
 
-  let today = new Date();
-  const yesterday = new Date(today.setDate(today.getDate() - 1)).toISOString().split("T")[0];
+  let today: Date = new Date();
+  const yesterday: string = new Date(today.setDate(today.getDate() - 1)).toISOString().split("T")[0];
 
-  let promisesUrl = [];
+  let promisesUrl: string[] = [];
 
   interests.forEach((interest) => {
     promisesUrl.push(
@@ -19,7 +20,7 @@ exports.getInterestUpdates = async (interests) => {
 
   let interestData = await Promise.all(
     promisesUrl.map(async (url) => {
-      const response = axios.get(url);
+      const response = axios.get<INews>(url);
       const responseData = await response;
       return responseData;
     })

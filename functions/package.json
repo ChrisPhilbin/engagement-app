@@ -15,6 +15,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@google-cloud/storage": "^6.9.2",
+    "@types/axios": "^0.14.0",
     "@types/cors": "^2.8.13",
     "@types/firebase": "^3.2.1",
     "@types/formidable": "^2.0.5",
