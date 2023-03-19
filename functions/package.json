@@ -2,6 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
+    "build": "npm run lint && tsc",
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
@@ -11,9 +12,13 @@
   "engines": {
     "node": "16"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "dependencies": {
     "@google-cloud/storage": "^6.9.2",
+    "@types/cors": "^2.8.13",
+    "@types/firebase": "^3.2.1",
+    "@types/formidable": "^2.0.5",
+    "@types/moment": "^2.13.0",
     "axios": "^0.26.0",
     "cors": "^2.8.5",
     "firebase": "^9.17.1",

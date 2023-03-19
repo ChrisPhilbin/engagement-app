@@ -1,4 +1,4 @@
-exports.validRelations = [
+export const validRelations = [
   "wife",
   "husband",
   "boyfriend",
