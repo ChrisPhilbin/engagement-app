@@ -8,7 +8,7 @@ export const defaultAppSettings: ISetting = {
   weeklyDigest: false,
 };
 
-export const configureUserAppSettings = (settingsObject): ISetting => {
+export const configureUserAppSettings = (settingsObject: any): ISetting => {
   if (!settingsObject) {
     return defaultAppSettings;
   }

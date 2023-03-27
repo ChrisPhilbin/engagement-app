@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "esModuleInterop": true,
     "module": "commonjs",
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noUnusedLocals": true,
     "outDir": "lib",
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "target": "es2017"
   },
   "compileOnSave": true,
-  "include": ["src"]
+  "include": [".", "package.json"]
 }

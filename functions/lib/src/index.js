@@ -1,5 +1,5 @@
+"use strict";
 // import * as functions from "firebase-functions";
-
 // // Start writing functions
 // // https://firebase.google.com/docs/functions/typescript
 //
@@ -7,3 +7,4 @@
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+//# sourceMappingURL=index.js.map

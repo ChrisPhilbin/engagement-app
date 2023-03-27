@@ -1,12 +1,15 @@
-const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
-const { fetchInterests, getInterestUpdates } = require("../util/getNews");
-const { getAppSettingsFromHeader } = require("./headerHelper");
+import { IEmployee } from "../api/models/employee-model";
+import { ISetting } from "../api/models/setting-model";
+import { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } from "./dateChecker";
+import { getInterestUpdates } from "./getNews";
+import { getAppSettingsFromHeader } from "./headerHelper";
+import { QueryDocumentSnapshot } from "firebase/firestore";
 
-exports.setupEmployeeObject = (employeeDocument, configHeaders) => {
+export const setupEmployeeObject = (employeeDocument: QueryDocumentSnapshot, configHeaders: ISetting): IEmployee => {
   const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } =
     getAppSettingsFromHeader(configHeaders);
 
-  let employeeObject = {
+  const employeeObject: IEmployee = {
     employeeId: employeeDocument.id,
     firstName: employeeDocument.data().firstName,
     lastName: employeeDocument.data().lastName,
@@ -30,8 +33,11 @@ exports.setupEmployeeObject = (employeeDocument, configHeaders) => {
   return employeeObject;
 };
 
-exports.setupEmployeeObjectWithNews = async (employeeDocument, configHeaders) => {
-  let employeeData = this.setupEmployeeObject(employeeDocument, configHeaders);
+export const setupEmployeeObjectWithNews = async (
+  employeeDocument: QueryDocumentSnapshot,
+  configHeaders: ISetting
+): Promise<IEmployee> => {
+  const employeeData = setupEmployeeObject(employeeDocument, configHeaders);
 
   await getInterestUpdates(employeeDocument.data().interests).then((interests) => {
     employeeData.newsFeed = interests;
