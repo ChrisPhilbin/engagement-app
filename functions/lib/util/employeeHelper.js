@@ -30,11 +30,13 @@ const setupEmployeeObject = (employeeDocument, configHeaders) => {
 };
 exports.setupEmployeeObject = setupEmployeeObject;
 const setupEmployeeObjectWithNews = async (employeeDocument, configHeaders) => {
+    var _a, _b;
+    //@ts-ignore
     const employeeData = (0, exports.setupEmployeeObject)(employeeDocument, configHeaders);
-    await (0, getNews_1.getInterestUpdates)(employeeDocument.data().interests).then((interests) => {
+    await (0, getNews_1.getInterestUpdates)((_a = employeeDocument.data()) === null || _a === void 0 ? void 0 : _a.interests).then((interests) => {
         employeeData.newsFeed = interests;
     });
-    await (0, getNews_1.getInterestUpdates)(employeeDocument.data().sportsTeams).then((sportsNews) => {
+    await (0, getNews_1.getInterestUpdates)((_b = employeeDocument.data()) === null || _b === void 0 ? void 0 : _b.sportsTeams).then((sportsNews) => {
         employeeData.sportsNews = sportsNews;
     });
     return employeeData;

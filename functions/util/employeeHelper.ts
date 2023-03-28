@@ -1,11 +1,14 @@
+import { IAppHeader } from "../api/models/app-headers-model";
+import { IAppRequest } from "../api/models/app-request-model";
 import { IEmployee } from "../api/models/employee-model";
-import { ISetting } from "../api/models/setting-model";
 import { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } from "./dateChecker";
 import { getInterestUpdates } from "./getNews";
 import { getAppSettingsFromHeader } from "./headerHelper";
-import { QueryDocumentSnapshot } from "firebase/firestore";
 
-export const setupEmployeeObject = (employeeDocument: QueryDocumentSnapshot, configHeaders: ISetting): IEmployee => {
+export const setupEmployeeObject = (
+  employeeDocument: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>,
+  configHeaders: IAppRequest
+): IEmployee => {
   const { birthdatethreshold, lastinteractionthreshold, workanniversarythreshold } =
     getAppSettingsFromHeader(configHeaders);
 
@@ -34,15 +37,16 @@ export const setupEmployeeObject = (employeeDocument: QueryDocumentSnapshot, con
 };
 
 export const setupEmployeeObjectWithNews = async (
-  employeeDocument: QueryDocumentSnapshot,
-  configHeaders: ISetting
+  employeeDocument: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
+  configHeaders: IAppHeader
 ): Promise<IEmployee> => {
+  //@ts-ignore
   const employeeData = setupEmployeeObject(employeeDocument, configHeaders);
 
-  await getInterestUpdates(employeeDocument.data().interests).then((interests) => {
+  await getInterestUpdates(employeeDocument.data()?.interests).then((interests) => {
     employeeData.newsFeed = interests;
   });
-  await getInterestUpdates(employeeDocument.data().sportsTeams).then((sportsNews) => {
+  await getInterestUpdates(employeeDocument.data()?.sportsTeams).then((sportsNews) => {
     employeeData.sportsNews = sportsNews;
   });
 

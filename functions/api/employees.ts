@@ -1,28 +1,35 @@
-const { db } = require("../util/admin");
-const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
-const { validRelations } = require("../util/relations");
-const { setupEmployeeObject, setupEmployeeObjectWithNews } = require("../util/employeeHelper");
+import { db } from "../util/admin";
+import { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } from "../util/dateChecker";
+import { validRelations } from "../util/relations";
+import { setupEmployeeObject, setupEmployeeObjectWithNews } from "../util/employeeHelper";
+import { IAppRequest } from "./models/app-request-model";
+import { IRelationship } from "./models/relationship-model";
+import { Response } from "express";
+import { IEmployee } from "./models/employee-model";
+import { IMeeting } from "./models/meeting-model";
+import { IInteraction } from "./models/interaction-model";
 
-exports.createEmployee = (request, response) => {
+export const createEmployee = (request: IAppRequest, response: Response) => {
   if (request.body.firstName.trim() === "" || !request.user.uid) {
     return response.status(400).json({ error: "Employee first name cannot be blank." });
   }
 
   if (request.body.relations) {
-    request.body.relations.forEach((relationship) => {
+    request.body.relations.forEach((relationship: IRelationship) => {
       if (!validRelations.includes(relationship.type.toLowerCase())) {
         return response.status(400).json({ error: "Unknown relationship type." });
       }
     });
   }
 
-  const newEmployee = {
+  const newEmployee: IEmployee = {
     userId: request.user.uid,
     firstName: request.body.firstName,
     lastName: request.body.lastName || "",
     email: request.body.email || "",
     linkedInUrl: request.body.linkedInUrl || "",
     facebookUrl: request.body.facebookUrl || "",
+    profilePictureUrl: request.body.profilePictureUrl || "",
     createdAt: new Date().toISOString(),
     hireDate: new Date(request.body.hireDate) || null,
     birthDate: new Date(request.body.birthDate) || null,
@@ -40,16 +47,17 @@ exports.createEmployee = (request, response) => {
       responseEmployee.id = doc.id;
       return response.status(200).json(responseEmployee);
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       response.status(500).json({ error: "Something went wrong." });
     });
 };
 
-exports.getAllEmployees = async (request, response) => {
+exports.getAllEmployees = async (request: IAppRequest, response: Response) => {
   try {
     const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
-    let employees = [];
+    let employees: IEmployee[] = [];
     employeesRef.forEach((employeeDocument) => {
+      //@ts-ignore
       employees.push(setupEmployeeObject(employeeDocument, request.headers));
     });
     for (const singleEmployee of employees) {
@@ -57,9 +65,9 @@ exports.getAllEmployees = async (request, response) => {
         .collection(`/employees/${singleEmployee.employeeId}/meetings`)
         .orderBy("createdAt", "asc")
         .get();
-      let meetings = [];
+      let meetings: IMeeting[] = [];
       meetingsSnapshot.forEach((meetingData) => {
-        meetings.push({ ...meetingData.data(), meetingId: meetingData.id });
+        meetings.push({ ...(meetingData.data() as IMeeting), meetingId: meetingData.id });
       });
       singleEmployee.meetings = meetings;
     }
@@ -70,16 +78,17 @@ exports.getAllEmployees = async (request, response) => {
   }
 };
 
-exports.getSingleEmployee = (request, response) => {
+exports.getSingleEmployee = (request: IAppRequest, response: Response) => {
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then(async (doc) => {
       if (!doc.exists) {
         return response.status(404).json();
       }
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
+      //@ts-ignore
       let employeeData = await setupEmployeeObjectWithNews(doc, request.headers);
       return response.status(200).json(employeeData);
     })
@@ -89,7 +98,7 @@ exports.getSingleEmployee = (request, response) => {
     });
 };
 
-exports.updateEmployee = async (request, response) => {
+exports.updateEmployee = async (request: IAppRequest, response: Response) => {
   if (request.body.createdAt || request.body.employeeId) {
     return response.status(403).json({ error: "Not allowed to edit" });
   }
@@ -106,6 +115,7 @@ exports.updateEmployee = async (request, response) => {
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then(async (updatedEmployeeDocument) => {
+      //@ts-ignore
       let updatedEmployee = await setupEmployeeObjectWithNews(updatedEmployeeDocument, request.headers);
       updatedEmployee.employeeId = request.params.employeeId;
       return response.status(200).json(updatedEmployee);
@@ -115,7 +125,7 @@ exports.updateEmployee = async (request, response) => {
     });
 };
 
-exports.deleteEmployee = (request, response) => {
+exports.deleteEmployee = (request: IAppRequest, response: Response) => {
   db.collection("employees")
     .doc(request.params.employeeId)
     .delete()
@@ -127,16 +137,16 @@ exports.deleteEmployee = (request, response) => {
     });
 };
 
-exports.getAllUpcomingBirthdays = (request, response) => {
+exports.getAllUpcomingBirthdays = (request: IAppRequest, response: Response) => {
   const { birthdatethreshold } = request.headers;
   db.collection("employees")
     .where("userId", "==", request.user.uid)
     .get()
     .then((data) => {
-      let employees = [];
+      let employeeBirthDates: IInteraction[] = [];
       data.forEach((doc) => {
-        if (hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold)) {
-          employees.push({
+        if (hasUpcomingBirthday(doc.data().birthDate, parseInt(birthdatethreshold))) {
+          employeeBirthDates.push({
             employeeId: doc.id,
             firstName: doc.data().firstName,
             lastName: doc.data().lastName,
@@ -144,22 +154,22 @@ exports.getAllUpcomingBirthdays = (request, response) => {
           });
         }
       });
-      return response.status(200).json(employees);
+      return response.status(200).json(employeeBirthDates);
     })
     .catch((error) => {
       response.status(500).json({ error: "Something went wrong." });
     });
 };
 
-exports.getAllUpcomingAnniversaries = (request, response) => {
+exports.getAllUpcomingAnniversaries = (request: IAppRequest, response: Response) => {
   const { workanniversarythreshold } = request.headers;
   db.collection("employees")
     .where("userId", "==", request.user.uid)
     .get()
     .then((data) => {
-      let employees = [];
+      let employees: IInteraction[] = [];
       data.forEach((doc) => {
-        if (hasUpcomingWorkAnniversary(doc.data().hireDate, workanniversarythreshold)) {
+        if (hasUpcomingWorkAnniversary(doc.data().hireDate, parseInt(workanniversarythreshold))) {
           employees.push({
             employeeId: doc.id,
             firstName: doc.data().firstName,
@@ -175,15 +185,15 @@ exports.getAllUpcomingAnniversaries = (request, response) => {
     });
 };
 
-exports.getAllOutstandingInteractions = (request, response) => {
+exports.getAllOutstandingInteractions = (request: IAppRequest, response: Response) => {
   const { lastinteractionthreshold } = request.headers;
   db.collection("employees")
     .where("userId", "==", request.user.uid)
     .get()
     .then((data) => {
-      let employees = [];
+      let employees: IInteraction[] = [];
       data.forEach((doc) => {
-        if (!hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold)) {
+        if (!hasRecentInteraction(doc.data().lastInteraction, parseInt(lastinteractionthreshold))) {
           employees.push({
             employeeId: doc.id,
             firstName: doc.data().firstName,

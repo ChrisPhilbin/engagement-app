@@ -1,15 +1,17 @@
 "use strict";
-const { db } = require("../util/admin");
-const { hasUpcomingBirthday, hasUpcomingWorkAnniversary, hasRecentInteraction } = require("../util/dateChecker");
-const { validRelations } = require("../util/relations");
-const { setupEmployeeObject, setupEmployeeObjectWithNews } = require("../util/employeeHelper");
-exports.createEmployee = (request, response) => {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createEmployee = void 0;
+const admin_1 = require("../util/admin");
+const dateChecker_1 = require("../util/dateChecker");
+const relations_1 = require("../util/relations");
+const employeeHelper_1 = require("../util/employeeHelper");
+const createEmployee = (request, response) => {
     if (request.body.firstName.trim() === "" || !request.user.uid) {
         return response.status(400).json({ error: "Employee first name cannot be blank." });
     }
     if (request.body.relations) {
         request.body.relations.forEach((relationship) => {
-            if (!validRelations.includes(relationship.type.toLowerCase())) {
+            if (!relations_1.validRelations.includes(relationship.type.toLowerCase())) {
                 return response.status(400).json({ error: "Unknown relationship type." });
             }
         });
@@ -21,6 +23,7 @@ exports.createEmployee = (request, response) => {
         email: request.body.email || "",
         linkedInUrl: request.body.linkedInUrl || "",
         facebookUrl: request.body.facebookUrl || "",
+        profilePictureUrl: request.body.profilePictureUrl || "",
         createdAt: new Date().toISOString(),
         hireDate: new Date(request.body.hireDate) || null,
         birthDate: new Date(request.body.birthDate) || null,
@@ -30,7 +33,7 @@ exports.createEmployee = (request, response) => {
         sportsTeams: request.body.sportsTeams || [],
         pets: request.body.pets || [],
     };
-    db.collection("employees")
+    admin_1.db.collection("employees")
         .add(newEmployee)
         .then((doc) => {
         const responseEmployee = newEmployee;
@@ -41,15 +44,17 @@ exports.createEmployee = (request, response) => {
         response.status(500).json({ error: "Something went wrong." });
     });
 };
+exports.createEmployee = createEmployee;
 exports.getAllEmployees = async (request, response) => {
     try {
-        const employeesRef = await db.collection("employees").where("userId", "==", request.user.uid).get();
+        const employeesRef = await admin_1.db.collection("employees").where("userId", "==", request.user.uid).get();
         let employees = [];
         employeesRef.forEach((employeeDocument) => {
-            employees.push(setupEmployeeObject(employeeDocument, request.headers));
+            //@ts-ignore
+            employees.push((0, employeeHelper_1.setupEmployeeObject)(employeeDocument, request.headers));
         });
         for (const singleEmployee of employees) {
-            const meetingsSnapshot = await db
+            const meetingsSnapshot = await admin_1.db
                 .collection(`/employees/${singleEmployee.employeeId}/meetings`)
                 .orderBy("createdAt", "asc")
                 .get();
@@ -67,16 +72,18 @@ exports.getAllEmployees = async (request, response) => {
     }
 };
 exports.getSingleEmployee = (request, response) => {
-    db.doc(`/employees/${request.params.employeeId}`)
+    admin_1.db.doc(`/employees/${request.params.employeeId}`)
         .get()
         .then(async (doc) => {
+        var _a;
         if (!doc.exists) {
             return response.status(404).json();
         }
-        if (doc.data().userId !== request.user.uid) {
+        if (((_a = doc.data()) === null || _a === void 0 ? void 0 : _a.userId) !== request.user.uid) {
             return response.status(401).json({ error: "You are not authorized." });
         }
-        let employeeData = await setupEmployeeObjectWithNews(doc, request.headers);
+        //@ts-ignore
+        let employeeData = await (0, employeeHelper_1.setupEmployeeObjectWithNews)(doc, request.headers);
         return response.status(200).json(employeeData);
     })
         .catch((error) => {
@@ -94,12 +101,13 @@ exports.updateEmployee = async (request, response) => {
     request.body.birthDate = request.body.birthDate ? new Date(request.body.birthDate) : "";
     request.body.hireDate = request.body.hireDate ? new Date(request.body.hireDate) : "";
     request.body.lastInteraction = request.body.lastInteraction ? new Date(request.body.lastInteraction) : "";
-    let document = db.collection("employees").doc(`${request.params.employeeId}`);
+    let document = admin_1.db.collection("employees").doc(`${request.params.employeeId}`);
     document.update(request.body);
-    db.doc(`/employees/${request.params.employeeId}`)
+    admin_1.db.doc(`/employees/${request.params.employeeId}`)
         .get()
         .then(async (updatedEmployeeDocument) => {
-        let updatedEmployee = await setupEmployeeObjectWithNews(updatedEmployeeDocument, request.headers);
+        //@ts-ignore
+        let updatedEmployee = await (0, employeeHelper_1.setupEmployeeObjectWithNews)(updatedEmployeeDocument, request.headers);
         updatedEmployee.employeeId = request.params.employeeId;
         return response.status(200).json(updatedEmployee);
     })
@@ -108,7 +116,7 @@ exports.updateEmployee = async (request, response) => {
     });
 };
 exports.deleteEmployee = (request, response) => {
-    db.collection("employees")
+    admin_1.db.collection("employees")
         .doc(request.params.employeeId)
         .delete()
         .then((doc) => {
@@ -120,14 +128,14 @@ exports.deleteEmployee = (request, response) => {
 };
 exports.getAllUpcomingBirthdays = (request, response) => {
     const { birthdatethreshold } = request.headers;
-    db.collection("employees")
+    admin_1.db.collection("employees")
         .where("userId", "==", request.user.uid)
         .get()
         .then((data) => {
-        let employees = [];
+        let employeeBirthDates = [];
         data.forEach((doc) => {
-            if (hasUpcomingBirthday(doc.data().birthDate, birthdatethreshold)) {
-                employees.push({
+            if ((0, dateChecker_1.hasUpcomingBirthday)(doc.data().birthDate, parseInt(birthdatethreshold))) {
+                employeeBirthDates.push({
                     employeeId: doc.id,
                     firstName: doc.data().firstName,
                     lastName: doc.data().lastName,
@@ -135,7 +143,7 @@ exports.getAllUpcomingBirthdays = (request, response) => {
                 });
             }
         });
-        return response.status(200).json(employees);
+        return response.status(200).json(employeeBirthDates);
     })
         .catch((error) => {
         response.status(500).json({ error: "Something went wrong." });
@@ -143,13 +151,13 @@ exports.getAllUpcomingBirthdays = (request, response) => {
 };
 exports.getAllUpcomingAnniversaries = (request, response) => {
     const { workanniversarythreshold } = request.headers;
-    db.collection("employees")
+    admin_1.db.collection("employees")
         .where("userId", "==", request.user.uid)
         .get()
         .then((data) => {
         let employees = [];
         data.forEach((doc) => {
-            if (hasUpcomingWorkAnniversary(doc.data().hireDate, workanniversarythreshold)) {
+            if ((0, dateChecker_1.hasUpcomingWorkAnniversary)(doc.data().hireDate, parseInt(workanniversarythreshold))) {
                 employees.push({
                     employeeId: doc.id,
                     firstName: doc.data().firstName,
@@ -166,13 +174,13 @@ exports.getAllUpcomingAnniversaries = (request, response) => {
 };
 exports.getAllOutstandingInteractions = (request, response) => {
     const { lastinteractionthreshold } = request.headers;
-    db.collection("employees")
+    admin_1.db.collection("employees")
         .where("userId", "==", request.user.uid)
         .get()
         .then((data) => {
         let employees = [];
         data.forEach((doc) => {
-            if (!hasRecentInteraction(doc.data().lastInteraction, lastinteractionthreshold)) {
+            if (!(0, dateChecker_1.hasRecentInteraction)(doc.data().lastInteraction, parseInt(lastinteractionthreshold))) {
                 employees.push({
                     employeeId: doc.id,
                     firstName: doc.data().firstName,

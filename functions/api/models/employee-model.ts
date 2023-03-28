@@ -1,7 +1,11 @@
+import { IMeeting } from "./meeting-model";
 import { INews } from "./news-model";
+import { IRelationship } from "./relationship-model";
 
 export interface IEmployee {
-  employeeId: string;
+  id?: string;
+  userId?: string;
+  employeeId?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -9,16 +13,17 @@ export interface IEmployee {
   facebookUrl: string;
   profilePictureUrl: string;
   createdAt: string;
-  hireDate: string;
-  birthDate: string;
-  hasUpcomingBirthday: boolean;
-  hasUpcomingWorkAnniversary: boolean;
-  hasRecentInteraction: boolean;
-  lastInteraction: string;
+  hireDate: Date;
+  birthDate: Date;
+  hasUpcomingBirthday?: boolean;
+  hasUpcomingWorkAnniversary?: boolean;
+  hasRecentInteraction?: boolean;
+  lastInteraction: Date;
   interests: string[];
   sportsTeams: string[];
   pets: string[];
-  relations: string[];
+  relations: IRelationship[];
   newsFeed?: INews[] | null;
   sportsNews?: INews[] | null;
+  meetings?: IMeeting[];
 }
