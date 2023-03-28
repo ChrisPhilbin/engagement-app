@@ -1,6 +1,7 @@
 export interface IMeeting {
+  id?: string;
   agreedUponActions: agreedUponAction[];
-  createdAt: Date;
+  createdAt: Date | string;
   hasOutstandingActionItems: boolean;
   meetingDate: Date;
   notes: string;

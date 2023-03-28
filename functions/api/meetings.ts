@@ -1,6 +1,9 @@
-const { db } = require("../util/admin");
+import { Response } from "express";
+import { db } from "../util/admin";
+import { IAppRequest } from "./models/app-request-model";
+import { IMeeting } from "./models/meeting-model";
 
-exports.createMeeting = (request, response) => {
+export const createMeeting = (request: IAppRequest, response: Response) => {
   if (request.body.notes.trim() === "") {
     return response.status(400).json({ error: "Meeting notes cannot be blank" });
   }
@@ -12,12 +15,12 @@ exports.createMeeting = (request, response) => {
         return response.status(404).json();
       }
 
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
     });
 
-  const newMeeting = {
+  const newMeeting: IMeeting = {
     userId: request.user.uid,
     notes: request.body.notes,
     meetingDate: request.body.meetingDate,
@@ -33,12 +36,12 @@ exports.createMeeting = (request, response) => {
       responseMeeting.id = doc.id;
       return response.status(200).json(responseMeeting);
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       response.status(500).json({ error: "Something went wrong." });
     });
 };
 
-exports.getAllMeetingsForEmployee = (request, response) => {
+export const getAllMeetingsForEmployee = (request: IAppRequest, response: Response) => {
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then((doc) => {
@@ -46,7 +49,7 @@ exports.getAllMeetingsForEmployee = (request, response) => {
         return response.status(404).json();
       }
 
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
     });
@@ -55,12 +58,12 @@ exports.getAllMeetingsForEmployee = (request, response) => {
     .orderBy("createdAt", "asc")
     .get()
     .then((data) => {
-      let meetings = [];
+      let meetings: IMeeting[] = [];
       data.forEach((doc) => {
         if (doc.data().userId !== request.user.uid) {
           return response.status(401).json({ error: "You are not authorized" });
         }
-        meetings.push({ ...doc.data(), meetingId: doc.id });
+        meetings.push({ ...(doc.data() as IMeeting), meetingId: doc.id });
       });
       return response.status(200).json(meetings);
     })
@@ -69,7 +72,7 @@ exports.getAllMeetingsForEmployee = (request, response) => {
     });
 };
 
-exports.getMeetingDetails = (request, response) => {
+export const getMeetingDetails = (request: IAppRequest, response: Response) => {
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then((doc) => {
@@ -77,7 +80,7 @@ exports.getMeetingDetails = (request, response) => {
         return response.status(404).json();
       }
 
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
     });
@@ -85,7 +88,7 @@ exports.getMeetingDetails = (request, response) => {
   db.doc(`employees/${request.params.employeeId}/meetings/${request.params.meetingId}`)
     .get()
     .then((doc) => {
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized" });
       }
 
@@ -93,7 +96,7 @@ exports.getMeetingDetails = (request, response) => {
     });
 };
 
-exports.updatedMeetingDetails = (request, response) => {
+export const updatedMeetingDetails = (request: IAppRequest, response: Response) => {
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
     .then((doc) => {
@@ -101,7 +104,7 @@ exports.updatedMeetingDetails = (request, response) => {
         return response.status(404).json();
       }
 
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
     });
@@ -125,7 +128,7 @@ exports.updatedMeetingDetails = (request, response) => {
     });
 };
 
-exports.deleteMeeting = (request, response) => {
+export const deleteMeeting = (request: IAppRequest, response: Response) => {
   console.log("deleting meeting...");
   db.doc(`/employees/${request.params.employeeId}`)
     .get()
@@ -134,7 +137,7 @@ exports.deleteMeeting = (request, response) => {
         return response.status(404).json();
       }
 
-      if (doc.data().userId !== request.user.uid) {
+      if (doc.data()?.userId !== request.user.uid) {
         return response.status(401).json({ error: "You are not authorized." });
       }
     });
