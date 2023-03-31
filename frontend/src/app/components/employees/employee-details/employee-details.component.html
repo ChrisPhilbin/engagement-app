@@ -16,6 +16,59 @@
     [toggleable]="true"
     [style]="{ 'margin-bottom': '30px' }"
   >
+    <div class="grid grid-cols-1 md:grid-cols-2 w-full md:w-11/12 mx-auto p-6">
+      <div>
+        <p class="ml-1 mb-1 block uppercase tracking-wide text-xs font-bold">
+          First Name
+        </p>
+        <div
+          class="border-2 border-gray-200 bg-gray-50 rounded-lg p-4 w-full md:w-4/5 mb-3"
+        >
+          {{ employee.firstName }}
+        </div>
+      </div>
+
+      <div>
+        <p class="ml-1 mb-1 block uppercase tracking-wide text-xs font-bold">
+          Last Name
+        </p>
+        <div
+          class="border-2 border-gray-200 bg-gray-50 rounded-lg p-4 w-full md:w-4/5 mb-3"
+        >
+          {{ employee.lastName }}
+        </div>
+      </div>
+
+      <div>
+        <p class="ml-1 mb-1 block uppercase tracking-wide text-xs font-bold">
+          Email address
+        </p>
+        <div
+          class="border-2 border-gray-200 bg-gray-50 rounded-lg p-4 w-full md:w-4/5 mb-3"
+        >
+          {{ employee.email }}
+        </div>
+      </div>
+
+      <div>
+        <p
+          class="ml-1 mb-1 block uppercase tracking-wide text-xs font-bold"
+          [ngClass]="employee.hasRecentInteraction ? '' : 'text-red-600'"
+        >
+          Last Interaction
+        </p>
+        <div
+          class="border-2 rounded-lg p-4 w-full md:w-4/5 mb-3"
+          [ngClass]="
+            employee.hasRecentInteraction
+              ? 'border-gray-200 bg-gray-50'
+              : 'text-red-600 bg-red-50 border-red-200'
+          "
+        >
+          {{ employee.lastInteraction | date : "fullDate" }}
+        </div>
+      </div>
+    </div>
     <span class="block mb-2">
       <a
         [href]="employee.linkedInUrl"
