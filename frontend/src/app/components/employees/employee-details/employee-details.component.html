@@ -68,7 +68,46 @@
           {{ employee.lastInteraction | date : "fullDate" }}
         </div>
       </div>
+
+      <div>
+        <p
+          class="ml-1 mb-1 block uppercase tracking-wide text-xs font-bold"
+          [ngClass]="employee.hasUpcomingWorkAnniversary ? 'text-red-600' : ''"
+        >
+          Work Anniversary
+        </p>
+        <div
+          class="border-2 rounded-lg p-4 w-full md:w-4/5 mb-3"
+          [ngClass]="
+            employee.hasUpcomingWorkAnniversary
+              ? 'text-red-600 bg-red-50 border-red-200'
+              : 'border-gray-200 bg-gray-50'
+          "
+        >
+          {{ employee.hireDate | date : "fullDate" }}
+        </div>
+      </div>
+
+      <div>
+        <p
+          class="ml-1 mb-1 block uppercase tracking-wide text-xs font-bold"
+          [ngClass]="employee.hasUpcomingBirthday ? 'text-red-600' : ''"
+        >
+          Birthday
+        </p>
+        <div
+          class="border-2 rounded-lg p-4 w-full md:w-4/5 mb-3"
+          [ngClass]="
+            employee.hasUpcomingBirthday
+              ? 'text-red-600 bg-red-50 border-red-200'
+              : 'border-gray-200 bg-gray-50'
+          "
+        >
+          {{ employee.birthDate | date : "MMMM d" }}
+        </div>
+      </div>
     </div>
+
     <span class="block mb-2">
       <a
         [href]="employee.linkedInUrl"
