@@ -213,38 +213,6 @@
         </div>
       </div>
     </div>
-    <!-- <p
-      class="inline"
-      [ngClass]="employee.hasRecentInteraction ? '' : 'text-red-600'"
-    >
-      <strong>Last interaction: </strong>
-    </p>
-    {{ employee.lastInteraction | date : "fullDate" }}<br />
-    <strong>Hire date: </strong>{{ employee.hireDate | date : "fullDate"
-    }}<br />
-    <strong>Birthday: </strong>
-    <span *ngIf="employee.birthDate">{{
-      employee.birthDate | date : "MMMM d"
-    }}</span
-    ><span *ngIf="!employee.birthDate">----</span><br />
-    <strong>Email:</strong>
-    {{ this.employee.email ? this.employee.email : "----" }}<br />
-    <strong>Interests:</strong><br />
-    <li *ngFor="let interest of employee.interests">
-      {{ interest | titlecase }}
-    </li>
-    <strong>Pets:</strong><br />
-    <li *ngFor="let pet of employee.pets">{{ pet.name }} - {{ pet.type }}</li>
-    <strong>Favorite sports teams:</strong><br />
-    <li *ngFor="let team of employee.sportsTeams">
-      {{ team }}
-    </li>
-    <span *ngIf="employee.relations">
-      <strong> {{ employee.firstName + "'s" }} important people:</strong><br />
-      <li *ngFor="let relation of employee.relations">
-        {{ relation.type + ": " + relation.name | titlecase }}
-      </li>
-    </span> -->
     <a [routerLink]="['/employees', employee.employeeId, 'edit']">
       <button
         type="button"
