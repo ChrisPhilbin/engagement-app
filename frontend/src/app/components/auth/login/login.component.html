@@ -83,7 +83,11 @@
         <app-loading></app-loading>
       </ng-template>
 
-      <div class="text-center text-sm text-red-600 mt-4" *ngIf="error">
+      <div
+        id="error-container"
+        class="text-center text-sm text-red-600 mt-4"
+        *ngIf="error"
+      >
         {{ error }}
       </div>
     </div>
