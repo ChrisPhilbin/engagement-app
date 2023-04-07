@@ -1,6 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgForm } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import {
@@ -127,7 +129,8 @@ describe('LoginComponent', () => {
     component.onSubmit(testFormData);
     fixture.detectChanges();
     const loginElement: HTMLElement = fixture.nativeElement;
-    const errorContainer = loginElement.querySelector('error-container');
-    expect(errorContainer).toBeDefined();
+    expect(loginElement.querySelector('#error-container')?.innerHTML).toContain(
+      'Must provide valid credentials'
+    );
   });
 });

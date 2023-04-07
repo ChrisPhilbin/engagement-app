@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
+      this.error = 'Must provide valid credentials';
       return;
     }
 
