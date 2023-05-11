@@ -2,114 +2,165 @@
   class="bg-gradient-to-b from-emerald-100 to-slate-200 min-h-screen w-full flex flex-col my-auto"
 >
   <div
-    class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
+    class="grid grid-cols-1 md:grid-cols-2 md:w-4/6 w-full px-6 gap-4 items-center justify-center my-auto mx-auto"
   >
-    <div class="bg-white px-6 py-8 rounded-lg shadow-xl text-black w-full">
-      <h1 class="font-nunito font-bold mb-8 text-3xl text-center text-gray-700">
-        {{ isLoginMode ? "Log in" : "Sign up" }}
-      </h1>
-      <p *ngIf="sessionExpired" class="text-center text-red-600 font-bold mb-2">
-        Your session has expired.<br />
-        Please login to continue.
+    <!-- <div
+    class="w-4/6 mx-auto flex flex-1 md:flex-2 flex-row items-center justify-center px-2"
+  > -->
+    <div class="mt-8">
+      <p
+        class="font-nunito text-center uppercase font-bold text-6xl tracking-wide text-violet-800 mb-8"
+      >
+        Engaged teams<br />
+        get stuff done.
       </p>
-      <div *ngIf="showDemoGreeting" class="mb-4">
-        <p-messages severity="info">
-          <ng-template pTemplate>
-            <p innerHTML="{{ demoGreetingMessage }}"></p>
-          </ng-template>
-        </p-messages>
-      </div>
-      <button
-        type="button"
-        (click)="prePopulateFields()"
-        *ngIf="showDemoGreeting"
-        class="w-full text-center font-bold font-nunito py-3 mb-4 rounded bg-emerald-700 text-white hover:bg-emerald-800 focus:outline-none my-1 shadow-xl"
+
+      <p class="mb-6">
+        <span class="font-nunito font-bold text-2xl"
+          >Did you know? Engaged teams...</span
+        ><br />
+      </p>
+      <ul class="list-inside list-disc font-nunito">
+        <li>
+          Drive
+          <span class="text-red-600 font-bold underline underline-offset-4"
+            >21% more profit</span
+          >
+          than teams that struggle with engagement
+        </li>
+        <li>Increase productivity by 17%</li>
+        <li>Experience less turnover, thus retaining valueable knowledge</li>
+        <li>Are more innovative and come up with creative solutions</li>
+      </ul>
+    </div>
+    <div>
+      <p
+        class="uppercase tracking-tight font-nunito font-bold mb-6 text-center text-3xl"
       >
-        Pre-populate fields
-      </button>
-      <form
-        #authForm="ngForm"
-        (ngSubmit)="onSubmit(authForm)"
-        *ngIf="!isLoading; else authLoading"
-      >
-        <input
-          ngModel
-          *ngIf="!isLoginMode"
-          [required]="!isLoginMode"
-          type="text"
-          class="block border border-grey-light w-full p-3 shadow rounded-lg mb-4"
-          name="username"
-          placeholder="Full Name"
-        />
-
-        <input
-          ngModel
-          required
-          email
-          type="text"
-          class="block border border-grey-light w-full p-3 shadow rounded-lg mb-4"
-          name="email"
-          placeholder="Email"
-          [(ngModel)]="email"
-        />
-
-        <input
-          ngModel
-          type="password"
-          class="block border border-grey-light w-full p-3 shadow rounded-lg rounded mb-4"
-          name="password"
-          placeholder="Password"
-          autocomplete="on"
-          [(ngModel)]="password"
-        />
-        <input
-          ngModel
-          *ngIf="!isLoginMode"
-          [required]="!isLoginMode"
-          type="password"
-          class="block border border-grey-light w-full p-3 shadow rounded-lg mb-4"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-        />
-
-        <button
-          type="submit"
-          class="w-full text-center font-bold font-nunito py-3 rounded bg-emerald-700 text-white hover:bg-emerald-800 focus:outline-none my-1 shadow-xl"
-        >
-          {{ isLoginMode ? "Log in" : "Create Account" }}
-        </button>
-      </form>
-      <ng-template #authLoading>
-        <app-loading></app-loading>
-      </ng-template>
-
+        Start engaging today
+      </p>
       <div
-        id="error-container"
-        class="text-center text-sm text-red-600 mt-4"
-        *ngIf="error"
+        class="bg-white px-6 py-8 mx-auto rounded-lg shadow-xl text-black w-full md:w-3/5"
       >
-        {{ error }}
+        <h1
+          class="font-nunito font-bold mb-8 text-3xl text-center text-gray-700"
+        >
+          {{ isLoginMode ? "Log in" : "Sign up" }}
+        </h1>
+        <p
+          *ngIf="sessionExpired"
+          class="text-center text-red-600 font-bold mb-2"
+        >
+          Your session has expired.<br />
+          Please login to continue.
+        </p>
+        <div *ngIf="showDemoGreeting" class="mb-4">
+          <p-messages severity="info">
+            <ng-template pTemplate>
+              <p innerHTML="{{ demoGreetingMessage }}"></p>
+            </ng-template>
+          </p-messages>
+        </div>
+        <button
+          type="button"
+          (click)="prePopulateFields()"
+          *ngIf="showDemoGreeting"
+          class="w-full text-center font-bold font-nunito py-3 mb-4 rounded bg-emerald-700 text-white hover:bg-emerald-800 focus:outline-none my-1 shadow-xl"
+        >
+          Pre-populate fields
+        </button>
+        <form
+          #authForm="ngForm"
+          (ngSubmit)="onSubmit(authForm)"
+          *ngIf="!isLoading; else authLoading"
+        >
+          <input
+            ngModel
+            *ngIf="!isLoginMode"
+            [required]="!isLoginMode"
+            type="text"
+            class="block border border-grey-light w-full p-3 shadow rounded-lg mb-4"
+            name="username"
+            placeholder="Full Name"
+          />
+
+          <input
+            ngModel
+            required
+            email
+            type="text"
+            class="block border border-grey-light w-full p-3 shadow rounded-lg mb-4"
+            name="email"
+            placeholder="Email"
+            [(ngModel)]="email"
+          />
+
+          <input
+            ngModel
+            type="password"
+            class="block border border-grey-light w-full p-3 shadow rounded-lg rounded mb-4"
+            name="password"
+            placeholder="Password"
+            autocomplete="on"
+            [(ngModel)]="password"
+          />
+          <input
+            ngModel
+            *ngIf="!isLoginMode"
+            [required]="!isLoginMode"
+            type="password"
+            class="block border border-grey-light w-full p-3 shadow rounded-lg mb-4"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+          />
+
+          <button
+            type="submit"
+            class="w-full text-center font-bold font-nunito py-3 rounded bg-emerald-700 text-white hover:bg-emerald-800 focus:outline-none my-1 shadow-xl"
+          >
+            {{ isLoginMode ? "Log in" : "Create Account" }}
+          </button>
+        </form>
+        <ng-template #authLoading>
+          <app-loading></app-loading>
+        </ng-template>
+
+        <div
+          id="error-container"
+          class="text-center text-sm text-red-600 mt-4"
+          *ngIf="error"
+        >
+          {{ error }}
+        </div>
       </div>
-    </div>
 
-    <div *ngIf="isLoginMode" class="font-nunito text-grey-dark mt-6">
-      Don't have an account yet?
-      <a
-        class="hover:no-underline underline text-blue cursor-pointer font-bold"
-        (click)="onSwitchMode()"
-      >
-        Sign up</a
-      >.
-    </div>
+      <div class="mx-auto w-full md:w-3/5">
+        <div
+          *ngIf="isLoginMode"
+          class="font-nunito text-grey-dark mt-6 text-center"
+        >
+          Don't have an account yet?
+          <a
+            class="hover:no-underline underline text-blue cursor-pointer font-bold"
+            (click)="onSwitchMode()"
+          >
+            Sign up</a
+          >.
+        </div>
 
-    <div *ngIf="!isLoginMode" class="font-nunito text-grey-dark mt-6">
-      Already have an account?
-      <a
-        class="hover:no-underline underline text-blue cursor-pointer font-bold"
-        (click)="onSwitchMode()"
-      >
-        Log in</a
-      >.
+        <div
+          *ngIf="!isLoginMode"
+          class="font-nunito text-grey-dark mt-6 text-center"
+        >
+          Already have an account?
+          <a
+            class="hover:no-underline underline text-blue cursor-pointer font-bold"
+            (click)="onSwitchMode()"
+          >
+            Log in</a
+          >.
+        </div>
+      </div>
     </div>
   </div>
 </div>

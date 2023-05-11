@@ -15,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 import { NavComponent } from './nav/nav.component';
 import { EmployeesModule } from './components/employees/employees.module';
 import { SettingsComponent } from './components/settings/settings.component';
+import { LandingComponent } from './components/auth/landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     HeaderComponent,
     NavComponent,
     SettingsComponent,
+    LandingComponent,
   ],
   imports: [
     BrowserModule,

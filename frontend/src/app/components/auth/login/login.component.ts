@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
-  isLoginMode = true;
+  isLoginMode = false;
   isLoading = false;
   error: string = '';
   sessionExpired = false;
@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit {
       if (params['sessionExpired']) {
         this.sessionExpired = true;
       }
-      if (params['demo'] === 'true' && this.isLoginMode) {
+      if (params['demo'] === 'true') {
+        this.isLoginMode = true;
         this.showDemoGreeting = true;
         this.demoGreetingMessage =
           '<strong>Welcome!</strong> Looks like this app is in demo mode given the route query params! Please use the following credentials to login:<br /> <strong>Username:</strong> chris@test.com<br /> <strong>Password:</strong> password123';
