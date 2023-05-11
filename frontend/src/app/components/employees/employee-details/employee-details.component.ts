@@ -38,9 +38,11 @@ export class EmployeeDetailsComponent implements OnInit, OnChanges {
       this.employeeService.employee.subscribe((employee: Employee) => {
         this.employee = employee;
         this.isLoading = false;
-        this.titleService.setPageTitle(
-          `Viewing details for ${this.employee.firstName} ${this.employee.lastName}`
-        );
+        document.title =
+          'Viewing details for ${this.employee.firstName} ${this.employee.lastName}';
+        // this.titleService.setPageTitle(
+        //   `Viewing details for ${this.employee.firstName} ${this.employee.lastName}`
+        // );
       });
     });
 
