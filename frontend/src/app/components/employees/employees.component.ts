@@ -18,7 +18,6 @@ export class EmployeesComponent implements OnInit {
   filterByBirthday: boolean = false;
   filterByOverdueInteractions: boolean = false;
   filterByUpcomingAnniversaries: boolean = false;
-  showGridLayout: boolean = false;
 
   constructor(
     public employeeService: EmployeeService,
@@ -109,9 +108,5 @@ export class EmployeesComponent implements OnInit {
     if (confirm('Are you sure you want to remove this employee?')) {
       this.employeeService.deleteEmployeeById(employeeId);
     }
-  }
-
-  toggleGridLayout() {
-    this.showGridLayout = !this.showGridLayout;
   }
 }
