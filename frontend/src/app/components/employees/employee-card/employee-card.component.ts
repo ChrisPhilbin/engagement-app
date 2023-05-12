@@ -16,8 +16,10 @@ export class EmployeeCardComponent implements OnInit {
   ngOnInit(): void {}
 
   employeeHasOutstandingActionItems(meetings: Meeting[]) {
-    return meetings.some(
-      (meeting) => meeting.hasOutstandingActionItems === true
-    );
+    if (meetings) {
+      return meetings.some(
+        (meeting) => meeting.hasOutstandingActionItems === true
+      );
+    }
   }
 }

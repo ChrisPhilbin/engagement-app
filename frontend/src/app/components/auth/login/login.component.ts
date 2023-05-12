@@ -91,7 +91,9 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         this.sessionExpired = false;
         this.authService.user.subscribe((user) => {});
-        this.router.navigate(['/dashboard']);
+        setTimeout(() => {
+          this.router.navigate(['dashboard']);
+        }, 2000);
       },
       (errorMessage) => {
         this.error = errorMessage;

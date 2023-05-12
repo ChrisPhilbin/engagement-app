@@ -65,15 +65,12 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap((responseData) => {
-          console.log(responseData, 'response data after signup.');
           this.http
             .post<UserResponseData>(`${environment.firebaseApiUrl}/signup`, {
               email: email,
               userId: responseData.localId,
             })
             .subscribe((userData) => {
-              console.log(responseData, 'Response data from firebase');
-              console.log(userData, 'User data from signing in');
               this.handleAuthentication(
                 responseData.email,
                 responseData.localId,
@@ -85,13 +82,6 @@ export class AuthService {
                 userData.appSettings.birthdateThreshold.toString()
               );
             });
-          // this.handleAuthentication(
-          //   responseData.email,
-          //   responseData.localId,
-          //   responseData.refreshToken,
-          //   responseData.idToken,
-          //   +responseData.expiresIn
-          // );
         })
       );
   }
@@ -155,7 +145,6 @@ export class AuthService {
   // }
 
   public logout() {
-    console.log('Logging out.');
     this.cookieService.deleteAll();
     // this.cookieService.delete('email', '/');
     // this.cookieService.delete('userId', '/');
