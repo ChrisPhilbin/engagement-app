@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
+  loginSuccess = false;
   isLoginMode = false;
   isLoading = false;
   error: string = '';
@@ -89,6 +90,7 @@ export class LoginComponent implements OnInit {
     authObs.subscribe(
       (response) => {
         this.isLoading = false;
+        this.loginSuccess = true;
         this.sessionExpired = false;
         this.authService.user.subscribe((user) => {});
         setTimeout(() => {

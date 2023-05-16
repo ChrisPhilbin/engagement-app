@@ -27,26 +27,26 @@
           Your session has expired.<br />
           Please login to continue.
         </p>
-        <div *ngIf="showDemoGreeting" class="mb-4">
-          <p-messages severity="info">
-            <ng-template pTemplate>
-              <p innerHTML="{{ demoGreetingMessage }}"></p>
-            </ng-template>
-          </p-messages>
-        </div>
-        <button
-          type="button"
-          (click)="prePopulateFields()"
-          *ngIf="showDemoGreeting"
-          class="w-full text-center font-bold font-nunito py-3 mb-4 rounded bg-emerald-700 text-white hover:bg-emerald-800 focus:outline-none my-1 shadow-xl"
-        >
-          Pre-populate fields
-        </button>
         <form
           #authForm="ngForm"
           (ngSubmit)="onSubmit(authForm)"
-          *ngIf="!isLoading; else authLoading"
+          *ngIf="!isLoading && !loginSuccess; else loadingOrSuccess"
         >
+          <div *ngIf="showDemoGreeting" class="mb-4">
+            <p-messages severity="info">
+              <ng-template pTemplate>
+                <p innerHTML="{{ demoGreetingMessage }}"></p>
+              </ng-template>
+            </p-messages>
+          </div>
+          <button
+            type="button"
+            (click)="prePopulateFields()"
+            *ngIf="showDemoGreeting"
+            class="w-full text-center font-bold font-nunito py-3 mb-4 rounded bg-emerald-700 text-white hover:bg-emerald-800 focus:outline-none my-1 shadow-xl"
+          >
+            Pre-populate fields
+          </button>
           <input
             ngModel
             *ngIf="!isLoginMode"
@@ -94,8 +94,21 @@
             {{ isLoginMode ? "Log in" : "Create Account" }}
           </button>
         </form>
-        <ng-template #authLoading>
-          <app-loading></app-loading>
+        <ng-template #loadingOrSuccess>
+          <div *ngIf="isLoading">
+            <app-loading></app-loading>
+          </div>
+
+          <div *ngIf="loginSuccess" class="text-center font-nunito">
+            <img src="/assets/images/checkmark.png" class="h-28 w-28 mx-auto" />
+            <p class="text-green-700 font-bold text-3xl">Success!</p>
+            <p class="text-gray-700">
+              If you are not redirected in a few seconds please
+              <a [routerLink]="['/dashboard']"
+                ><span class="font-bold underline">click here</span></a
+              >.
+            </p>
+          </div>
         </ng-template>
 
         <div
@@ -110,7 +123,7 @@
       <div class="mx-auto w-full md:w-3/5">
         <div
           *ngIf="isLoginMode"
-          class="font-nunito text-grey-dark mt-6 text-center"
+          class="font-nunito text-grey-dark my-6 text-center"
         >
           Don't have an account yet?
           <a
