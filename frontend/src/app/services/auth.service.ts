@@ -14,6 +14,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Settings } from 'src/models/settings-model';
+import { EmployeeService } from './employee.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -46,6 +47,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
+    private employeeService: EmployeeService,
     public jwtHelper: JwtHelperService,
     public router: Router
   ) {
@@ -156,6 +158,7 @@ export class AuthService {
     // this.cookieService.delete('workAnniversaryThreshold', '/');
     this.user.next(null);
     this.isLoggedIn.next(false);
+    this.employeeService.resetEmployeeServiceState();
     this.router.navigate(['login']);
   }
 

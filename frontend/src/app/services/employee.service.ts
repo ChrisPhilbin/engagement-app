@@ -30,6 +30,14 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
+  resetEmployeeServiceState() {
+    this.employees.next([]);
+    this.employee = new Subject<Employee>();
+    this.employeeBirthdays.next([]);
+    this.employeeAnniversaries.next([]);
+    this.employeeInteractions.next([]);
+  }
+
   getAllEmployees() {
     this.http
       .get<Employee[]>(`${environment.firebaseApiUrl}/employees`)
