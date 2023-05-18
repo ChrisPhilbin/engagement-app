@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AuthResponseData, AuthService } from '../../../services/auth.service';
-import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -29,16 +28,7 @@ export class LoginComponent implements OnInit {
   demoGreetingMessage = '';
   email = '';
   password = '';
-
-  // ngOnInit(): void {
-  //   // this.route.paramMap.subscribe((params: Params) => {
-  //   //   console.log(params, 'demo from login component');
-  //   // });
-  //   this.route.queryParams.pipe(skip(1)).subscribe((params: Params) => {
-  //     console.log(params, 'Params from login component');
-  //   });
-  //   console.log(window.location.href);
-  // }
+  loginButton: HTMLElement;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
@@ -57,34 +47,38 @@ export class LoginComponent implements OnInit {
   prePopulateFields() {
     this.email = 'chris@test.com';
     this.password = 'password123';
+    this.onSubmit();
   }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onSubmit(form: NgForm) {
-    if (!form.valid) {
-      this.error = 'Must provide valid credentials';
-      return;
-    }
-
-    const { username, email, password, confirmPassword } = form.value;
-
-    if (!this.isLoginMode && password !== confirmPassword) {
-      this.error = 'Passwords do not match.';
-      return;
-    }
-
+  onSubmit(form?: NgForm) {
     let authObs: Observable<AuthResponseData>;
 
-    this.isLoading = true;
-
-    if (this.isLoginMode) {
+    if (!form && this.isLoginMode && this.email && this.password) {
       //@ts-ignore
-      authObs = this.authService.testLogin(email, password);
+      authObs = this.authService.testLogin(this.email, this.password);
+    } else if (!form?.valid) {
+      this.error = 'Must provide valid credentials';
+      return;
     } else {
-      authObs = this.authService.signup(email, password);
+      const { username, email, password, confirmPassword } = form?.value;
+
+      if (!this.isLoginMode && password !== confirmPassword) {
+        this.error = 'Passwords do not match.';
+        return;
+      }
+
+      this.isLoading = true;
+
+      if (this.isLoginMode) {
+        //@ts-ignore
+        authObs = this.authService.testLogin(email, password);
+      } else {
+        authObs = this.authService.signup(email, password);
+      }
     }
 
     authObs.subscribe(
@@ -104,6 +98,6 @@ export class LoginComponent implements OnInit {
       }
     );
 
-    form.reset();
+    form?.reset();
   }
 }
