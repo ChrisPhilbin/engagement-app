@@ -58,6 +58,7 @@ export class LoginComponent implements OnInit {
     let authObs: Observable<AuthResponseData>;
 
     if (!form && this.isLoginMode && this.email && this.password) {
+      this.isLoading = true;
       //@ts-ignore
       authObs = this.authService.testLogin(this.email, this.password);
     } else if (!form?.valid) {
